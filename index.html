@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<title>Teste ChatGPT · GitHub Pages</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 20%,#263c77,transparent 40%),linear-gradient(140deg,#0b1020,#111827);color:#f8fafc;padding:24px}
+main{width:min(100%,660px);padding:clamp(28px,6vw,56px);background:#ffffff0c;border:1px solid #ffffff25;border-radius:24px;box-shadow:0 20px 80px #0005;backdrop-filter:blur(14px)}
+.tag{display:inline-block;padding:8px 12px;border-radius:100px;background:#22c55e20;color:#86efac;font-size:13px;font-weight:700;letter-spacing:.06em}
+h1{font-size:clamp(32px,6vw,54px);line-height:1.1;letter-spacing:-.04em;margin:26px 0 16px}
+p{font-size:18px;line-height:1.7;color:#cbd5e1}button{border:0;border-radius:12px;background:#a5b4fc;color:#111827;padding:14px 22px;font-size:16px;font-weight:700;cursor:pointer;margin-top:12px}button:hover{background:#c7d2fe}
+#feedback{min-height:28px;color:#86efac;font-size:15px}footer{font-size:13px;color:#94a3b8;margin-top:36px}
+</style>
+</head>
+<body>
+<main>
+<span class="tag">● PROJETO ONLINE</span>
+<h1>Olá! 👋<br>Seu site está pronto.</h1>
+<p>Esta é uma página de demonstração criada pelo ChatGPT diretamente no seu repositório GitHub. Um primeiro passo para desenvolver projetos usando comandos por voz.</p>
+<button type="button" id="teste">Testar interação →</button>
+<p id="feedback" role="status" aria-live="polite"></p>
+<footer>Feito com HTML, CSS e JavaScript · Sem dependências externas</footer>
+</main>
+<script>
+document.getElementById('teste').addEventListener('click',()=>{document.getElementById('feedback').textContent='Funcionou! A página está interativa. 🚀';});
+</script>
+</body>
+</html>
