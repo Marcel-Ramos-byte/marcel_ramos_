@@ -1,33 +1,106 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0b1020">
-<title>Teste ChatGPT · GitHub Pages</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080d19">
+<meta name="description" content="Marcel Labs — ferramentas digitais, simuladores e utilitários em um só lugar.">
+<title>Marcel Labs — Digital Tools & Utilities</title>
 <style>
-:root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 20%,#263c77,transparent 40%),linear-gradient(140deg,#0b1020,#111827);color:#f8fafc;padding:24px}
-main{width:min(100%,660px);padding:clamp(28px,6vw,56px);background:#ffffff0c;border:1px solid #ffffff25;border-radius:24px;box-shadow:0 20px 80px #0005;backdrop-filter:blur(14px)}
-.tag{display:inline-block;padding:8px 12px;border-radius:100px;background:#22c55e20;color:#86efac;font-size:13px;font-weight:700;letter-spacing:.06em}
-h1{font-size:clamp(32px,6vw,54px);line-height:1.1;letter-spacing:-.04em;margin:26px 0 16px}
-p{font-size:18px;line-height:1.7;color:#cbd5e1}button{border:0;border-radius:12px;background:#a5b4fc;color:#111827;padding:14px 22px;font-size:16px;font-weight:700;cursor:pointer;margin-top:12px}button:hover{background:#c7d2fe}
-#feedback{min-height:28px;color:#86efac;font-size:15px}footer{font-size:13px;color:#94a3b8;margin-top:36px}
+:root{color-scheme:dark;--bg:#080d19;--panel:#111c30;--line:#ffffff1c;--text:#eef6ff;--muted:#9daec7;--cyan:#5eead4;--blue:#70a8ff;font:16px Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:pointer}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse 45% 42% at 84% 7%,#14467d75,transparent),radial-gradient(ellipse 45% 40% at 9% 45%,#0d4b5070,transparent),linear-gradient(160deg,#080d19,#0a1425)}
+.ambient:after{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:52px 52px;mask-image:linear-gradient(#0009,transparent 85%)}
+.wrap{width:min(1160px,calc(100% - 40px));margin:auto}
+.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(22px);background:#080d19c9;border-bottom:1px solid var(--line)}
+.nav{min-height:76px;display:flex;align-items:center;gap:26px;justify-content:space-between}
+.brand{font-size:1.08rem;font-weight:850;letter-spacing:-.04em;display:flex;align-items:center;gap:12px;white-space:nowrap}
+.logo{display:grid;place-items:center;width:37px;height:37px;border:1px solid #5eead477;border-radius:11px;background:linear-gradient(135deg,#1b5861,#102d4a);box-shadow:0 0 30px #5eead42a;color:#a4fff0;font-weight:900}
+.brand em{font-style:normal;color:var(--cyan)}
+.links{display:flex;align-items:center;gap:25px;font-size:.9rem;color:#b7c5da}.links a:hover{color:white}
+.navcta{border:1px solid #5eead45b;padding:10px 15px;border-radius:10px;background:#5eead410;color:#b6fff2;font-weight:650;font-size:.88rem;transition:.2s}.navcta:hover{background:#5eead425;transform:translateY(-2px)}
+.menu{display:none;border:1px solid var(--line);background:#152239;color:#fff;padding:9px 13px;border-radius:10px}
+.hero{position:relative;padding:106px 0 96px;display:grid;grid-template-columns:1.3fr .7fr;gap:38px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;color:#9dfce6;font-size:.78rem;letter-spacing:.16em;font-weight:800;text-transform:uppercase}
+.dot{width:7px;height:7px;border-radius:50%;background:#5eead4;box-shadow:0 0 0 5px #5eead418,0 0 20px #5eead4}
+h1{font-size:clamp(3.2rem,7.8vw,6.3rem);line-height:1.03;letter-spacing:-.075em;margin:25px 0 24px;font-weight:850}
+.gradient{background:linear-gradient(105deg,#f4fbff 5%,#70a8ff 48%,#5eead4 95%);background-clip:text;color:transparent}
+.lead{font-size:1.12rem;line-height:1.8;color:var(--muted);max-width:630px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}.btn{display:inline-flex;gap:12px;align-items:center;padding:15px 21px;border-radius:12px;font-weight:760;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-3px)}.primary{color:#07111c;background:linear-gradient(110deg,#65e7d3,#79a9ff);box-shadow:0 12px 34px #4c9cd32c}.secondary{border:1px solid #ffffff35;background:#ffffff08}
+.orbit{height:320px;position:relative;display:grid;place-items:center;isolation:isolate}
+.ring{position:absolute;border:1px solid #78b6fa42;border-radius:50%;width:280px;height:280px;box-shadow:0 0 90px #48c7dc13,inset 0 0 80px #70a8ff0d;animation:spin 32s linear infinite}
+.ring:before,.ring:after{content:"";position:absolute;border-radius:50%;width:12px;height:12px;background:#5eead4;box-shadow:0 0 25px #5eead4;top:24px;left:40px}
+.ring:after{background:#79a9ff;top:auto;left:auto;right:26px;bottom:35px}
+.ring2{width:205px;height:205px;border-style:dashed;animation-direction:reverse;animation-duration:40s;opacity:.8}
+.core{width:148px;height:148px;display:grid;place-items:center;border:1px solid #86d9fa66;border-radius:35px;transform:rotate(-12deg);background:linear-gradient(145deg,#183b57,#102039);box-shadow:0 20px 80px #0008,0 0 75px #52b6f73b;font-size:4rem;font-weight:900;letter-spacing:-.12em}
+.core span{transform:rotate(12deg);background:linear-gradient(140deg,#80e9ff,#a1fbdc);background-clip:text;color:transparent}
+@keyframes spin{to{transform:rotate(360deg)}}
+.divider{border-top:1px solid var(--line)}
+.section{padding:68px 0 100px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.kicker{font-size:.75rem;color:var(--cyan);text-transform:uppercase;letter-spacing:.18em;font-weight:800}
+h2{font-size:clamp(2rem,4vw,3rem);letter-spacing:-.055em;margin:10px 0 8px}p{margin:0}.hint{color:var(--muted);line-height:1.7}
+.search{background:#121f34;border:1px solid #34445c;border-radius:12px;color:#fff;padding:13px 15px;min-width:240px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.card{position:relative;display:flex;flex-direction:column;min-height:330px;padding:30px;border:1px solid #ffffff22;border-radius:22px;background:linear-gradient(140deg,#17253cdb,#10192ac9);overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s}
+.card:hover{transform:translateY(-7px);border-color:#8ed9ff80;box-shadow:0 25px 70px #0006}
+.card:after{content:"";position:absolute;width:230px;height:230px;border-radius:50%;right:-85px;top:-100px;background:#4fa8fa16;filter:blur(5px);pointer-events:none}
+.card.weather:after{background:#40f0c624}
+.card-icon{width:65px;height:65px;border-radius:18px;display:grid;place-items:center;font-size:2rem;background:#508ffb1d;border:1px solid #508ffb44;margin-bottom:27px}
+.weather .card-icon{background:#5eead41a;border-color:#5eead444}
+.card h3{font-size:1.6rem;letter-spacing:-.035em;margin:0 0 10px}.card p{color:#aabbd1;line-height:1.7;max-width:420px}
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:19px}.tags span{border:1px solid #ffffff24;background:#ffffff08;padding:6px 9px;border-radius:7px;font-size:.72rem;color:#b8c9dd}
+.card-link{display:flex;align-items:center;gap:10px;color:#a4f8e8;font-weight:750;margin-top:auto;padding-top:26px}
+.empty{display:none;padding:25px;color:var(--muted);border:1px dashed #ffffff40;border-radius:12px}.empty.show{display:block}
+.bottom{padding:32px 0;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;font-size:.84rem;color:#93a5bd}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s}.reveal.visible{opacity:1;transform:none}
+@media(max-width:760px){.nav{min-height:66px}.menu{display:block}.links{display:none;position:absolute;top:65px;left:0;right:0;padding:18px 20px;background:#0e192c;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch}.links.open{display:flex}.navcta{display:none}.hero{grid-template-columns:1fr;padding:68px 0 45px}.orbit{height:220px;grid-row:1}.ring{width:190px;height:190px}.ring2{width:135px;height:135px}.core{width:105px;height:105px;border-radius:25px;font-size:3rem}.cards{grid-template-columns:1fr}.section{padding:55px 0}.search{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
-<meta name="description" content="Página de teste publicada pelo GitHub Pages">
-</head>
-<body>
+</head><body>
+<div class="ambient" aria-hidden="true"></div>
+<header class="top"><nav class="wrap nav" aria-label="Navegação principal">
+<a href="./" class="brand" aria-label="Marcel Labs, início"><span class="logo">M.</span><span>MARCEL <em>LABS</em></span></a>
+<button class="menu" id="menu" aria-expanded="false" aria-controls="navlinks" aria-label="Abrir menu">☰ Menu</button>
+<div class="links" id="navlinks"><a href="#inicio">Início</a><a href="#ferramentas">Ferramentas</a><a href="./caldeira/">THERMO</a><a href="./clima/">Clima Brasil</a></div>
+<a class="navcta" href="#ferramentas">Explorar projetos ↗</a>
+</nav></header>
 <main>
-<span class="tag">● PROJETO ONLINE</span>
-<h1>Olá! 👋<br>Seu site está pronto.</h1>
-<p>Esta é uma página de demonstração criada pelo ChatGPT diretamente no seu repositório GitHub. Um primeiro passo para desenvolver projetos usando comandos por voz.</p>
-<p><a href="./caldeira/" style="display:inline-block;background:#22c55e;color:#052e16;padding:15px 22px;border-radius:12px;font-weight:800;text-decoration:none">🔥 Abrir painel da caldeira →</a></p>
-<button type="button" id="teste">Testar interação →</button>
-<p id="feedback" role="status" aria-live="polite"></p>
-<footer>Feito com HTML, CSS e JavaScript · Sem dependências externas</footer>
+<section class="wrap hero" id="inicio">
+<div><span class="eyebrow"><span class="dot"></span> Digital tools & utilities</span>
+<h1>Ideias em código.<br><span class="gradient">Tecnologia em ação.</span></h1>
+<p class="lead">Um hub de ferramentas inteligentes, experimentos interativos e soluções digitais. Explore projetos desenvolvidos para transformar informação em experiências úteis.</p>
+<div class="actions"><a class="btn primary" href="#ferramentas">Explorar ferramentas <span aria-hidden="true">↗</span></a><a class="btn secondary" href="./clima/">Ver Clima Brasil →</a></div>
+</div>
+<div class="orbit" aria-hidden="true"><div class="ring"></div><div class="ring ring2"></div><div class="core"><span>M.</span></div></div>
+</section>
+<div class="divider"></div>
+<section class="wrap section" id="ferramentas">
+<div class="section-head reveal"><div><span class="kicker">01 / Projetos</span><h2>Seu painel de ferramentas.</h2><p class="hint">Escolha uma experiência para começar.</p></div>
+<label><span class="hint" style="display:block;font-size:.8rem;margin-bottom:6px">Filtrar ferramentas</span><input class="search" id="search" type="search" placeholder="Buscar ferramenta…" autocomplete="off"></label>
+</div>
+<div class="cards" id="cards">
+<a class="card reveal" href="./caldeira/" data-search="thermo caldeira simulador supervisório industrial processo temperatura pressão">
+<div class="card-icon" aria-hidden="true">⚙️</div><h3>THERMO <span style="color:#70a8ff">/</span> Supervisório</h3>
+<p>Ambiente interativo para simulação e acompanhamento de uma caldeira flamotubular. Visualização técnica e indicadores de processo.</p>
+<div class="tags"><span>Simulação</span><span>Industrial</span><span>Dashboard</span></div><span class="card-link">Abrir supervisório <span aria-hidden="true">↗</span></span>
+</a>
+<a class="card weather reveal" href="./clima/" data-search="clima brasil tempo meteorologia previsão horária chuva vento municípios temperatura">
+<div class="card-icon" aria-hidden="true">☁️</div><h3>Clima Brasil</h3>
+<p>Explore a previsão meteorológica por município, com chuva por intensidade, temperatura, direção do vento e evolução horária.</p>
+<div class="tags"><span>Meteorologia</span><span>Brasil</span><span>Previsão horária</span></div><span class="card-link">Consultar previsão <span aria-hidden="true">↗</span></span>
+</a>
+</div><p class="empty" id="empty" role="status">Nenhuma ferramenta encontrada para essa busca.</p>
+</section>
 </main>
+<div class="divider"></div><footer class="wrap bottom"><span>© <span id="year"></span> Marcel Labs · Built to explore.</span><span>Engineering mindset. Human experience.</span></footer>
 <script>
-document.getElementById('teste').addEventListener('click',()=>{document.getElementById('feedback').textContent='Funcionou! A página está interativa. 🚀';});
-</script>
-</body>
-</html>
+document.getElementById('year').textContent=new Date().getFullYear();
+const menu=document.getElementById('menu'),links=document.getElementById('navlinks');
+menu.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.textContent=open?'✕ Fechar':'☰ Menu'});
+links.addEventListener('click',e=>{if(e.target.closest('a')){links.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='☰ Menu'}});
+const cards=[...document.querySelectorAll('.card')],empty=document.getElementById('empty');
+document.getElementById('search').addEventListener('input',e=>{const term=e.target.value.toLocaleLowerCase('pt-BR').trim();let count=0;cards.forEach(card=>{const show=card.dataset.search.includes(term);card.hidden=!show;if(show)count++});empty.classList.toggle('show',!count)});
+const reveals=document.querySelectorAll('.reveal');
+if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}})},{threshold:.08});reveals.forEach(el=>observer.observe(el))}else reveals.forEach(el=>el.classList.add('visible'));
+</script></body></html>
