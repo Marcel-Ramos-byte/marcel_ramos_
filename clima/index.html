@@ -27,7 +27,7 @@ select:focus,input:focus{outline:2px solid #71b7fa}select:disabled{opacity:.5}
 <div class="panel"><h2 id="titulo">Previsão</h2><div class="stats" id="stats"></div><p class="status" id="atualizacao"></p></div>
 <div class="panel"><h2>Próximas 48 horas</h2><p class="muted">Chuva: fraca (até 2,5 mm/h), moderada (acima de 2,5 até 10 mm/h), forte (acima de 10 mm/h). Classificação indicativa, não é alerta oficial.</p><div class="scroller"><div id="horas" class="hours"></div></div></div>
 </section>
-<footer>Dados meteorológicos: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (CC BY 4.0). Catálogo e códigos municipais: IBGE; coordenadas: base pública Municipios-Brasileiros. Previsões são estimativas de modelos numéricos, não medições locais nem avisos oficiais. Atualizações programadas às 07h, 12h e 16h (Brasília), sujeitas a atrasos do GitHub Actions. Não utilize isoladamente para decisões de segurança.</footer>
+<footer>Dados meteorológicos: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (CC BY 4.0). Catálogo e códigos municipais: IBGE; coordenadas: base pública Municipios-Brasileiros. Previsões são estimativas de modelos numéricos, não medições locais nem avisos oficiais. Atualizações automáticas programadas às 07h, 12h e 16h (Brasília), sujeitas a atrasos; quando não houver arquivo atualizado, a consulta usa a API em tempo real. Não utilize isoladamente para decisões de segurança.</footer>
 </main><script>
 const $=id=>document.getElementById(id), fmt=(n,d=0)=>n==null?'—':Number(n).toFixed(d).replace('.',',');
 let municipios=[],dados={},estado='';
@@ -41,8 +41,16 @@ function populate(){const uf=$('uf').value;const cities=municipios.filter(x=>x.u
 async function choose(){
  const id=$('cidade').value;if(!id)return;$('status').textContent='Carregando previsão…';$('resultado').hidden=true;
  try{
- const uf=$('uf').value;if(estado!==uf){dados=await json('dados/'+uf+'.json');estado=uf}
- const data=dados[id];if(!data)throw Error('Dados ainda não disponíveis para este município');
+ const uf=$('uf').value;if(estado!==uf){try{dados=await json('dados/'+uf+'.json')}catch(_){dados={}}estado=uf}
+ let data=dados[id];
+ if(!data){
+  const city=municipios.find(x=>x.id===id);
+  if(!city||!Number.isFinite(city.lat)||!Number.isFinite(city.lon))throw Error('Coordenadas indisponíveis');
+  const params=new URLSearchParams({latitude:city.lat,longitude:city.lon,hourly:'temperature_2m,precipitation,precipitation_probability,wind_speed_10m,wind_direction_10m',forecast_days:'3',timezone:'America/Sao_Paulo'});
+  const live=await json('https://api.open-meteo.com/v1/forecast?'+params.toString());
+  if(!live.hourly)throw Error('API meteorológica indisponível');
+  data={atualizado:new Date().toISOString(),horas:live.hourly};
+ }
  const h=data.horas,now=new Date(),times=h.time.map(x=>new Date(x+'-03:00'));let i=times.findIndex(t=>t>=now);if(i<0)i=0;
  const city=municipios.find(x=>x.id===id);$('titulo').textContent=city.nome+' · '+city.uf;
  $('stats').innerHTML=cell('Temperatura',fmt(h.temperature_2m[i],1)+' °C')+cell('Chuva prevista',fmt(h.precipitation[i],1)+' mm/h')+cell('Probabilidade',fmt(h.precipitation_probability[i])+'%')+cell('Vento',fmt(h.wind_speed_10m[i])+' km/h · '+vento(h.wind_direction_10m[i]));
