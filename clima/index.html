@@ -30,19 +30,19 @@ select:focus,input:focus{outline:2px solid #71b7fa}select:disabled{opacity:.5}
 <footer>Dados meteorológicos: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (CC BY 4.0). Catálogo e códigos municipais: IBGE; coordenadas: base pública Municipios-Brasileiros. Previsões são estimativas de modelos numéricos, não medições locais nem avisos oficiais. Atualizações automáticas programadas às 07h, 12h e 16h (Brasília), sujeitas a atrasos; quando não houver arquivo atualizado, a consulta usa a API em tempo real. Não utilize isoladamente para decisões de segurança.</footer>
 </main><script>
 const $=id=>document.getElementById(id), fmt=(n,d=0)=>n==null?'—':Number(n).toFixed(d).replace('.',',');
-let municipios=[],dados={},estado='';
+let municipios=[];
 const directions=['N','NE','L','SE','S','SO','O','NO'];
 const vento=n=>n==null?'—':directions[Math.round((n%360)/45)%8];
 const chuva=n=>n==null?['Sem dados','']:n>10?['Forte','forte']:n>2.5?['Moderada','moderada']:n>0?['Fraca','fraca']:['Sem chuva',''];
 const cell=(label,value)=>'<div class="stat"><small>'+label+'</small><strong>'+value+'</strong></div>';
 const option=(value,label)=>{const o=document.createElement('option');o.value=value;o.textContent=label;return o};
-async function json(url){const r=await fetch(url,{cache:'no-cache'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
+async function json(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status+' em '+(url.includes('open-meteo')?'API meteorológica':'catálogo'));return r.json()}
 function populate(){const uf=$('uf').value;const cities=municipios.filter(x=>x.uf===uf);$('cidade').replaceChildren(option('','Selecione um município'),...cities.map(c=>option(c.id,c.nome)));$('cidade').disabled=!uf;$('resultado').hidden=true}
 async function choose(){
  const id=$('cidade').value;if(!id)return;$('status').textContent='Carregando previsão…';$('resultado').hidden=true;
  try{
- const uf=$('uf').value;if(estado!==uf){try{dados=await json('dados/'+uf+'.json')}catch(_){dados={}}estado=uf}
- let data=dados[id];
+ const uf=$('uf').value;
+ let data=null;
  if(!data){
   const city=municipios.find(x=>x.id===id);
   if(!city||!Number.isFinite(city.lat)||!Number.isFinite(city.lon))throw Error('Coordenadas indisponíveis');
