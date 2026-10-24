@@ -33,7 +33,7 @@ def main():
     if len(cities) < 5500:
         raise RuntimeError("Catálogo incompleto; atualização abortada")
     cities.sort(key=lambda c:(c["uf"],c["nome"]))
-    (OUT/"municipios.json").write_text(json.dumps([{"id":c["id"],"nome":c["nome"],"uf":c["uf"]} for c in cities],ensure_ascii=False,separators=(",",":")),encoding="utf-8")
+    (OUT/"municipios.json").write_text(json.dumps([{"id":c["id"],"nome":c["nome"],"uf":c["uf"],"lat":c["lat"],"lon":c["lon"]} for c in cities],ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     timestamp=datetime.now(timezone.utc).isoformat()
     errors=[]
     # Uma requisição por lote de até 50 coordenadas; menos de 120 chamadas por execução.
