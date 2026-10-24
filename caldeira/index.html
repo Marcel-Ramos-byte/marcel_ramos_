@@ -18,6 +18,8 @@ main{max-width:1550px;margin:auto;padding:24px;display:grid;gap:18px}.notice{pad
 .field{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;color:#b9cadd}.field input{width:110px;background:#0b1726;border:1px solid #3b5670;border-radius:8px;color:#fff;padding:9px}.help{font-size:12px;line-height:1.55;color:#93a9be}
 .chart{height:220px;width:100%;display:block}.alarms{display:grid;gap:8px;max-height:230px;overflow:auto}.alarmitem{border:1px solid #36475a;border-left:4px solid #f0a951;padding:11px;border-radius:8px;background:#182638;font-size:13px}.alarmitem.critical{border-left-color:#ff6c72}.alarmitem small{display:block;color:#9caec2;margin-top:4px}.empty{color:#88d9ae;font-size:13px}
 .footer{font-size:12px;color:#879bb0;line-height:1.6;padding-bottom:15px}@media(max-width:1000px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}}@media(max-width:540px){main{padding:12px}.metrics{gap:9px}.card{padding:13px}.value{font-size:25px}.boiler{width:88%;height:135px}.flame{font-size:32px}.pipe{right:40px}}
+
+.pid-wrap{overflow:auto;border:1px solid #294763;border-radius:13px;background:radial-gradient(ellipse at 50% 20%,#1b3950,#0b1a2b 80%)}.pid{display:block;width:100%;min-width:740px;height:auto}.pid .line{stroke:#8bb4d1;stroke-width:5;fill:none;stroke-linecap:round}.pid .fuel{stroke:#e8aa62}.pid .water{stroke:#50c9ee}.pid .steam{stroke:#c7d7f5}.pid .signal{stroke:#87c5a0;stroke-width:2;stroke-dasharray:6 6;fill:none}.pid .device{fill:#122b43;stroke:#86b6d6;stroke-width:2.5}.pid .instrument{fill:#0b2438;stroke:#70d8ed;stroke-width:2.5}.pid .symbol{cursor:pointer;outline:none}.pid .symbol:hover .instrument,.pid .symbol:hover .device,.pid .symbol:focus .instrument,.pid .symbol:focus .device{stroke:#f6df8c;stroke-width:4}.pid text{fill:#e7f4ff;font:15px system-ui;pointer-events:none}.pid .tag{font-size:13px;font-weight:800}.pid .small{font-size:12px;fill:#9dc3d9}.pid .motor{fill:#123b4a;stroke:#60e3d4;stroke-width:3}.pid .alarmglow{stroke:#ff727b!important;filter:drop-shadow(0 0 7px #f44)}.instrument-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin-top:16px}.instrument-tile{border:1px solid #34516d;border-radius:11px;background:#10253a;padding:12px;text-align:left;color:#e5f5ff}.instrument-tile:hover{border-color:#7bcaf0;background:#17334c}.instrument-tile strong{display:block;font-size:14px}.instrument-tile small{display:block;color:#9db4c9;margin-top:6px}.config-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.config-grid label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:#aac2d8}.config-grid input,.config-grid select{background:#0b192a;border:1px solid #46617a;border-radius:9px;color:white;padding:10px;min-width:0;width:100%;font:inherit}.config-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.config-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.chip{border:1px solid #476781;border-radius:20px;padding:6px 11px;color:#b7d6e9;font-size:12px}.pid-info{font-size:13px;color:#b0c7d9;line-height:1.6;margin-top:10px}.alarm-table{width:100%;border-collapse:collapse;font-size:13px}.alarm-table th,.alarm-table td{text-align:left;padding:10px;border-bottom:1px solid #2c4055}.alarm-table th{color:#9fb5cc}.alarm-table input{width:85px;background:#0b192a;border:1px solid #48617a;color:white;border-radius:7px;padding:8px}.alarm-table input[type=checkbox]{width:18px;height:18px}.table-scroll{overflow-x:auto}.state-live{color:#6ee7ba}.state-off{color:#93a9bd}@media(max-width:650px){.config-grid{grid-template-columns:1fr}.instrument-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head><body>
 <header><div><div class="brand">THERMO<span>•</span>HMI <span style="font-size:12px;color:#8ba3b9">/ CALDEIRA FT-01</span></div><div class="sub">Painel de instrumentos · Caldeira FT-01</div></div><div class="status"><span class="pill sim" title="Valores gerados pelo modelo, sem conexão com equipamento físico">MODO VIRTUAL</span><span class="pill" id="mode">PARADA</span><span class="pill" id="clock">--:--:--</span></div></header>
 <main>
@@ -26,6 +28,40 @@ main{max-width:1550px;margin:auto;padding:24px;display:grid;gap:18px}.notice{pad
 <div class="card"><div class="label">Nível de água</div><div class="value"><span id="level">65</span><span class="unit">%</span></div></div>
 <div class="card"><div class="label">Temperatura do vapor</div><div class="value"><span id="temp">25</span><span class="unit">°C</span></div></div>
 <div class="card"><div class="label">Carga do queimador</div><div class="value"><span id="burner">0</span><span class="unit">%</span></div></div>
+</section>
+
+<section class="card" aria-label="Diagrama de instrumentação e controle">
+<div class="config-head"><h2 class="sectiontitle">Diagrama de processo · FT-01</h2><span class="chip">P&ID interativo</span></div>
+<div class="pid-wrap">
+<svg class="pid" viewBox="0 0 1100 490" role="group" aria-label="Diagrama da caldeira com queimador, ventilador, bomba, válvulas e transmissores">
+<defs><linearGradient id="shell" x2="0" y2="1"><stop stop-color="#39546b"/><stop offset=".45" stop-color="#203a51"/><stop offset="1" stop-color="#0c253b"/></linearGradient></defs>
+<path class="line water" d="M70 380 H250 V310 H370"/><path class="line steam" d="M715 185 V95 H1000"/><path class="line fuel" d="M80 245 H368"/><path class="line" d="M95 110 H240 V225 H370"/>
+<rect x="370" y="155" width="345" height="205" rx="94" fill="url(#shell)" stroke="#a3c1d9" stroke-width="6"/>
+<path d="M384 275 H701" stroke="#46bad8" stroke-width="6" stroke-dasharray="12 7"/><text x="475" y="300">CALDEIRA FT-01</text><text x="475" y="325" class="small">VAPOR / ÁGUA</text>
+<g class="symbol" data-tag="B-101" tabindex="0" role="button" aria-label="Configurar queimador B-101"><rect class="device" x="280" y="225" width="94" height="52" rx="12"/><path d="M374 239 l26 12 -26 12" fill="#f4a74d"/><text x="300" y="246" class="tag">B-101</text><text x="295" y="266" class="small">QUEIM.</text></g>
+<g class="symbol" data-tag="F-101" tabindex="0" role="button" aria-label="Configurar ventilador F-101"><circle class="motor" cx="95" cy="110" r="36"/><path d="M95 110 q-32 -20 -7 -28 q16 7 7 28 q28 -20 29 7 q-15 16 -29 -7 q4 34 -23 23 q-8 -19 23 -23" fill="#4c9ba8"/><text x="65" y="164" class="tag">F-101</text><text x="48" y="181" class="small">VENTILADOR</text></g>
+<g class="symbol" data-tag="P-101" tabindex="0" role="button" aria-label="Configurar bomba P-101"><circle class="motor" cx="165" cy="380" r="33"/><path d="M152 362 L185 380 L152 398 Z" fill="#8ce1d6"/><text x="136" y="430" class="tag">P-101</text><text x="138" y="447" class="small">BOMBA</text></g>
+<g class="symbol" data-tag="FV-101" tabindex="0" role="button" aria-label="Configurar válvula de combustível FV-101"><path class="device" d="M185 225 L225 265 L225 225 L185 265 Z"/><text x="178" y="209" class="tag">FV-101</text></g>
+<g class="symbol" data-tag="LV-101" tabindex="0" role="button" aria-label="Configurar válvula de alimentação LV-101"><path class="device" d="M262 290 L302 330 L302 290 L262 330 Z"/><text x="240" y="280" class="tag">LV-101</text></g>
+<g class="symbol" data-tag="SV-101" tabindex="0" role="button" aria-label="Configurar válvula de vapor SV-101"><path class="device" d="M842 75 L882 115 L882 75 L842 115 Z"/><text x="829" y="61" class="tag">SV-101</text></g>
+<g class="symbol" data-tag="PT-101" tabindex="0" role="button" aria-label="Transmissor de pressão PT-101"><path class="signal" d="M570 155 V98"/><circle class="instrument" cx="570" cy="70" r="29"/><text x="546" y="75" class="tag">PT</text><text x="546" y="115" class="small">101</text></g>
+<g class="symbol" data-tag="LT-101" tabindex="0" role="button" aria-label="Transmissor de nível LT-101"><path class="signal" d="M715 280 H767"/><circle class="instrument" cx="797" cy="280" r="29"/><text x="776" y="285" class="tag">LT</text><text x="784" y="325" class="small">101</text></g>
+<g class="symbol" data-tag="TT-101" tabindex="0" role="button" aria-label="Transmissor de temperatura TT-101"><path class="signal" d="M715 205 H765"/><circle class="instrument" cx="797" cy="205" r="29"/><text x="776" y="210" class="tag">TT</text><text x="783" y="246" class="small">101</text></g>
+<g class="symbol" data-tag="FT-101" tabindex="0" role="button" aria-label="Transmissor de vazão FT-101"><path class="signal" d="M930 95 V145"/><circle class="instrument" cx="930" cy="174" r="29"/><text x="909" y="179" class="tag">FT</text><text x="916" y="215" class="small">101</text></g>
+<g class="symbol" data-tag="PIC-101" tabindex="0" role="button" aria-label="Controlador de pressão PIC-101"><circle class="instrument" cx="900" cy="365" r="36"/><text x="876" y="370" class="tag">PIC</text><text x="886" y="414" class="small">101</text></g>
+<g class="symbol" data-tag="LIC-101" tabindex="0" role="button" aria-label="Controlador de nível LIC-101"><circle class="instrument" cx="1010" cy="365" r="36"/><text x="987" y="370" class="tag">LIC</text><text x="995" y="414" class="small">101</text></g>
+<text x="42" y="218" class="small">COMBUSTÍVEL →</text><text x="42" y="352" class="small">ÁGUA →</text><text x="918" y="77" class="small">VAPOR →</text>
+</svg></div>
+<p class="pid-info">Selecione um símbolo ou instrumento para visualizar e ajustar seus parâmetros.</p>
+<div class="instrument-grid" id="instrumentTiles"></div>
+</section>
+<section class="layout">
+<div class="card" id="configPanel"><div class="config-head"><h2 class="sectiontitle" id="configTitle">Configuração de instrumentos</h2><span class="chip" id="configTag">PT-101</span></div>
+<p class="pid-info" id="configDescription"></p>
+<div class="config-grid" id="configFields"></div>
+<div class="config-actions"><button class="btn primary" id="saveInstrument">Aplicar ajustes</button><button class="btn" id="restoreInstrument">Restaurar instrumento</button></div><p class="pid-info" id="configMessage" role="status"></p>
+</div>
+<div class="card"><h2 class="sectiontitle">Alarmes configuráveis</h2><div class="table-scroll"><table class="alarm-table"><thead><tr><th>Variável</th><th>Baixo</th><th>Alto</th><th>Ativo</th></tr></thead><tbody id="alarmConfig"></tbody></table></div><div class="config-actions"><button class="btn primary" id="saveAlarms">Salvar alarmes</button><button class="btn" id="resetAlarms">Restaurar limites</button></div><p class="pid-info" id="alarmMessage" role="status"></p></div>
 </section>
 <section class="layout">
 <div class="card"><h2 class="sectiontitle">Visão geral do processo</h2><div class="diagram" role="img" aria-label="Representação esquemática simplificada de caldeira flamotubular com nível de água e queimador"><div class="blabel">FT-01 · GERADOR DE VAPOR</div><div class="boiler"><div class="pipe"></div><span class="flame" id="flame">◌</span><div class="boiler-info">ÁGUA / VAPOR</div></div></div><div class="legend"><span><i class="dot" id="flameDot"></i> Queimador</span><span><i class="dot off"></i> Queimador desligado</span><span><i class="dot alarm"></i> Alarme</span></div></div>
@@ -41,14 +77,117 @@ const $=id=>document.getElementById(id);let running=false,fault=false,p=0,level=
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));const now=()=>new Date().toLocaleTimeString('pt-BR');
 function addEvent(message,critical=false){events.unshift({message,time:now(),critical,ack:false});events=events.slice(0,30);renderEvents()}
 function renderEvents(){const box=$('alarms');box.replaceChildren();if(!events.length){const el=document.createElement('div');el.className='empty';el.textContent='Nenhum evento registrado.';box.append(el);return}for(const e of events){const item=document.createElement('div');item.className='alarmitem'+(e.critical?' critical':'');const msg=document.createElement('strong');msg.textContent=(e.ack?'✓ ':'● ')+e.message;const small=document.createElement('small');small.textContent=e.time+' · '+(e.ack?'Reconhecido':'Não reconhecido');item.append(msg,small);box.append(item)}}
-function render(){ $('pressure').textContent=p.toFixed(1).replace('.',',');$('level').textContent=Math.round(level);$('temp').textContent=Math.round(temp);$('burner').textContent=Math.round(burner);$('clock').textContent=now();$('mode').textContent=fault?'FALHA':running?'EM OPERAÇÃO':'PARADA';$('mode').className='pill '+(fault?'bad':running?'ok':'');$('flame').textContent=running&&!fault?'🔥':'◌';$('flameDot').className='dot '+(running&&!fault?'':'off');$('stateText').textContent=fault?'Falha de chama. Reinicie para restabelecer.':running?'Sistema em operação.':'Sistema parado.';draw()}
+function render(){ refreshInstruments(); $('pressure').textContent=p.toFixed(1).replace('.',',');$('level').textContent=Math.round(level);$('temp').textContent=Math.round(temp);$('burner').textContent=Math.round(burner);$('clock').textContent=now();$('mode').textContent=fault?'FALHA':running?'EM OPERAÇÃO':'PARADA';$('mode').className='pill '+(fault?'bad':running?'ok':'');$('flame').textContent=running&&!fault?'🔥':'◌';$('flameDot').className='dot '+(running&&!fault?'':'off');$('stateText').textContent=fault?'Falha de chama. Reinicie para restabelecer.':running?'Sistema em operação.':'Sistema parado.';draw()}
 function draw(){const c=$('trend'),rect=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1,w=Math.max(240,rect.width),h=Math.max(150,rect.height);c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);const x=c.getContext('2d');x.scale(dpr,dpr);x.clearRect(0,0,w,h);x.strokeStyle='#2d4359';x.lineWidth=1;for(let i=0;i<=4;i++){let y=12+(h-30)*i/4;x.beginPath();x.moveTo(38,y);x.lineTo(w-10,y);x.stroke();x.fillStyle='#8fa8bf';x.font='11px system-ui';x.fillText(String((10-i*2.5).toFixed(1)),3,y+4)}x.beginPath();history.forEach((v,i)=>{const px=38+i*(w-50)/(history.length-1),py=12+(h-30)*(1-clamp(v/10,0,1));i?x.lineTo(px,py):x.moveTo(px,py)});x.strokeStyle='#59c7f2';x.lineWidth=2.5;x.stroke()}
 $('start').onclick=()=>{if(fault){addEvent('Partida bloqueada por falha de chama',true);return}if(!running){running=true;addEvent('Partida realizada')}render()};
 $('stop').onclick=()=>{if(running){running=false;burner=0;addEvent('Parada realizada')}render()};
 $('fault').onclick=()=>{fault=true;running=false;burner=0;addEvent('Falha de chama — operação interrompida',true);render()};
 $('reset').onclick=()=>{running=false;fault=false;p=0;level=65;temp=25;burner=0;history=Array(60).fill(0);events=[];addEvent('Sistema reiniciado');render()};
 $('ack').onclick=()=>{events.forEach(e=>e.ack=true);renderEvents()};
-$('target').onchange=()=>{$('target').value=clamp(Number($('target').value)||5,1,8);addEvent('Pressão de referência alterada para '+$('target').value+' bar')};
-setInterval(()=>{if(running){const target=clamp(Number($('target').value)||5,1,8);burner=clamp(30+(target-p)*12,15,100);p=clamp(p+(target-p)*.035+(Math.random()-.5)*.035,0,9);temp=25+p*16;level=clamp(level+(Math.random()-.5)*.15-.012,45,80)}else{burner=0;p=Math.max(0,p-.025);temp=Math.max(25,temp-.4)}history.push(p);history.shift();render()},1000);
-window.addEventListener('resize',draw);render();})();
+$('target').onchange=()=>{const value=clamp(Number($('target').value)||5,1,8);$('target').value=value;configs['PIC-101'].setpoint=value;localStorage.setItem('thermo-instruments-v1',JSON.stringify(configs));if(selectedTag==='PIC-101')showInstrument(selectedTag);addEvent('Pressão de referência alterada para '+value+' bar')};
+setInterval(()=>{if(running){const pic=configs['PIC-101'],lic=configs['LIC-101'];const target=clamp(pic.setpoint,1,8);integralP=clamp(integralP+(target-p)*pic.ki,-15,15);const demand=30+(target-p)*pic.kp+integralP;burner=(configs['B-101'].enabled&&configs['F-101'].enabled&&configs['FV-101'].enabled)?clamp(demand*configs['FV-101'].opening/70,configs['B-101'].minLoad,configs['B-101'].maxLoad):0;p=clamp(p+(burner/70*(target-p))*.035+(Math.random()-.5)*.035,0,9);temp=25+p*16;integralL=clamp(integralL+(lic.setpoint-level)*lic.ki,-10,10);const feed=(configs['P-101'].enabled&&configs['LV-101'].enabled)?(configs['P-101'].speed/70)*(configs['LV-101'].opening/55):0;level=clamp(level+feed*(lic.setpoint-level)*.01+integralL*.001+(Math.random()-.5)*.15-.012,0,100)}else{burner=0;p=Math.max(0,p-.025);temp=Math.max(25,temp-.4)}history.push(p);history.shift();evaluateAlarms();render()},1000);
+
+/* Configuração local dos instrumentos do modelo virtual; não controla equipamentos físicos. */
+const instrumentDefs={
+"PT-101":{name:"Transmissor de pressão",unit:"bar",pv:"pressure",fields:{rangeMin:0,rangeMax:10,offset:0}},
+"LT-101":{name:"Transmissor de nível",unit:"%",pv:"level",fields:{rangeMin:0,rangeMax:100,offset:0}},
+"TT-101":{name:"Transmissor de temperatura",unit:"°C",pv:"temp",fields:{rangeMin:0,rangeMax:250,offset:0}},
+"FT-101":{name:"Transmissor de vazão de vapor",unit:"t/h",pv:"flow",fields:{rangeMin:0,rangeMax:12,offset:0}},
+"PIC-101":{name:"Controlador de pressão",unit:"bar",pv:"pressure",fields:{setpoint:5,kp:12,ki:0.035,mode:1}},
+"LIC-101":{name:"Controlador de nível",unit:"%",pv:"level",fields:{setpoint:65,kp:1.2,ki:0.02,mode:1}},
+"B-101":{name:"Queimador",unit:"%",pv:"burner",fields:{minLoad:15,maxLoad:100,enabled:1}},
+"F-101":{name:"Ventilador de combustão",unit:"%",pv:"fan",fields:{speed:75,enabled:1}},
+"P-101":{name:"Bomba de alimentação",unit:"%",pv:"pump",fields:{speed:70,enabled:1}},
+"FV-101":{name:"Válvula de combustível",unit:"%",pv:"fuelValve",fields:{opening:70,enabled:1}},
+"LV-101":{name:"Válvula de alimentação",unit:"%",pv:"feedValve",fields:{opening:55,enabled:1}},
+"SV-101":{name:"Válvula de vapor",unit:"%",pv:"steamValve",fields:{opening:80,enabled:1}}
+};
+const alarmDefaults={pressure:{name:"Pressão (bar)",low:0,high:8.5,enabled:true},level:{name:"Nível (%)",low:45,high:85,enabled:true},temp:{name:"Temperatura (°C)",low:0,high:185,enabled:true},flow:{name:"Vazão (t/h)",low:0,high:11,enabled:true}};
+const copy=o=>JSON.parse(JSON.stringify(o));
+const storeRead=(key,defaultValue)=>{try{const val=JSON.parse(localStorage.getItem(key));return val&&typeof val==="object"?val:copy(defaultValue)}catch{return copy(defaultValue)}};
+let configs=storeRead("thermo-instruments-v1",Object.fromEntries(Object.entries(instrumentDefs).map(([k,v])=>[k,v.fields])));
+let alarmSettings=storeRead("thermo-alarms-v1",alarmDefaults);
+for(const [tag,def] of Object.entries(instrumentDefs))configs[tag]={...def.fields,...configs[tag]};
+for(const [key,def] of Object.entries(alarmDefaults))alarmSettings[key]={...def,...alarmSettings[key]};
+let selectedTag="PT-101",activeAlarms=new Set(),integralP=0,integralL=0;
+const labels={rangeMin:"Faixa mínima",rangeMax:"Faixa máxima",offset:"Offset",setpoint:"Setpoint",kp:"Ganho proporcional",ki:"Ganho integral",mode:"Automático (1) / Manual (0)",minLoad:"Carga mínima",maxLoad:"Carga máxima",enabled:"Habilitado (1) / Desabilitado (0)",speed:"Velocidade (%)",opening:"Abertura (%)"};
+const getPV=key=>({pressure:p,level,temp,burner,flow:running?burner*.085:0,fan:running&&configs["F-101"].enabled?configs["F-101"].speed:0,pump:running&&configs["P-101"].enabled?configs["P-101"].speed:0,fuelValve:running?configs["FV-101"].opening:0,feedValve:running?configs["LV-101"].opening:0,steamValve:configs["SV-101"].opening})[key]??0;
+function showInstrument(tag){
+ selectedTag=tag;const def=instrumentDefs[tag];if(!def)return;
+ $("configTitle").textContent=def.name;$("configTag").textContent=tag;
+ $("configDescription").textContent="Valor atual: "+getPV(def.pv).toFixed(1)+" "+def.unit;
+ $("configFields").replaceChildren();
+ for(const [key,val] of Object.entries(configs[tag])){
+ const label=document.createElement("label");label.textContent=labels[key]||key;
+ const input=document.createElement("input");input.type="number";input.step="any";input.value=val;input.dataset.key=key;input.setAttribute("aria-label",label.textContent);
+ label.append(input);$("configFields").append(label);
+ }
+ $("configMessage").textContent="";
+ document.querySelectorAll(".instrument-tile").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.tag===tag)));
+}
+function setupInstruments(){
+ const tiles=$("instrumentTiles");
+ for(const [tag,def] of Object.entries(instrumentDefs)){
+ const btn=document.createElement("button");btn.className="instrument-tile";btn.dataset.tag=tag;
+ btn.innerHTML="<strong>"+tag+" · "+def.name+"</strong><small data-pv='"+tag+"'>—</small>";
+ btn.onclick=()=>{showInstrument(tag);$("configPanel").scrollIntoView({behavior:"smooth",block:"nearest"})};tiles.append(btn);
+ }
+ document.querySelectorAll(".pid .symbol").forEach(el=>{
+ const action=()=>{showInstrument(el.dataset.tag);$("configPanel").scrollIntoView({behavior:"smooth",block:"nearest"})};
+ el.addEventListener("click",action);el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();action()}});
+ });
+ $("saveInstrument").onclick=()=>{
+ const next={};for(const input of $("configFields").querySelectorAll("input")){const n=Number(input.value);if(!Number.isFinite(n)){ $("configMessage").textContent="Informe valores numéricos válidos.";return }next[input.dataset.key]=n}
+ if(next.rangeMin!==undefined&&next.rangeMax<=next.rangeMin){$("configMessage").textContent="A faixa máxima deve ser maior que a mínima.";return}
+ if(next.setpoint!==undefined&&(next.setpoint<0||next.setpoint>100)){ $("configMessage").textContent="Setpoint fora da faixa permitida.";return}
+ if(next.minLoad!==undefined&&next.minLoad>next.maxLoad){$("configMessage").textContent="A carga mínima deve ser menor que a máxima.";return}
+ for(const key of ["speed","opening","minLoad","maxLoad"]){if(next[key]!==undefined&&(next[key]<0||next[key]>100)){$("configMessage").textContent="Utilize valores entre 0 e 100%.";return}}
+ for(const key of ["enabled","mode"]){if(next[key]!==undefined&&![0,1].includes(next[key])){$("configMessage").textContent="Utilize 0 ou 1.";return}}
+ if(next.kp!==undefined&&(next.kp<0||next.ki<0)){$("configMessage").textContent="Os ganhos não podem ser negativos.";return}
+ configs[selectedTag]=next;localStorage.setItem("thermo-instruments-v1",JSON.stringify(configs));
+ if(selectedTag==="PIC-101"){$("target").value=next.setpoint;integralP=0}
+ addEvent(selectedTag+" · parâmetros atualizados");showInstrument(selectedTag);$("configMessage").textContent="Ajustes aplicados.";
+ };
+ $("restoreInstrument").onclick=()=>{configs[selectedTag]=copy(instrumentDefs[selectedTag].fields);localStorage.setItem("thermo-instruments-v1",JSON.stringify(configs));if(selectedTag==="PIC-101")$("target").value=configs[selectedTag].setpoint;showInstrument(selectedTag);$("configMessage").textContent="Parâmetros restaurados."};
+ showInstrument(selectedTag);
+}
+function drawAlarmSettings(){
+ const body=$("alarmConfig");body.replaceChildren();
+ for(const [key,a] of Object.entries(alarmSettings)){
+ const row=document.createElement("tr");row.dataset.key=key;
+ const title=document.createElement("td");title.textContent=a.name;row.append(title);
+ for(const k of ["low","high"]){const td=document.createElement("td"),inp=document.createElement("input");inp.type="number";inp.step="any";inp.value=a[k];inp.dataset.field=k;inp.setAttribute("aria-label",a.name+" "+(k==="low"?"limite baixo":"limite alto"));td.append(inp);row.append(td)}
+ const td=document.createElement("td"),check=document.createElement("input");check.type="checkbox";check.checked=a.enabled;check.dataset.field="enabled";check.setAttribute("aria-label","Habilitar alarme "+a.name);td.append(check);row.append(td);body.append(row);
+ }
+}
+function setupAlarms(){
+ drawAlarmSettings();
+ $("saveAlarms").onclick=()=>{
+ const next=copy(alarmSettings);
+ for(const row of $("alarmConfig").querySelectorAll("tr")){
+ const key=row.dataset.key,low=Number(row.querySelector('[data-field="low"]').value),high=Number(row.querySelector('[data-field="high"]').value);
+ if(!Number.isFinite(low)||!Number.isFinite(high)||low>=high){$("alarmMessage").textContent="O limite baixo deve ser menor que o alto.";return}
+ next[key]={...next[key],low,high,enabled:row.querySelector('[data-field="enabled"]').checked};
+ }
+ alarmSettings=next;activeAlarms.clear();localStorage.setItem("thermo-alarms-v1",JSON.stringify(next));$("alarmMessage").textContent="Limites de alarme salvos.";addEvent("Limites de alarme atualizados");
+ };
+ $("resetAlarms").onclick=()=>{alarmSettings=copy(alarmDefaults);activeAlarms.clear();localStorage.setItem("thermo-alarms-v1",JSON.stringify(alarmSettings));drawAlarmSettings();$("alarmMessage").textContent="Limites restaurados."};
+}
+function evaluateAlarms(){
+ for(const [key,a] of Object.entries(alarmSettings)){
+ const value=getPV(key),state=a.enabled?(value<a.low?"baixo":value>a.high?"alto":null):null;
+ const previous=[...activeAlarms].find(x=>x.startsWith(key+":"));
+ if(previous&&previous!==key+":"+state)activeAlarms.delete(previous);
+ if(state&&!activeAlarms.has(key+":"+state)){activeAlarms.add(key+":"+state);addEvent(a.name+" · alarme "+state+" ("+value.toFixed(1)+")",true)}
+ }
+}
+function refreshInstruments(){
+ for(const [tag,def] of Object.entries(instrumentDefs)){
+ const el=document.querySelector('[data-pv="'+tag+'"]');if(el)el.textContent=getPV(def.pv).toFixed(1)+" "+def.unit;
+ }
+ if(instrumentDefs[selectedTag])$("configDescription").textContent="Valor atual: "+getPV(instrumentDefs[selectedTag].pv).toFixed(1)+" "+instrumentDefs[selectedTag].unit;
+}
+setupInstruments();setupAlarms();
+
+window.addEventListener('resize',draw);render();refreshInstruments();})();
 </script></body></html>
