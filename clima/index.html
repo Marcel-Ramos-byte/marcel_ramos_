@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0c1728"><title>Clima Brasil · Previsão por município</title>
+<style>
+:root{font:16px system-ui,-apple-system,Segoe UI,sans-serif;color:#e9f1fc;background:#0b1423}*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#19385b,#0b1423 65%);min-height:100vh}
+main{max-width:1060px;margin:auto;padding:32px 18px 64px}a{color:#90c8ff}header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+h1{font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.04em;margin:22px 0 8px}h2{font-size:1.15rem;margin:0 0 14px}p,.muted{color:#aebed1}
+.panel{background:#14253b;border:1px solid #30455f;border-radius:20px;padding:22px;margin-top:20px;box-shadow:0 14px 35px #0002}
+.controls{display:grid;grid-template-columns:160px 1fr;gap:12px}label{display:block;font-size:.85rem;color:#b9cce2;margin-bottom:6px}
+select,input{width:100%;padding:12px;border:1px solid #536783;border-radius:10px;background:#0b1728;color:#fff;font:inherit}
+select:focus,input:focus{outline:2px solid #71b7fa}select:disabled{opacity:.5}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
+.stat{background:#0c1b2d;padding:16px;border-radius:14px}.stat small{display:block;color:#aabdd1}.stat strong{font-size:1.65rem}
+.scroller{overflow:auto}.hours{display:flex;gap:10px;padding:8px 0 14px}.hour{flex:0 0 145px;background:#0c1b2d;border:1px solid #2d4058;border-radius:14px;padding:14px}
+.hour strong{font-size:1.45rem}.hour p{margin:7px 0;font-size:.85rem}.rain{font-weight:700}.fraca{color:#80caff}.moderada{color:#ffda83}.forte{color:#ff9c92}
+.status{font-size:.9rem;margin-top:12px}footer{font-size:.85rem;color:#9aafc5;margin-top:30px;line-height:1.6}
+@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}.controls{grid-template-columns:1fr}.panel{padding:16px}}
+</style></head><body><main>
+<header><a href="../">← Página inicial</a><span class="muted">🇧🇷 Cobertura nacional</span></header>
+<h1>☁️ Clima Brasil</h1><p>Previsão horária de temperatura, chuva e vento para os municípios disponíveis.</p>
+<section class="panel"><h2>Escolha a localidade</h2><div class="controls">
+<div><label for="uf">Estado</label><select id="uf"><option value="">Carregando…</option></select></div>
+<div><label for="cidade">Município</label><select id="cidade" disabled><option>Selecione um estado</option></select></div>
+</div><p id="status" class="status" role="status" aria-live="polite">Carregando catálogo…</p></section>
+<section id="resultado" hidden>
+<div class="panel"><h2 id="titulo">Previsão</h2><div class="stats" id="stats"></div><p class="status" id="atualizacao"></p></div>
+<div class="panel"><h2>Próximas 48 horas</h2><p class="muted">Chuva: fraca (até 2,5 mm/h), moderada (acima de 2,5 até 10 mm/h), forte (acima de 10 mm/h). Classificação indicativa, não é alerta oficial.</p><div class="scroller"><div id="horas" class="hours"></div></div></div>
+</section>
+<footer>Dados meteorológicos: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (CC BY 4.0). Catálogo e códigos municipais: IBGE; coordenadas: base pública Municipios-Brasileiros. Previsões são estimativas de modelos numéricos, não medições locais nem avisos oficiais. Atualizações programadas às 07h, 12h e 16h (Brasília), sujeitas a atrasos do GitHub Actions. Não utilize isoladamente para decisões de segurança.</footer>
+</main><script>
+const $=id=>document.getElementById(id), fmt=(n,d=0)=>n==null?'—':Number(n).toFixed(d).replace('.',',');
+let municipios=[],dados={},estado='';
+const directions=['N','NE','L','SE','S','SO','O','NO'];
+const vento=n=>n==null?'—':directions[Math.round((n%360)/45)%8];
+const chuva=n=>n==null?['Sem dados','']:n>10?['Forte','forte']:n>2.5?['Moderada','moderada']:n>0?['Fraca','fraca']:['Sem chuva',''];
+const cell=(label,value)=>'<div class="stat"><small>'+label+'</small><strong>'+value+'</strong></div>';
+const option=(value,label)=>{const o=document.createElement('option');o.value=value;o.textContent=label;return o};
+async function json(url){const r=await fetch(url,{cache:'no-cache'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
+function populate(){const uf=$('uf').value;const cities=municipios.filter(x=>x.uf===uf);$('cidade').replaceChildren(option('','Selecione um município'),...cities.map(c=>option(c.id,c.nome)));$('cidade').disabled=!uf;$('resultado').hidden=true}
+async function choose(){
+ const id=$('cidade').value;if(!id)return;$('status').textContent='Carregando previsão…';$('resultado').hidden=true;
+ try{
+ const uf=$('uf').value;if(estado!==uf){dados=await json('dados/'+uf+'.json');estado=uf}
+ const data=dados[id];if(!data)throw Error('Dados ainda não disponíveis para este município');
+ const h=data.horas,now=new Date(),times=h.time.map(x=>new Date(x+'-03:00'));let i=times.findIndex(t=>t>=now);if(i<0)i=0;
+ const city=municipios.find(x=>x.id===id);$('titulo').textContent=city.nome+' · '+city.uf;
+ $('stats').innerHTML=cell('Temperatura',fmt(h.temperature_2m[i],1)+' °C')+cell('Chuva prevista',fmt(h.precipitation[i],1)+' mm/h')+cell('Probabilidade',fmt(h.precipitation_probability[i])+'%')+cell('Vento',fmt(h.wind_speed_10m[i])+' km/h · '+vento(h.wind_direction_10m[i]));
+ $('atualizacao').textContent='Dados atualizados em '+new Date(data.atualizado).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})+' (Brasília). Vento indica a direção de origem.';
+ $('horas').replaceChildren();
+ for(let j=i;j<Math.min(i+48,h.time.length);j++){
+ const [level,cls]=chuva(h.precipitation[j]),el=document.createElement('article');el.className='hour';
+ const date=times[j].toLocaleString('pt-BR',{weekday:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'});
+ el.innerHTML='<small>'+date+'</small><p><strong>'+fmt(h.temperature_2m[j])+'°C</strong></p><p class="rain '+cls+'">'+level+'</p><p>'+fmt(h.precipitation[j],1)+' mm/h · '+fmt(h.precipitation_probability[j])+'%</p><p>Vento: '+vento(h.wind_direction_10m[j])+' · '+fmt(h.wind_speed_10m[j])+' km/h</p>';
+ $('horas').append(el);
+ }
+ $('resultado').hidden=false;$('status').textContent='Previsão disponível.';
+ localStorage.setItem('clima-municipio',id);
+ }catch(e){$('status').textContent='Não foi possível carregar: '+e.message}
+}
+$('uf').addEventListener('change',populate);$('cidade').addEventListener('change',choose);
+(async()=>{try{
+ municipios=await json('dados/municipios.json');const ufs=[...new Set(municipios.map(x=>x.uf))].sort();
+ $('uf').replaceChildren(option('','Selecione um estado'),...ufs.map(x=>option(x,x)));
+ const saved=municipios.find(x=>x.id===localStorage.getItem('clima-municipio'))||municipios.find(x=>x.nome==='Campinas'&&x.uf==='SP');
+ if(saved){$('uf').value=saved.uf;populate();$('cidade').value=saved.id;await choose()}
+ else $('status').textContent=municipios.length+' municípios cadastrados.';
+}catch(e){$('status').textContent='Catálogo ainda não publicado. A primeira execução do workflow irá gerá-lo.'}})();
+</script></body></html>
