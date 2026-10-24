@@ -18,16 +18,16 @@ select:focus,input:focus{outline:2px solid #71b7fa}select:disabled{opacity:.5}
 @media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}.controls{grid-template-columns:1fr}.panel{padding:16px}}
 </style></head><body><main>
 <header><a href="../">← Página inicial</a><span class="muted">🇧🇷 Cobertura nacional</span></header>
-<h1>☁️ Clima Brasil</h1><p>Previsão horária de temperatura, chuva e vento para os municípios disponíveis.</p>
+<h1>☁️ Clima Brasil</h1><p>Confira temperatura, chuva e vento com previsão por hora.</p>
 <section class="panel"><h2>Escolha a localidade</h2><div class="controls">
 <div><label for="uf">Estado</label><select id="uf"><option value="">Carregando…</option></select></div>
 <div><label for="cidade">Município</label><select id="cidade" disabled><option>Selecione um estado</option></select></div>
 </div><p id="status" class="status" role="status" aria-live="polite">Carregando catálogo…</p></section>
 <section id="resultado" hidden>
 <div class="panel"><h2 id="titulo">Previsão</h2><div class="stats" id="stats"></div><p class="status" id="atualizacao"></p></div>
-<div class="panel"><h2>Próximas 48 horas</h2><p class="muted">Chuva: fraca (até 2,5 mm/h), moderada (acima de 2,5 até 10 mm/h), forte (acima de 10 mm/h). Classificação indicativa, não é alerta oficial.</p><div class="scroller"><div id="horas" class="hours"></div></div></div>
+<div class="panel"><h2>Próximas 48 horas</h2><p class="muted">Intensidade da chuva: fraca até 2,5 mm/h; moderada até 10 mm/h; forte acima de 10 mm/h.</p><div class="scroller"><div id="horas" class="hours"></div></div></div>
 </section>
-<footer>Dados meteorológicos: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (CC BY 4.0). Catálogo e códigos municipais: IBGE; coordenadas: base pública Municipios-Brasileiros. Previsões são estimativas de modelos numéricos, não medições locais nem avisos oficiais. Atualizações automáticas programadas às 07h, 12h e 16h (Brasília), sujeitas a atrasos; quando não houver arquivo atualizado, a consulta usa a API em tempo real. Não utilize isoladamente para decisões de segurança.</footer>
+<footer>Previsões fornecidas por <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>. As condições podem mudar; acompanhe os alertas oficiais em situações de risco.</footer>
 </main><script>
 const $=id=>document.getElementById(id), fmt=(n,d=0)=>n==null?'—':Number(n).toFixed(d).replace('.',',');
 let municipios=[];
@@ -36,25 +36,24 @@ const vento=n=>n==null?'—':directions[Math.round((n%360)/45)%8];
 const chuva=n=>n==null?['Sem dados','']:n>10?['Forte','forte']:n>2.5?['Moderada','moderada']:n>0?['Fraca','fraca']:['Sem chuva',''];
 const cell=(label,value)=>'<div class="stat"><small>'+label+'</small><strong>'+value+'</strong></div>';
 const option=(value,label)=>{const o=document.createElement('option');o.value=value;o.textContent=label;return o};
-async function json(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status+' em '+(url.includes('open-meteo')?'API meteorológica':'catálogo'));return r.json()}
+async function json(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error(url.includes('open-meteo')?'A previsão está temporariamente indisponível. Tente novamente.':'Não foi possível carregar as cidades. Atualize a página.');return r.json()}
 function populate(){const uf=$('uf').value;const cities=municipios.filter(x=>x.uf===uf);$('cidade').replaceChildren(option('','Selecione um município'),...cities.map(c=>option(c.id,c.nome)));$('cidade').disabled=!uf;$('resultado').hidden=true}
 async function choose(){
  const id=$('cidade').value;if(!id)return;$('status').textContent='Carregando previsão…';$('resultado').hidden=true;
  try{
- const uf=$('uf').value;
  let data=null;
- if(!data){
+ {
   const city=municipios.find(x=>x.id===id);
-  if(!city||!Number.isFinite(city.lat)||!Number.isFinite(city.lon))throw Error('Coordenadas indisponíveis');
+  if(!city||!Number.isFinite(city.lat)||!Number.isFinite(city.lon))throw Error('Não há previsão disponível para esta cidade no momento.');
   const params=new URLSearchParams({latitude:city.lat,longitude:city.lon,hourly:'temperature_2m,precipitation,precipitation_probability,wind_speed_10m,wind_direction_10m',forecast_days:'3',timezone:'America/Sao_Paulo'});
   const live=await json('https://api.open-meteo.com/v1/forecast?'+params.toString());
-  if(!live.hourly)throw Error('API meteorológica indisponível');
+  if(!live.hourly)throw Error('A previsão está temporariamente indisponível. Tente novamente em instantes.');
   data={atualizado:new Date().toISOString(),horas:live.hourly};
  }
  const h=data.horas,now=new Date(),times=h.time.map(x=>new Date(x+'-03:00'));let i=times.findIndex(t=>t>=now);if(i<0)i=0;
  const city=municipios.find(x=>x.id===id);$('titulo').textContent=city.nome+' · '+city.uf;
  $('stats').innerHTML=cell('Temperatura',fmt(h.temperature_2m[i],1)+' °C')+cell('Chuva prevista',fmt(h.precipitation[i],1)+' mm/h')+cell('Probabilidade',fmt(h.precipitation_probability[i])+'%')+cell('Vento',fmt(h.wind_speed_10m[i])+' km/h · '+vento(h.wind_direction_10m[i]));
- $('atualizacao').textContent='Dados atualizados em '+new Date(data.atualizado).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})+' (Brasília). Vento indica a direção de origem.';
+ $('atualizacao').textContent='Consulta realizada em '+new Date(data.atualizado).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})+' (horário de Brasília). Direção de onde o vento vem.';
  $('horas').replaceChildren();
  for(let j=i;j<Math.min(i+48,h.time.length);j++){
  const [level,cls]=chuva(h.precipitation[j]),el=document.createElement('article');el.className='hour';
@@ -62,9 +61,9 @@ async function choose(){
  el.innerHTML='<small>'+date+'</small><p><strong>'+fmt(h.temperature_2m[j])+'°C</strong></p><p class="rain '+cls+'">'+level+'</p><p>'+fmt(h.precipitation[j],1)+' mm/h · '+fmt(h.precipitation_probability[j])+'%</p><p>Vento: '+vento(h.wind_direction_10m[j])+' · '+fmt(h.wind_speed_10m[j])+' km/h</p>';
  $('horas').append(el);
  }
- $('resultado').hidden=false;$('status').textContent='Previsão disponível.';
+ $('resultado').hidden=false;$('status').textContent='Previsão atualizada.';
  localStorage.setItem('clima-municipio',id);
- }catch(e){$('status').textContent='Não foi possível carregar: '+e.message}
+ }catch(e){$('status').textContent=e.message||'Não foi possível consultar a previsão. Tente novamente.'}
 }
 $('uf').addEventListener('change',populate);$('cidade').addEventListener('change',choose);
 (async()=>{try{
@@ -72,6 +71,6 @@ $('uf').addEventListener('change',populate);$('cidade').addEventListener('change
  $('uf').replaceChildren(option('','Selecione um estado'),...ufs.map(x=>option(x,x)));
  const saved=municipios.find(x=>x.id===localStorage.getItem('clima-municipio'))||municipios.find(x=>x.nome==='Campinas'&&x.uf==='SP');
  if(saved){$('uf').value=saved.uf;populate();$('cidade').value=saved.id;await choose()}
- else $('status').textContent=municipios.length+' municípios cadastrados.';
-}catch(e){$('status').textContent='Catálogo ainda não publicado. A primeira execução do workflow irá gerá-lo.'}})();
+ else $('status').textContent='Selecione um estado e um município para consultar a previsão.';
+}catch(e){$('status').textContent='Não foi possível carregar os municípios. Atualize a página e tente novamente.'}})();
 </script></body></html>
