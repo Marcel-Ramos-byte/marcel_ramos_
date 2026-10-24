@@ -1,0 +1,31 @@
+name: Atualizar clima do Brasil
+on:
+  schedule:
+    # Horário de Brasília (UTC-3); GitHub Actions pode atrasar.
+    - cron: '0 10,15,19 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: clima-brasil
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Consultar previsões
+        run: python scripts/atualizar_clima.py
+      - name: Publicar dados
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add clima/dados/
+          if ! git diff --cached --quiet; then
+            git commit -m "dados: atualizar previsões meteorológicas"
+            git push
+          fi
