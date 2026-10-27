@@ -1,25 +1,33 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0c1728"><title>Clima Brasil · Previsão por município</title>
+<meta name="theme-color" content="#345b47"><title>Pelos Caminhos do Brasil · Clima na Estrada</title>
 <style>
-:root{font:16px system-ui,-apple-system,Segoe UI,sans-serif;color:#e9f1fc;background:#0b1423}*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#19385b,#0b1423 65%);min-height:100vh}
-main{max-width:1060px;margin:auto;padding:32px 18px 64px}a{color:#90c8ff}header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-h1{font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.04em;margin:22px 0 8px}h2{font-size:1.15rem;margin:0 0 14px}p,.muted{color:#aebed1}
-.panel{background:#14253b;border:1px solid #30455f;border-radius:20px;padding:22px;margin-top:20px;box-shadow:0 14px 35px #0002}
-.controls{display:grid;grid-template-columns:160px 1fr;gap:12px}label{display:block;font-size:.85rem;color:#b9cce2;margin-bottom:6px}
-select,input{width:100%;padding:12px;border:1px solid #536783;border-radius:10px;background:#0b1728;color:#fff;font:inherit}
-select:focus,input:focus{outline:2px solid #71b7fa}select:disabled{opacity:.5}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+:root{font:16px 'DM Sans',system-ui,sans-serif;color:#28332b;background:#f5f1e8}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#f5f1e8}main{max-width:1120px;margin:auto;padding:22px 20px 60px}
+a{color:#345b47}header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 0 22px}
+header a{text-decoration:none;font-weight:700}header .muted{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase}
+.hero{min-height:440px;border-radius:22px;position:relative;overflow:hidden;display:flex;align-items:end;padding:clamp(24px,5vw,62px);color:#fff;background:linear-gradient(0deg,rgba(18,30,22,.83),rgba(18,30,22,.08) 72%),url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1800&q=85') center/cover}
+.hero-copy{max-width:730px;position:relative}.eyebrow{font-size:.75rem;letter-spacing:.23em;text-transform:uppercase;font-weight:700;color:#e7c18a}
+h1{font:700 clamp(2.6rem,6vw,5rem)/1.08 'Playfair Display',Georgia,serif;letter-spacing:-.03em;margin:14px 0}h2{font:700 1.4rem 'Playfair Display',Georgia,serif;margin:0 0 14px}
+.hero p{color:#f5f0e6;max-width:600px;font-size:1.13rem;line-height:1.7}p,.muted{color:#617064}
+.panel{background:#fffdf7;border:1px solid #e4dfd2;border-radius:18px;padding:25px;margin-top:22px;box-shadow:0 10px 26px #2738270a}
+.controls{display:grid;grid-template-columns:160px 1fr;gap:12px}label{display:block;font-size:.85rem;color:#4f6252;margin-bottom:7px;font-weight:700}
+select,input{width:100%;padding:13px;border:1px solid #bfc8ba;border-radius:10px;background:#fff;color:#24382b;font:inherit}
+select:focus,input:focus{outline:2px solid #557a5a;outline-offset:2px}select:disabled{opacity:.55}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
-.stat{background:#0c1b2d;padding:16px;border-radius:14px}.stat small{display:block;color:#aabdd1}.stat strong{font-size:1.65rem}
-.scroller{overflow:auto}.hours{display:flex;gap:10px;padding:8px 0 14px}.hour{flex:0 0 145px;background:#0c1b2d;border:1px solid #2d4058;border-radius:14px;padding:14px}
-.hour strong{font-size:1.45rem}.hour p{margin:7px 0;font-size:.85rem}.rain{font-weight:700}.fraca{color:#80caff}.moderada{color:#ffda83}.forte{color:#ff9c92}
-.daily-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.daily-date{font-size:.88rem;color:#b4c9e0}.daily-overview{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin:20px 0}.weather-icon{font-size:4.2rem;line-height:1}.daily-summary{font-size:1.12rem;font-weight:700}.daily-range{font-size:1rem;color:#bbcee2;margin-top:5px}.status{font-size:.9rem;margin-top:12px}footer{font-size:.85rem;color:#9aafc5;margin-top:30px;line-height:1.6}
-@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}.controls{grid-template-columns:1fr}.panel{padding:16px}}
+.stat{background:#edf1e9;padding:17px;border-radius:12px}.stat small{display:block;color:#536756}.stat strong{font-size:1.55rem;color:#294a36}
+.scroller{overflow:auto}.hours{display:flex;gap:10px;padding:8px 0 14px}.hour{flex:0 0 155px;background:#f3f1e9;border:1px solid #e4dfd2;border-radius:12px;padding:14px}
+.hour strong{font-size:1.45rem}.hour p{margin:7px 0;font-size:.85rem}.rain{font-weight:700}.fraca{color:#286a8a}.moderada{color:#9b681c}.forte{color:#ae473c}
+.daily-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.daily-date{font-size:.88rem;color:#62705f}
+.daily-overview{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin:20px 0}.weather-icon{font-size:4rem;line-height:1}.daily-summary{font-size:1.12rem;font-weight:700}.daily-range{margin-top:5px;color:#586b5a}.status{font-size:.9rem;margin-top:12px}
+.journey{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;margin-top:26px;padding:24px;background:#e8e7db;border-radius:18px}.journey img{width:100%;height:275px;object-fit:cover;border-radius:12px}.journey p{line-height:1.75}
+footer{font-size:.85rem;color:#607061;margin-top:30px;line-height:1.7}
+@media(max-width:650px){main{padding:12px 14px 40px}.hero{min-height:400px;padding:24px}.stats,.journey{grid-template-columns:repeat(2,minmax(0,1fr))}.controls{grid-template-columns:1fr}.panel{padding:18px}.journey{grid-template-columns:1fr;padding:16px}.journey img{height:220px}}
 </style></head><body><main>
-<header><a href="../">← Página inicial</a><span class="muted">🇧🇷 Cobertura nacional</span></header>
-<h1>☁️ Clima Brasil</h1><p>Confira a previsão do dia e acompanhe as condições hora a hora.</p>
-<section class="panel"><h2>Escolha a localidade</h2><div class="controls">
+<header><a href="../">← Página inicial</a><span class="muted">Brasil além dos roteiros óbvios</span></header>
+<section class="hero"><div class="hero-copy"><span class="eyebrow">Estrada • Natureza • Liberdade</span><h1>Pelos caminhos<br>do Brasil</h1><p>Uma homenagem a quem escolheu dividir a vida, os horizontes e cada quilômetro da estrada. Porque a melhor viagem é aquela que fazemos juntos.</p></div></section>
+<section class="panel"><h2>Como está o tempo no próximo destino?</h2><p>Antes de pegar a estrada, consulte o clima em qualquer município brasileiro.</p><div class="controls">
 <div><label for="uf">Estado</label><select id="uf"><option value="">Carregando…</option></select></div>
 <div><label for="cidade">Município</label><select id="cidade" disabled><option>Selecione um estado</option></select></div>
 </div><p id="status" class="status" role="status" aria-live="polite">Carregando catálogo…</p></section>
@@ -27,6 +35,7 @@ select:focus,input:focus{outline:2px solid #71b7fa}select:disabled{opacity:.5}
 <div class="panel"><div class="daily-head"><h2 id="titulo">Previsão de hoje</h2><span class="daily-date" id="dataDia"></span></div><div class="daily-overview"><div class="weather-icon" id="iconeDia" aria-hidden="true">☁️</div><div><div class="daily-summary" id="resumoDia"></div><div class="daily-range" id="faixaDia"></div></div></div><div class="stats" id="stats"></div><p class="status" id="atualizacao"></p></div>
 <div class="panel"><h2>Próximas 48 horas</h2><p class="muted">Intensidade da chuva: fraca até 2,5 mm/h; moderada até 10 mm/h; forte acima de 10 mm/h.</p><div class="scroller"><div id="horas" class="hours"></div></div></div>
 </section>
+<section class="journey"><div><span class="eyebrow" style="color:#816342">Nossa inspiração</span><h2>Uma casa sobre rodas. Um Brasil inteiro pela frente.</h2><p>Das estradas de terra do Jalapão às paisagens da Serra da Capivara, de Bonito aos caminhos tranquilos do interior: viajar é descobrir o extraordinário nas coisas simples.</p><p>Inspirado nas viagens a dois a bordo de um <strong>Peugeot Boxer 2003</strong> transformado em motorhome — companheiro de jornadas, paradas e novos começos.</p><p><em>Que nunca faltem caminhos para explorar e motivos para seguir juntos.</em></p></div><img loading="lazy" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="Paisagem natural de montanhas, evocando liberdade e viagem"></section>
 <footer>Previsões fornecidas por <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>. As condições podem mudar; acompanhe os alertas oficiais em situações de risco.</footer>
 </main><script>
 const $=id=>document.getElementById(id), fmt=(n,d=0)=>n==null?'—':Number(n).toFixed(d).replace('.',',');
