@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laboratório de Zona Convencional — Simulador</title>
+<style>
+:root{font:13px system-ui,sans-serif;color:#e8edf5;background:#0e1522}*{box-sizing:border-box}
+body{width:100%;max-width:1600px;margin:auto;padding:10px 14px}header{display:flex;align-items:baseline;gap:16px;margin-bottom:9px;flex-wrap:wrap}h1{font-size:1.25rem;margin:0}h2{font-size:1rem;margin:0 0 8px}h3{font-size:.92rem;margin:10px 0 5px}p,small{color:#a9b7ca}header p{margin:0;font-size:.82rem}
+.grid{display:grid;grid-template-columns:minmax(320px,390px) minmax(0,1fr);gap:10px;align-items:start}.panel{background:#192436;border:1px solid #344156;border-radius:9px;padding:12px;min-width:0}
+label{display:block;margin:7px 0 3px;font-weight:600;font-size:.85rem}input,select,button{font:inherit}input[type=range]{width:100%;height:14px;accent-color:#68c4ff}input[type=number],select{width:100%;padding:5px 7px;border:1px solid #52627a;background:#101b2b;color:white;border-radius:5px;height:30px}
+output{color:#8cdbff}button{padding:6px 9px;background:#2c5274;color:white;border:1px solid #517a9e;border-radius:6px;cursor:pointer;margin:3px 3px 0 0}button.active{background:#187e79}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.stat{background:#111c2c;border-radius:6px;padding:9px;min-width:0}.stat b{display:block;font-size:1.13rem;margin-top:3px;color:#8cdbff;overflow-wrap:anywhere}.stat small{font-size:.73rem}
+canvas{width:100%;height:clamp(180px,30vh,280px);display:block;background:#101a29;border-radius:7px}.note{font-size:.79rem;line-height:1.4;margin:6px 0}.warn{border-left:3px solid #e6aa50;padding-left:8px}a{color:#8cdbff}#history{max-height:95px;overflow:auto;font:11px ui-monospace,monospace;white-space:pre}details{border-top:1px solid #344156;margin-top:9px;padding-top:7px}summary{cursor:pointer;font-weight:650;color:#b6dcf6}details .note{margin:7px 0}
+.annunciators{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:10px 0}.annunciator{--lamp:#ffb547;margin:0;padding:12px 8px;background:#101b2b;color:#9eacbe;border:1px solid #52627a;cursor:default;font-weight:700}.annunciator::before{content:'';display:inline-block;width:10px;height:10px;margin-right:7px;border-radius:50%;background:#465366}.annunciator[data-tone="alarm"]{--lamp:#ff6262}.annunciator[data-tone="normal"]{--lamp:#62dfac}.annunciator.lit{color:#fff;border-color:var(--lamp);box-shadow:0 0 12px color-mix(in srgb,var(--lamp) 35%,transparent);background:color-mix(in srgb,var(--lamp) 20%,#101b2b)}.annunciator.lit::before{background:var(--lamp);box-shadow:0 0 9px var(--lamp)}.annunciator span{display:block;font-size:.72rem;font-weight:400;margin-top:5px}
+.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 10px}.control{min-width:0}.control.wide{grid-column:1/-1}.buttons{display:flex;flex-wrap:wrap;gap:3px;margin-top:7px}
+@media(min-width:1100px) and (min-height:700px){.grid{grid-template-columns:minmax(350px,440px) minmax(0,1fr)}}
+@media(max-width:750px){body{padding:8px}.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}canvas{height:220px}}
+/* Layout limitado à área visível; cada painel mantém sua própria rolagem. */
+html{height:100%;overflow:hidden}
+body{height:100vh;height:100dvh;max-width:none;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:12px 16px;overflow:hidden;background:radial-gradient(ellipse at top right,#182d46 0,transparent 60%)}
+header{margin:0;gap:6px 18px}header h1{font-size:clamp(1rem,1.4vw,1.35rem)}
+.grid{min-height:0;grid-template-columns:minmax(290px,30%) minmax(0,1fr);align-items:stretch;gap:12px}
+.panel{min-height:0;border-radius:12px;background:#172335;box-shadow:0 8px 28px #0002;padding:12px;overflow:auto;scrollbar-width:thin;scrollbar-color:#526780 transparent;overscroll-behavior:contain}
+.parameters{display:flex;flex-direction:column;gap:5px}.parameters h2{margin:0}.parameters label{margin-top:4px}.parameters>.note{margin:0 0 4px}.parameters>.buttons{margin-top:auto;padding-top:7px}
+.controls{gap:5px 12px}.controls label{min-height:1.2em}input[type=range]{margin:4px 0;height:18px}input[type=number],select{height:32px}input,select,button{min-width:0}button{transition:background .15s,border-color .15s}button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #8cdbff;outline-offset:2px}button:disabled{opacity:.45;cursor:not-allowed}
+.mode-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.mode-buttons button{margin:0}.buttons{gap:5px}.buttons button{flex:1;margin:0;font-size:.84rem}
+.dashboard{display:flex;flex-direction:column;gap:7px}.dashboard h2,.dashboard h3{margin:0}.dashboard h3{font-size:.85rem}.dashboard>.note{margin:0;font-size:.73rem}.dashboard>details{flex:none;margin:0;padding-top:5px}.dashboard>h2{color:#c0d3e9}
+.annunciators{grid-template-columns:repeat(5,minmax(0,1fr));margin:0;gap:7px;flex:none}.annunciator{padding:9px 4px;font-size:clamp(.72rem,1vw,.92rem);border-radius:8px}.annunciator::before{width:8px;height:8px;margin-right:5px}.annunciator span{font-size:.68rem;margin-top:3px}
+.stats{gap:7px;flex:none}.stat{padding:8px 10px;border:1px solid #293b52}.stat b{font-size:clamp(.95rem,1.4vw,1.35rem);margin-top:2px}.stat small{font-size:.74rem}
+.chart-section{flex:1;min-height:125px;display:flex;flex-direction:column;gap:6px}.chart-section canvas{flex:1;min-height:95px;height:0;width:100%;border:1px solid #293b52}
+.history-section{flex:none}#history{max-height:58px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5;padding:6px 8px;background:#101a29;border-radius:6px}
+.reference{margin:0!important;padding:8px 12px;overflow:visible}.reference[open]{max-height:45dvh;overflow:auto}.reference summary{font-size:.82rem}.view-tabs{display:none}
+@media(min-width:1500px){.grid{grid-template-columns:minmax(340px,25%) minmax(0,1fr)}.stats{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media(max-height:740px) and (min-width:761px){body{padding:8px 12px;gap:7px}.panel{padding:9px}.dashboard{gap:5px}.parameters{gap:2px}.parameters .note{font-size:.71rem}.parameters label{font-size:.78rem}.annunciator{padding:7px 3px}.stat{padding:6px 8px}.stat b{font-size:1.05rem}.chart-section{min-height:115px}.dashboard>.note{font-size:.68rem}#history{max-height:34px}}
+@media(max-width:760px){body{padding:8px;gap:8px;grid-template-rows:auto auto minmax(0,1fr) auto}header{display:block}header p{font-size:.69rem;margin-top:3px}.view-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px}.view-tabs button{margin:0;padding:9px}.grid{grid-template-columns:minmax(0,1fr);gap:0}.panel{padding:10px}.parameters{display:none}.grid[data-view="parameters"] .parameters{display:flex}.grid[data-view="parameters"] .dashboard{display:none}.dashboard{gap:7px}.annunciators{gap:4px}.annunciator{font-size:.68rem;padding:8px 2px}.annunciator::before{display:block;margin:0 auto 5px}.annunciator span{font-size:.62rem}.stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.stat{padding:7px}.stat small{font-size:.67rem}.stat b{font-size:.93rem}.chart-section{min-height:135px}.dashboard>.note{font-size:.68rem}.reference[open]{max-height:35dvh}}
+@media(max-width:380px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.annunciator{font-size:.62rem}.controls{column-gap:8px}}
+</style><link rel="stylesheet" href="../assets/css/navigation.css">
+</head><body>
+<header><h1>Laboratório de zona convencional</h1>
+<p>Simulação elétrica didática • Referência: Simplex 4090-9101 • Não controla hardware real</p></header>
+<nav class="view-tabs" aria-label="Visualização do laboratório"><button type="button" data-view="dashboard" class="active" aria-pressed="true">Monitoramento</button><button type="button" data-view="parameters" aria-pressed="false">Parâmetros</button></nav>
+<div class="grid" data-view="dashboard">
+<section class="panel parameters"><h2>Parâmetros — ensaio virtual</h2><p class="note warn">Faixas ampliadas para explorar condições fora da especificação. NÃO aplicar automaticamente esses valores ao módulo físico.</p>
+<div class="controls"><div class="control"><label>Tensão de ensaio: <output id="vout"></output></label><input id="v" type="range" min="0" max="48" step=".1" value="24"></div><div class="control"><label>Distância de ida: <output id="lout"></output></label><input id="l" type="range" min="0" max="1000" step="10" value="100"></div><div class="control"><label>Bitola do condutor</label><select id="area"><option>.5</option><option>.75</option><option selected>1.5</option><option>2.5</option><option>4</option><option>6</option></select></div><div class="control"><label>Material</label><select id="metal"><option value=".01724">Cobre</option><option value=".02826">Alumínio</option></select></div><div class="control"><label>Temperatura do cabo: <output id="tout"></output></label><input id="temp" type="range" min="0" max="80" step="1" value="20"></div><div class="control"><label>Resistência série adicional: <output id="rout"></output></label><input id="extra" type="range" min="0" max="100000" step="10" value="0"></div><div class="control"><label>Resistor fim de linha (Ω)</label><input id="eol" type="number" min="1" max="1000000" value="3300"></div></div>
+<details><summary>Limiares de classificação (hipóteses)</summary><div class="controls">
+<p class="note control wide">Valores hipotéticos, não limites Simplex.</p>
+
+<div class="control"><label>Corrente abaixo da qual indicar aberto (mA)</label><input id="openLimit" type="number" min="0" step=".01" value="2"></div><div class="control"><label>Corrente a partir da qual indicar alarme (mA)</label><input id="alarmLimit" type="number" min="0" step=".01" value="12"></div><div class="control"><label>Corrente a partir da qual indicar curto (mA)</label><input id="shortLimit" type="number" min="0" step=".01" value="50"></div><div class="control"><label>Tensão mínima hipotética para falha geral (V)</label><input id="lowV" type="number" min="0" step=".1" value="18.9"></div><div class="control"><label>Tensão máxima hipotética para falha geral (V)</label><input id="highV" type="number" min="0" step=".1" value="32"></div></div></details>
+<label>Estado simulado</label><div class="mode-buttons"><button data-mode="normal" class="active">Normal</button><button data-mode="open">Aberto</button><button data-mode="short">Curto</button></div>
+<label>Resistência de curto simulada (Ω)</label><input id="shortR" type="number" min=".1" step=".1" value="1">
+<p id="validation" class="note warn" role="status" hidden></p>
+<div class="buttons"><button id="record">Registrar ponto</button><button id="export">Exportar CSV</button><button id="reset">Limpar</button></div>
+</section>
+<section class="panel dashboard">
+<h2>Modelo elétrico simplificado</h2>
+<div class="annunciators" role="group" aria-label="Indicadores de alarme e falha">
+<button type="button" class="annunciator" id="lampNormal" data-tone="normal" aria-disabled="true" aria-label="Normal: inativo">Normal<span>Inativo</span></button>
+<button type="button" class="annunciator" id="lampAlarm" data-tone="alarm" aria-disabled="true" aria-label="Alarme: inativo">Alarme<span>Inativo</span></button>
+<button type="button" class="annunciator" id="lampOpen" aria-disabled="true" aria-label="Circuito aberto: inativo">Circuito aberto<span>Inativo</span></button>
+<button type="button" class="annunciator" id="lampShort" data-tone="alarm" aria-disabled="true" aria-label="Curto-circuito: inativo">Curto-circuito<span>Inativo</span></button>
+<button type="button" class="annunciator" id="lampFault" aria-disabled="true" aria-label="Falha geral: inativo">Falha geral<span>Inativo</span></button>
+</div>
+<p class="note">Indicadores automáticos: acendem pelo estado calculado ou por abertura/curto imposto. Falhas simultâneas podem acender juntas; apagam quando a condição termina.</p>
+<div class="stats">
+<div class="stat"><small>Corrente teórica</small><b id="i">—</b></div>
+<div class="stat"><small>Tensão no fim de linha</small><b id="ve">—</b></div>
+<div class="stat"><small>Resistência total série</small><b id="rs">—</b></div>
+<div class="stat"><small>Queda no cabo + série</small><b id="drop">—</b></div>
+<div class="stat"><small id="powerLabel">Potência no EOL</small><b id="power">—</b></div>
+<div class="stat"><small>Estado calculado (hipótese)</small><b id="state">—</b></div>
+</div>
+<div class="chart-section"><h3>Corrente teórica versus distância</h3><canvas id="chart" width="900" height="320" aria-label="Gráfico de corrente teórica por distância"></canvas></div>
+<details><summary>Premissas do gráfico</summary><p class="note">A classificação e o gráfico são simulações hipotéticas. O gráfico representa um circuito resistivo ideal: fonte DC, resistência de ida e volta e resistor de fim de linha. Não reproduz a eletrônica interna do módulo nem correntes dos detectores.</p></details>
+<div class="history-section"><h3>Pontos registrados</h3><div id="history">Nenhum ponto registrado.</div></div>
+<details><summary>Advertências e limites documentados</summary><p class="note warn"><strong>Atenção:</strong> 18,9–32 V é a faixa de operação documentada do módulo 4090-9101, não uma garantia de que a tensão na saída da zona seja igual à alimentação. 16 mA em repouso e 72 mA em alarme são limites de corrente do ZAM a 24 V, não limiares de reconhecimento da zona. A classificação com asterisco é HIPOTÉTICA e usa limiares definidos pelo usuário; não representa a lógica interna do módulo nem sua indicação na central. Exceder 18,9–32 V em equipamento real pode causar danos.</p></details>
+</section></div>
+<details class="panel reference"><summary>Premissas, fórmulas e fontes</summary>
+<p class="note">Resistividade a 20 °C usada como valor ilustrativo: cobre 0,01724 Ω·mm²/m; alumínio 0,02826 Ω·mm²/m. Coeficientes térmicos aproximados: cobre 0,00393/°C; alumínio 0,00403/°C. R<sub>cabo</sub> = 2 × distância × resistividade × [1 + α(T − 20)] / bitola. Distância significa percurso de ida; o fator 2 considera retorno. A resistência extra é série. No estado aberto, a abertura é considerada na extremidade: a corrente é zero e a tensão entre os terminais é igual à fonte; no curto, o EOL é substituído pela resistência de curto especificada. O curto ideal de zero ohm não é usado. A fonte é ideal, sem limitação de corrente. I = V / (R<sub>cabo</sub> + R<sub>extra</sub> + R<sub>carga</sub>); P<sub>carga</sub> = I² × R<sub>carga</sub>. No curto, a potência exibida corresponde à resistência de curto. Os limiares devem obedecer a 0 &lt; aberto &lt; alarme &lt; curto e 0 ≤ tensão mínima &lt; tensão máxima.</p>
+<p class="note">Dados documentados para o Simplex 4090-9101: resistor de supervisão 3,3 kΩ / 1 W, alimentação separada de 24 Vcc para o circuito convencional, faixa operacional 18,9–32 Vcc, até 20 detectores compatíveis. <a href="https://docs.johnsoncontrols.com/simplex/api/khub/documents/n0tyb8Ui1KnQeelDEi1cYA/content" target="_blank" rel="noopener">Ficha Simplex/Johnson Controls</a>. <a href="https://www.iso.org/standard/75444.html" target="_blank" rel="noopener">ISO 7240-13:2020 — compatibilidade de componentes</a>. Os limiares do painel são hipóteses ajustáveis, não extraídos da ISO nem do datasheet. O módulo pode depender de uma central IDNet/MAPNET para reportar estados.</p>
+</details>
+<script>
+const $=id=>document.getElementById(id), ids=['v','l','area','metal','temp','extra','eol','shortR','openLimit','alarmLimit','shortLimit','lowV','highV'];
+let mode='normal',rows=[];
+const num=id=>$(id).value.trim()===''?NaN:Number($(id).value);
+function validationError(){
+ for(const id of ids){
+  const el=$(id),value=num(id);
+  if(!Number.isFinite(value))return 'Preencha todos os parâmetros com números válidos.';
+  if((el.hasAttribute('min')&&value<Number(el.min))||(el.hasAttribute('max')&&value>Number(el.max)))return 'Há parâmetros fora da faixa permitida. Confira os valores informados.';
+ }
+ if(!(0<num('openLimit')&&num('openLimit')<num('alarmLimit')&&num('alarmLimit')<num('shortLimit')))return 'Os limiares devem obedecer a: 0 < aberto < alarme < curto.';
+ if(!(num('lowV')<num('highV')))return 'A tensão mínima deve ser menor que a tensão máxima.';
+ return '';
+}
+const alpha=()=>num('metal')<.02?.00393:.00403;
+function calc(length=num('l')){
+ const rho=num('metal')*(1+alpha()*(num('temp')-20)),rc=2*length*rho/num('area'),rs=rc+num('extra');
+ const load=mode==='open'?Infinity:mode==='short'?num('shortR'):num('eol');
+ if(mode==='open')return {rc,rs,i:0,ve:num('v'),drop:0,power:0};
+ const current=num('v')/(rs+load);
+ return {rc,rs,i:current,ve:current*load,drop:current*rs,power:current*current*load};
+}
+function fmt(n,d=2){return Number.isFinite(n)?n.toLocaleString('pt-BR',{maximumFractionDigits:d,minimumFractionDigits:d}):'—'}
+function draw(){
+ const c=$('chart'),ctx=c.getContext('2d'),rect=c.getBoundingClientRect(),scale=window.devicePixelRatio||1;
+ if(!rect.width||!rect.height)return;
+ const w=rect.width,h=rect.height,p=Math.min(45,w*.13,h*.28);
+ c.width=Math.round(w*scale);c.height=Math.round(h*scale);ctx.setTransform(scale,0,0,scale,0,0);
+ ctx.clearRect(0,0,w,h);const values=Array.from({length:101},(_,j)=>calc(j*10).i*1000);
+ const ymax=Math.max(1,...values)*1.15;ctx.strokeStyle='#34455d';ctx.lineWidth=1;ctx.font='14px system-ui';ctx.fillStyle='#a9b7ca';
+ for(let k=0;k<=4;k++){let y=p+(h-2*p)*k/4;ctx.beginPath();ctx.moveTo(p,y);ctx.lineTo(w-p,y);ctx.stroke();ctx.fillText(fmt(ymax*(1-k/4),1),5,y+5)}
+ ctx.fillText('mA',8,17);ctx.fillText('Distância de ida (m)',w/2-70,h-7);
+ ctx.strokeStyle='#70d3ff';ctx.lineWidth=3;ctx.beginPath();
+ values.forEach((val,j)=>{let x=p+j/100*(w-2*p),y=h-p-val/ymax*(h-2*p);j?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();
+ const x=p+num('l')/1000*(w-2*p),y=h-p-calc().i*1000/ymax*(h-2*p);
+ ctx.fillStyle='#f6b95b';ctx.beginPath();ctx.arc(x,y,6,0,2*Math.PI);ctx.fill();
+}
+function classify(r){
+ if(validationError())return 'Parâmetros inválidos';
+ const mA=r.i*1000;
+ if(num('v')<num('lowV')||num('v')>num('highV')) return 'Falha geral*';
+ if(mode==='open'||mA<num('openLimit'))return 'Circuito aberto*';
+ if(mA>=num('shortLimit'))return 'Curto-circuito*';
+ if(mA>=num('alarmLimit'))return 'Alarme*';
+ return 'Normal*';
+}
+function updateIndicators(state,invalid=false){
+ const active={lampNormal:!invalid&&state==='Normal*'&&mode==='normal',lampAlarm:!invalid&&state==='Alarme*',lampOpen:!invalid&&(mode==='open'||state==='Circuito aberto*'),lampShort:!invalid&&(mode==='short'||state==='Curto-circuito*'),lampFault:invalid||state==='Falha geral*'};
+ for(const [id,on] of Object.entries(active)){
+  const button=$(id),label=button.firstChild.textContent.trim();
+  button.classList.toggle('lit',on);button.querySelector('span').textContent=on?'Ativo':'Inativo';button.setAttribute('aria-label',label+': '+(on?'ativo':'inativo'));
+ }
+}
+function update(){
+ $('vout').textContent=fmt(num('v'),1)+' V';$('lout').textContent=fmt(num('l'),0)+' m';$('tout').textContent=fmt(num('temp'),0)+' °C';$('rout').textContent=fmt(num('extra'),0)+' Ω';
+ $('powerLabel').textContent=mode==='short'?'Potência na resistência de curto':mode==='open'?'Potência na carga (aberta)':'Potência no EOL';
+ const error=validationError();$('validation').textContent=error;$('validation').hidden=!error;$('record').disabled=!!error;
+ if(error){
+  ['i','ve','rs','drop','power'].forEach(id=>$(id).textContent='—');$('state').textContent='Parâmetros inválidos';updateIndicators('Parâmetros inválidos',true);
+  const c=$('chart');c.getContext('2d').clearRect(0,0,c.width,c.height);return;
+ }
+ const r=calc();$('i').textContent=fmt(r.i*1000,3)+' mA';$('ve').textContent=fmt(r.ve)+' V';$('rs').textContent=fmt(r.rs)+' Ω';$('drop').textContent=fmt(r.drop)+' V';$('power').textContent=fmt(r.power*1000)+' mW';const state=classify(r);$('state').textContent=state;updateIndicators(state);draw();
+}
+ids.forEach(id=>$(id).addEventListener('input',update));
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));update()});
+function refreshHistory(){$('history').textContent=rows.length?rows.slice(-12).map(r=>`${r.data_hora} | ${r.estado_calculado} | ${r.tensao_v} V | ${r.corrente_ma} mA`).join('\n'):'Nenhum ponto registrado.'}
+$('record').onclick=()=>{if(validationError()){update();return}let r=calc();rows.push({data_hora:new Date().toISOString(),estado_imposto:mode,estado_calculado:classify(r),tensao_v:num('v'),distancia_m:num('l'),bitola_mm2:num('area'),material:num('metal')<.02?'cobre':'aluminio',temperatura_c:num('temp'),resistencia_extra_ohm:num('extra'),resistencia_eol_ohm:num('eol'),resistencia_curto_ohm:num('shortR'),resistencia_serie_ohm:+r.rs.toFixed(5),corrente_ma:+(r.i*1000).toFixed(5),tensao_fim_linha_v:+r.ve.toFixed(5),potencia_carga_w:+r.power.toFixed(5)});refreshHistory()};
+$('export').onclick=()=>{if(!rows.length){alert('Registre pelo menos um ponto.');return}let cols=Object.keys(rows[0]),csv=[cols.join(';'),...rows.map(r=>cols.map(k=>String(r[k]).replaceAll(';',',')).join(';'))].join('\r\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='ensaio_zona_convencional.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('reset').onclick=()=>{rows=[];refreshHistory()};
+document.querySelectorAll('.view-tabs button').forEach(button=>button.onclick=()=>{
+ document.querySelector('.grid').dataset.view=button.dataset.view;
+ document.querySelectorAll('.view-tabs button').forEach(tab=>{const active=tab===button;tab.classList.toggle('active',active);tab.setAttribute('aria-pressed',String(active))});
+ update();
+});
+new ResizeObserver(()=>{if(!validationError())draw()}).observe($('chart'));
+update();
+</script><details class="lab-nav lab-nav--floating"><summary>Menu Marcel Labs</summary><nav aria-label="Navegação entre projetos"><a href="../">Página inicial</a><a href="../caldeira/">Caldeira</a><a href="../clima/">Clima Brasil</a><a href="../alarme_de_incendio/" aria-current="page">Alarme de incêndio</a></nav></details></body></html>

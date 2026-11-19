@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0c1728"><title>Clima Brasil · Previsão por município</title>
+<meta name="theme-color" content="#080d19"><meta name="description" content="Previsão do tempo por município brasileiro, com temperatura, chuva e vento hora a hora."><title>Clima Brasil · Previsão por município</title>
 <style>
-:root{font:16px system-ui,-apple-system,Segoe UI,sans-serif;color:#e9f1fc;background:#0b1423}*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#19385b,#0b1423 65%);min-height:100vh}
-main{max-width:1060px;margin:auto;padding:32px 18px 64px}a{color:#90c8ff}header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-h1{font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.04em;margin:22px 0 8px}h2{font-size:1.15rem;margin:0 0 14px}p,.muted{color:#aebed1}
-.panel{background:#14253b;border:1px solid #30455f;border-radius:20px;padding:22px;margin-top:20px;box-shadow:0 14px 35px #0002}
+:root{font:16px system-ui,-apple-system,Segoe UI,sans-serif;color:#eef6ff;background:#080d19}*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#14467d,#080d19 65%);min-height:100vh}
+main{max-width:1060px;margin:auto;padding:32px 18px 64px}a{color:#5eead4}header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+h1{font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.04em;margin:22px 0 8px}h2{font-size:1.15rem;margin:0 0 14px}p,.muted{color:#9daec7}
+.panel{background:#111c30;border:1px solid #ffffff1c;border-radius:20px;padding:22px;margin-top:20px;box-shadow:0 14px 35px #0002}
 .controls{display:grid;grid-template-columns:160px 1fr;gap:12px}label{display:block;font-size:.85rem;color:#b9cce2;margin-bottom:6px}
 select,input{width:100%;padding:12px;border:1px solid #536783;border-radius:10px;background:#0b1728;color:#fff;font:inherit}
 select:focus,input:focus{outline:2px solid #71b7fa}select:disabled{opacity:.5}
@@ -16,7 +16,8 @@ select:focus,input:focus{outline:2px solid #71b7fa}select:disabled{opacity:.5}
 .hour strong{font-size:1.45rem}.hour p{margin:7px 0;font-size:.85rem}.rain{font-weight:700}.fraca{color:#80caff}.moderada{color:#ffda83}.forte{color:#ff9c92}
 .daily-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.daily-date{font-size:.88rem;color:#b4c9e0}.daily-overview{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin:20px 0}.weather-icon{font-size:4.2rem;line-height:1}.daily-summary{font-size:1.12rem;font-weight:700}.daily-range{font-size:1rem;color:#bbcee2;margin-top:5px}.status{font-size:.9rem;margin-top:12px}footer{font-size:.85rem;color:#9aafc5;margin-top:30px;line-height:1.6}
 @media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}.controls{grid-template-columns:1fr}.panel{padding:16px}}
-</style></head><body><main>
+</style><link rel="stylesheet" href="../assets/css/navigation.css">
+</head><body><main><nav class="lab-nav lab-nav--page" aria-label="Navegação entre projetos"><div><a href="../">Página inicial</a><a href="../caldeira/">Caldeira</a><a href="../clima/" aria-current="page">Clima Brasil</a><a href="../alarme_de_incendio/">Alarme de incêndio</a></div></nav>
 <header><a href="../">← Página inicial</a><span class="muted">🇧🇷 Cobertura nacional</span></header>
 <h1>☁️ Clima Brasil</h1><p>Confira a previsão do dia e acompanhe as condições hora a hora.</p>
 <section class="panel"><h2>Escolha a localidade</h2><div class="controls">

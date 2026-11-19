@@ -51,9 +51,9 @@ h2{font-size:clamp(2rem,4vw,3rem);letter-spacing:-.055em;margin:10px 0 8px}p{mar
 .card h3{font-size:1.6rem;letter-spacing:-.035em;margin:0 0 10px}.card p{color:#aabbd1;line-height:1.7;max-width:420px}
 .tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:19px}.tags span{border:1px solid #ffffff24;background:#ffffff08;padding:6px 9px;border-radius:7px;font-size:.72rem;color:#b8c9dd}
 .card-link{display:flex;align-items:center;gap:10px;color:#a4f8e8;font-weight:750;margin-top:auto;padding-top:26px}
-.empty{display:none;padding:25px;color:var(--muted);border:1px dashed #ffffff40;border-radius:12px}.empty.show{display:block}
+[hidden]{display:none!important}.empty{display:none;padding:25px;color:var(--muted);border:1px dashed #ffffff40;border-radius:12px}.empty.show{display:block}
 .bottom{padding:32px 0;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;font-size:.84rem;color:#93a5bd}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s}.reveal.visible{opacity:1;transform:none}
+.reveal{opacity:1;transform:translateY(20px);transition:opacity .7s,transform .7s}.reveal.visible{opacity:1;transform:none}
 @media(max-width:760px){.nav{min-height:66px}.menu{display:block}.links{display:none;position:absolute;top:65px;left:0;right:0;padding:18px 20px;background:#0e192c;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch}.links.open{display:flex}.navcta{display:none}.hero{grid-template-columns:1fr;padding:68px 0 45px}.orbit{height:220px;grid-row:1}.ring{width:190px;height:190px}.ring2{width:135px;height:135px}.core{width:105px;height:105px;border-radius:25px;font-size:3rem}.cards{grid-template-columns:1fr}.section{padding:55px 0}.search{width:100%}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
@@ -62,7 +62,7 @@ h2{font-size:clamp(2rem,4vw,3rem);letter-spacing:-.055em;margin:10px 0 8px}p{mar
 <header class="top"><nav class="wrap nav" aria-label="Navegação principal">
 <a href="./" class="brand" aria-label="Marcel Labs, início"><span class="logo">M.</span><span>MARCEL <em>LABS</em></span></a>
 <button class="menu" id="menu" aria-expanded="false" aria-controls="navlinks" aria-label="Abrir menu">☰ Menu</button>
-<div class="links" id="navlinks"><a href="#inicio">Início</a><a href="#ferramentas">Ferramentas</a><a href="./caldeira/">THERMO</a><a href="./clima/">Clima Brasil</a></div>
+<div class="links" id="navlinks"><a href="#inicio">Início</a><a href="#ferramentas">Ferramentas</a><a href="./caldeira/">THERMO</a><a href="./clima/">Clima Brasil</a><a href="./alarme_de_incendio/">Alarme de incêndio</a></div>
 <a class="navcta" href="#ferramentas">Explorar projetos ↗</a>
 </nav></header>
 <main>
@@ -90,6 +90,8 @@ h2{font-size:clamp(2rem,4vw,3rem);letter-spacing:-.055em;margin:10px 0 8px}p{mar
 <p>Explore a previsão meteorológica por município, com chuva por intensidade, temperatura, direção do vento e evolução horária.</p>
 <div class="tags"><span>Meteorologia</span><span>Brasil</span><span>Previsão horária</span></div><span class="card-link">Consultar previsão <span aria-hidden="true">↗</span></span>
 </a>
+<a class="card reveal" href="./alarme_de_incendio/" data-search="alarme incendio incêndio simplex laboratório zona convencional simulador segurança">
+<div class="card-icon" aria-hidden="true">🔥</div><h3>Alarme de incêndio</h3><p>Explore um laboratório interativo de zona convencional e acompanhe o comportamento do circuito de detecção.</p><div class="tags"><span>Simulação</span><span>Detecção</span><span>Laboratório</span></div><span class="card-link">Abrir laboratório</span></a>
 </div><p class="empty" id="empty" role="status">Nenhuma ferramenta encontrada para essa busca.</p>
 </section>
 </main>

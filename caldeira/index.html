@@ -20,18 +20,48 @@ main{max-width:1550px;margin:auto;padding:24px;display:grid;gap:18px}.notice{pad
 .footer{font-size:12px;color:#879bb0;line-height:1.6;padding-bottom:15px}@media(max-width:1000px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}}@media(max-width:540px){main{padding:12px}.metrics{gap:9px}.card{padding:13px}.value{font-size:25px}.boiler{width:88%;height:135px}.flame{font-size:32px}.pipe{right:40px}}
 
 .pid-wrap{overflow:auto;border:1px solid #294763;border-radius:13px;background:radial-gradient(ellipse at 50% 20%,#1b3950,#0b1a2b 80%)}.pid{display:block;width:100%;min-width:740px;height:auto}.pid .line{stroke:#8bb4d1;stroke-width:5;fill:none;stroke-linecap:round}.pid .fuel{stroke:#e8aa62}.pid .water{stroke:#50c9ee}.pid .steam{stroke:#c7d7f5}.pid .signal{stroke:#87c5a0;stroke-width:2;stroke-dasharray:6 6;fill:none}.pid .device{fill:#122b43;stroke:#86b6d6;stroke-width:2.5}.pid .instrument{fill:#0b2438;stroke:#70d8ed;stroke-width:2.5}.pid .symbol{cursor:pointer;outline:none}.pid .symbol:hover .instrument,.pid .symbol:hover .device,.pid .symbol:focus .instrument,.pid .symbol:focus .device{stroke:#f6df8c;stroke-width:4}.pid text{fill:#e7f4ff;font:15px system-ui;pointer-events:none}.pid .tag{font-size:13px;font-weight:800}.pid .small{font-size:12px;fill:#9dc3d9}.pid .motor{fill:#123b4a;stroke:#60e3d4;stroke-width:3}.pid .alarmglow{stroke:#ff727b!important;filter:drop-shadow(0 0 7px #f44)}.instrument-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin-top:16px}.instrument-tile{border:1px solid #34516d;border-radius:11px;background:#10253a;padding:12px;text-align:left;color:#e5f5ff}.instrument-tile:hover{border-color:#7bcaf0;background:#17334c}.instrument-tile strong{display:block;font-size:14px}.instrument-tile small{display:block;color:#9db4c9;margin-top:6px}.config-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.config-grid label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:#aac2d8}.config-grid input,.config-grid select{background:#0b192a;border:1px solid #46617a;border-radius:9px;color:white;padding:10px;min-width:0;width:100%;font:inherit}.config-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.config-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.chip{border:1px solid #476781;border-radius:20px;padding:6px 11px;color:#b7d6e9;font-size:12px}.pid-info{font-size:13px;color:#b0c7d9;line-height:1.6;margin-top:10px}.alarm-table{width:100%;border-collapse:collapse;font-size:13px}.alarm-table th,.alarm-table td{text-align:left;padding:10px;border-bottom:1px solid #2c4055}.alarm-table th{color:#9fb5cc}.alarm-table input{width:85px;background:#0b192a;border:1px solid #48617a;color:white;border-radius:7px;padding:8px}.alarm-table input[type=checkbox]{width:18px;height:18px}.table-scroll{overflow-x:auto}.state-live{color:#6ee7ba}.state-off{color:#93a9bd}@media(max-width:650px){.config-grid{grid-template-columns:1fr}.instrument-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-</style></head><body>
-<header><div><div class="brand">THERMO<span>•</span>HMI <span style="font-size:12px;color:#8ba3b9">/ CALDEIRA FT-01</span></div><div class="sub">Painel de instrumentos · Caldeira FT-01</div></div><div class="status"><span class="pill sim" title="Valores gerados pelo modelo, sem conexão com equipamento físico">MODO VIRTUAL</span><span class="pill" id="mode">PARADA</span><span class="pill" id="clock">--:--:--</span></div></header>
-<main>
-<section class="metrics" aria-label="Instrumentos da caldeira">
-<div class="card"><div class="label">Pressão do vapor</div><div class="value"><span id="pressure">0,0</span><span class="unit">bar</span></div></div>
-<div class="card"><div class="label">Nível de água</div><div class="value"><span id="level">65</span><span class="unit">%</span></div></div>
-<div class="card"><div class="label">Temperatura do vapor</div><div class="value"><span id="temp">25</span><span class="unit">°C</span></div></div>
-<div class="card"><div class="label">Carga do queimador</div><div class="value"><span id="burner">0</span><span class="unit">%</span></div></div>
-</section>
 
-<section class="card" aria-label="Diagrama de instrumentação e controle">
-<div class="config-head"><h2 class="sectiontitle">Diagrama de processo · FT-01</h2><span class="chip">P&ID interativo</span></div>
+/* Supervisório em uma única página: navegação entre telas internas. */
+html{height:100%;overflow:hidden}body{height:100vh;height:100dvh;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;overflow:hidden;background:radial-gradient(ellipse at top right,#142c43,transparent 65%),#0b1220;font-size:13px}
+[hidden]{display:none!important}header{padding:10px 18px;gap:10px}.brand{font-size:17px}.sub{font-size:11px}.status{gap:7px}.pill{font-size:11px;padding:5px 10px}
+.screen-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;padding:9px 18px 0}.screen-nav button{min-width:0;display:flex;justify-content:center;align-items:center;gap:8px;border:1px solid #2c435b;border-radius:8px;padding:10px 8px;background:#111f30;color:#a8bfd4;font-size:12px;font-weight:700}.screen-nav button:hover{background:#1d344b}.screen-nav button.active{background:#173e57;border-color:#4ac2e6;color:#dff8ff;box-shadow:inset 0 -2px #4ac2e6}.nav-index{font:11px ui-monospace,monospace;color:#6e98b7}.nav-badge{background:#273f55;color:#c0d5e5;font-size:10px;border-radius:10px;padding:1px 6px}.nav-badge.alert{background:#752f3d;color:#ffd9df}
+main{max-width:none;width:100%;margin:0;padding:10px 18px;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px;overflow:hidden}.metrics{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.card{padding:13px;border-radius:11px;min-width:0;min-height:0;border-color:#2a3f55}.metrics .card{padding:10px 14px;background:linear-gradient(115deg,#172b3f,#111e2e)}.label{font-size:10px;letter-spacing:.06em}.value{font-size:clamp(21px,2.5vw,32px);margin-top:3px}.unit{font-size:11px}.screens{min-height:0;position:relative}.screen{height:100%;min-height:0;display:grid;gap:10px}.screen>.card{overflow:auto;scrollbar-width:thin;scrollbar-color:#46627b transparent;overscroll-behavior:contain}.process-screen{grid-template-columns:minmax(0,1fr) minmax(250px,290px)}.sectiontitle{font-size:14px;margin:0 0 10px}.config-head{gap:5px}.config-head .sectiontitle{margin:0}.chip{font-size:10px;padding:4px 8px}.process-card{display:flex;flex-direction:column;gap:8px}.pid-wrap{flex:1;min-height:120px;overflow:hidden;display:flex;align-items:center;justify-content:center;border-radius:8px}.pid{width:100%;height:100%;min-width:0;min-height:0}.pid-info{font-size:11px;line-height:1.5;margin:0}.command-card .controls{gap:14px}.ctrlrow{gap:7px}.ctrlrow>.btn{flex:1;min-width:0}.btn{padding:9px 10px;font-size:12px}.field{font-size:12px;flex-wrap:wrap;gap:6px}.field input{width:100%;padding:8px}.help{font-size:11px;margin:0 0 9px}.command-card .help{padding:10px;background:#0b1929;border-radius:7px}.command-card .sectiontitle{margin-bottom:14px}
+.instruments-screen{grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr)}.instrument-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:9px}.instrument-tile{padding:10px;border-radius:8px}.instrument-tile strong{font-size:11px;line-height:1.4}.instrument-tile small{font-size:11px;margin-top:4px}.instrument-tile[aria-pressed="true"]{border-color:#59c7f2;background:#173a50}.config-grid{gap:10px;margin-top:12px}.config-grid label{font-size:11px}.config-grid input{padding:8px}.config-actions{gap:7px;margin-top:12px}#configDescription{margin-top:8px}#configMessage,#alarmMessage{margin-top:8px}.alarms-screen{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.alarm-table{font-size:12px}.alarm-table th,.alarm-table td{padding:9px 7px}.alarm-table input{width:85px;padding:7px}.event-card{display:flex;flex-direction:column}.event-card .alarms{flex:1;max-height:none;min-height:0;overflow:auto;align-content:start}.alarmitem{font-size:12px;padding:9px}.alarmitem small{font-size:10px}
+.trends-screen{grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr)}.trend-card{display:flex;flex-direction:column}.chart{flex:1;min-height:100px;height:0}.visual-card{display:flex;flex-direction:column}.diagram{flex:1;min-height:180px}.boiler{height:135px;width:84%}.flame{top:45px;font-size:32px}.legend{font-size:10px;gap:9px;margin-top:10px}.model-screen{grid-template-columns:minmax(0,1fr)}.model-card{font-size:13px;line-height:1.65;color:#b8cbdd}.model-card p{max-width:1050px;margin:0 0 16px}.model-card a{color:#6accef}
+.screen-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 18px;border-top:1px solid #243b50;background:#0e1b2b;font-size:11px;color:#8ca7bf;min-width:0}.footer-state{color:#7fe4b5;min-width:0}.footer-state.alert{color:#ff9ca6}.pager{display:flex;align-items:center;gap:10px;white-space:nowrap}.pager button{background:#1c334a;color:#d3e6f5;border:1px solid #3c5a75;border-radius:6px;padding:4px 11px}.pager button:disabled{opacity:.35;cursor:default}#screenPosition{min-width:160px;text-align:center;font-variant-numeric:tabular-nums}.footer-note{font-size:10px}
+@media(min-width:1600px){.instrument-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.process-screen{grid-template-columns:minmax(0,1fr) 330px}}
+@media(max-height:650px){header{padding:7px 14px}.sub{display:none}.screen-nav{padding-top:6px}.screen-nav button{padding:7px}.metrics .card{padding:7px 10px}.value{font-size:24px}.card{padding:10px}.instrument-tile{padding:7px}.screen-footer{padding-top:5px;padding-bottom:5px}}
+@media(max-width:900px){.instrument-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.instruments-screen{grid-template-columns:minmax(0,1fr) minmax(250px,1fr)}.trends-screen{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(0,.8fr)}.visual-card{display:flex}.process-screen{grid-template-columns:minmax(0,1fr) 250px}.footer-note{display:none}}
+@media(max-width:650px){header{padding:8px 10px}.brand{font-size:14px}.brand>span:last-child{font-size:10px!important}.status{gap:4px}.pill{font-size:9px;padding:4px 7px}.sub{display:none}#clock{display:none}.screen-nav{padding:6px 8px 0;gap:4px}.screen-nav button{padding:8px 2px;font-size:9px;gap:3px}.nav-index{display:none}.nav-badge{font-size:9px;padding:0 4px}main{padding:8px;gap:7px}.metrics{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.metrics .card{padding:7px 5px}.label{font-size:8px;letter-spacing:0;min-height:20px}.value{font-size:20px}.unit{font-size:9px;margin-left:2px}.screen{gap:7px}.card{padding:10px}.process-screen{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(125px,1fr) auto}.process-card .pid-info{font-size:9px}.pid-wrap{min-height:90px}.command-card .sectiontitle{margin-bottom:7px}.command-card .controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.command-card .help{grid-column:1/-1;margin:0;padding:6px}.command-card .field{font-size:10px}.command-card .field input{padding:6px}.command-card .btn{padding:8px 4px;font-size:10px}.command-card .controls>.ctrlrow:nth-of-type(3){grid-column:1/-1}.instruments-screen{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(105px,.8fr) minmax(160px,1.2fr)}.instrument-list .sectiontitle{margin-bottom:5px}.instrument-list .help{display:none}.instrument-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:0}.instrument-tile{padding:7px 5px}.instrument-tile strong{font-size:9px}.instrument-tile small{font-size:10px}.config-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}.config-grid input{padding:7px}.config-actions .btn{font-size:10px}.alarms-screen{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(160px,1.1fr) minmax(100px,1fr)}.alarm-table{font-size:10px}.alarm-table input{width:65px;padding:5px}.alarm-table th,.alarm-table td{padding:5px}.alarm-table input[type=checkbox]{width:16px;height:16px}.alarms-screen .config-actions{margin-top:7px}.sectiontitle{font-size:12px}.screen-footer{padding:6px 8px;gap:4px;font-size:9px}.pager{gap:5px}.pager button{padding:5px 8px}#screenPosition{min-width:120px}.footer-state{max-width:110px}.model-card{font-size:12px}.trends-screen{grid-template-rows:minmax(0,1fr) minmax(0,.8fr)}}
+@media(max-width:360px){.brand>span:last-child{display:none}.status .pill{font-size:8px}.value{font-size:17px}.instrument-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nav-badge{display:none}}
+
+
+/* Combustão supervisionada e cenários — todas as telas permanecem no mesmo documento. */
+.screen-nav{grid-template-columns:repeat(7,minmax(0,1fr))}.screen-nav button{font-size:11px;gap:5px}.nav-index{font-size:10px}.command-card .controls{gap:9px}.sim-controls{display:grid;grid-template-columns:1fr auto;gap:5px;font-size:11px}.sim-controls label{grid-column:1/-1}.sim-controls select,.sensor-fault-fields select{background:#0b192a;color:#dcebf7;border:1px solid #46617a;border-radius:7px;padding:7px;min-width:0;width:100%;font:inherit}#operatorMessage:empty{display:none}.command-card .help{margin:0;font-size:10px}.command-card #stateText{overflow-wrap:anywhere}.command-card #reset{font-size:10px}.footer-state{border:0;background:none;font:inherit;text-align:left;cursor:pointer;padding:0}.combustion-screen{grid-template-columns:minmax(0,1.35fr) minmax(280px,1fr)}.combustion-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:9px 0}.combustion-stat{padding:8px;background:#0c1b2b;border:1px solid #29435a;border-radius:8px;min-width:0}.combustion-stat small{display:block;font-size:10px;color:#9bb7cd}.combustion-stat strong{display:block;color:#82d9f4;font-size:16px;margin-top:4px;overflow-wrap:anywhere}.sequence-steps{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.sequence-steps span{padding:6px 9px;background:#0c1b2b;border:1px solid #2d4960;border-radius:6px;font-size:10px;color:#8ba9be}.sequence-steps .current{color:#b3f0ff;border-color:#5ed5f5;background:#17465c}.proof-grid{display:grid;gap:7px;padding:10px;border:1px solid #29435a;border-radius:8px;margin-bottom:15px}.proof-grid strong{font-size:11px;color:#c1d6e8}.proof-grid small{font-size:10px;color:#93a9bd}.first-out{padding:10px;border-left:3px solid #f0a951;background:#322b26;font-size:12px;line-height:1.6}#sequenceState{color:#8bdcfa}#crossLimitStatus{margin-top:8px}.scenarios-screen{grid-template-columns:minmax(0,1.1fr) minmax(280px,1fr)}.fault-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.fault-option{display:flex;align-items:center;gap:7px;padding:9px;background:#0c1b2b;border:1px solid #30495e;border-radius:8px;font-size:11px}.fault-option input{width:17px;height:17px;flex:none;accent-color:#e89f54}.fault-option:has(input:checked){border-color:#e89f54;background:#3b2a20}.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}.preset-grid .btn{font-size:11px;padding:10px}.sensor-fault-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0}.sensor-fault-fields label{display:grid;gap:5px;font-size:11px}.scenarios-screen .help{line-height:1.6}#sensorFaultSummary{margin-top:9px}.alarm-table input{width:64px}.alarm-table th,.alarm-table td{padding:7px 5px}.event-card .alarms{flex:0 1 42%;min-height:60px}.history-title{margin-top:12px}.event-history{flex:1;min-height:80px;overflow:auto;border-top:1px solid #29435a;padding-top:6px;font:11px/1.6 ui-monospace,monospace}.history-event{padding:5px 7px;border-bottom:1px solid #25394b;overflow-wrap:anywhere}.history-event.trip,.history-event.alarm{color:#ffa3a9}.history-event.return{color:#8ee3bd}.history-event.injection{color:#ffd08a}.instrument-grid{grid-template-columns:repeat(3,minmax(0,1fr))}#configHint{margin-top:7px;font-size:10px;line-height:1.5}.config-grid select{padding:8px}#screenAlarmStatus{max-width:45%}.actuator-table{width:100%}.model-card h3{font-size:14px;color:#d8e8f5;margin:16px 0 6px}
+@media(max-width:1000px){.combustion-screen{grid-template-columns:minmax(0,1fr) minmax(250px,1fr)}.combustion-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.fault-options{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:650px){.screen-nav{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.screen-nav button{font-size:10px;padding:6px 2px}.process-screen{grid-template-rows:minmax(110px,1fr) minmax(0,1fr)}.command-card .controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.command-card #stateText,.command-card #operatorMessage{grid-column:1/-1}.command-card .sim-controls{font-size:9px}.sim-controls select{padding:4px}.command-card .btn{padding:6px 4px;font-size:9px}.command-card .sectiontitle{margin-bottom:5px}.command-card .help{padding:5px}.combustion-screen,.scenarios-screen{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(0,1fr)}.combustion-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.combustion-stat{padding:6px}.combustion-stat small{font-size:9px}.combustion-stat strong{font-size:12px}.fault-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.fault-option{padding:6px;font-size:9px}.preset-grid .btn{font-size:9px;padding:8px 5px}.screen-footer{font-size:9px}.alarms-screen{grid-template-rows:minmax(0,1fr) minmax(0,1fr)}.alarms-screen .table-scroll{overflow:auto}.alarm-table{font-size:10px}.event-history{font-size:9px}.alarm-table input{width:55px}.alarm-table th,.alarm-table td{padding:4px}.event-card .alarms{min-height:45px}.instrument-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sensor-fault-fields{grid-template-columns:minmax(0,1fr)}.label{min-height:20px}#screenAlarmStatus{max-width:42%}}
+
+.comb-view-tabs{display:flex;gap:6px;margin-top:8px}.comb-view-tabs button{flex:1;padding:7px;border-radius:6px;border:1px solid #365772;background:#102438;color:#b9d7ed;font:inherit;font-size:11px}.comb-view-tabs button.active{background:#19435a;border-color:#60cde9;color:white}#combActuatorsView{margin-top:12px}#combActuatorsView .help{margin-top:8px}.combustion-stat{padding:6px}.combustion-stat strong{font-size:14px}.combustion-stats{gap:5px}.combustion-stat small{font-size:9px}
+</style><link rel="stylesheet" href="../assets/css/navigation.css">
+</head><body>
+<header><div><div class="brand">THERMO<span>•</span>HMI <span style="font-size:12px;color:#8ba3b9">/ CALDEIRA FT-01</span></div><div class="sub">Painel de instrumentos · Caldeira FT-01</div></div><div class="status"><span class="pill sim" title="Valores gerados pelo modelo, sem conexão com equipamento físico">MODO VIRTUAL</span><span class="pill" id="mode">PARADA</span><span class="pill" id="clock">--:--:--</span></div></header>
+<nav class="screen-nav" aria-label="Telas do supervisório">
+<button type="button" data-screen="process" aria-controls="screen-process" aria-current="page" class="active"><span class="nav-index">01</span> Processo</button>
+<button type="button" data-screen="instruments" aria-controls="screen-instruments"><span class="nav-index">02</span> Instrumentos</button>
+<button type="button" data-screen="combustion" aria-controls="screen-combustion"><span class="nav-index">03</span> Combustão</button>
+<button type="button" data-screen="alarms" aria-controls="screen-alarms"><span class="nav-index">04</span> Alarmes <span id="alarmBadge" class="nav-badge">0</span></button>
+<button type="button" data-screen="trends" aria-controls="screen-trends"><span class="nav-index">05</span> Tendências</button>
+<button type="button" data-screen="scenarios" aria-controls="screen-scenarios"><span class="nav-index">06</span> Cenários</button>
+<button type="button" data-screen="model" aria-controls="screen-model"><span class="nav-index">07</span> Modelo</button>
+</nav>
+<main><section class="metrics" aria-label="Instrumentos da caldeira">
+<div class="card"><div class="label">Pressão do vapor (manométrica)</div><div class="value"><span id="pressure">0,0</span><span class="unit">bar(g)</span></div></div>
+<div class="card"><div class="label">Nível de água</div><div class="value"><span id="level">65</span><span class="unit">%</span></div></div>
+<div class="card"><div class="label">Temperatura do fluido</div><div class="value"><span id="temp">25</span><span class="unit">°C</span></div></div>
+<div class="card"><div class="label">Carga do queimador</div><div class="value"><span id="burner">0</span><span class="unit">%</span></div></div>
+</section><div class="screens">
+<section class="screen process-screen" id="screen-process" aria-label="Processo"><div class="card process-card" aria-label="Diagrama de instrumentação e controle">
+<div class="config-head"><h2 class="sectiontitle">Diagrama de processo · FT-01</h2><span class="chip" id="bmsSummary">PARADO</span></div>
 <div class="pid-wrap">
 <svg class="pid" viewBox="0 0 1100 490" role="group" aria-label="Diagrama da caldeira com queimador, ventilador, bomba, válvulas e transmissores">
 <defs><linearGradient id="shell" x2="0" y2="1"><stop stop-color="#39546b"/><stop offset=".45" stop-color="#203a51"/><stop offset="1" stop-color="#0c253b"/></linearGradient></defs>
@@ -52,142 +82,428 @@ main{max-width:1550px;margin:auto;padding:24px;display:grid;gap:18px}.notice{pad
 <g class="symbol" data-tag="LIC-101" tabindex="0" role="button" aria-label="Controlador de nível LIC-101"><circle class="instrument" cx="1010" cy="365" r="36"/><text x="987" y="370" class="tag">LIC</text><text x="995" y="414" class="small">101</text></g>
 <text x="42" y="218" class="small">COMBUSTÍVEL →</text><text x="42" y="352" class="small">ÁGUA →</text><text x="918" y="77" class="small">VAPOR →</text>
 </svg></div>
-<p class="pid-info">Selecione um símbolo ou instrumento para visualizar e ajustar seus parâmetros.</p>
-<div class="instrument-grid" id="instrumentTiles"></div>
+<p class="pid-info">Selecione um instrumento no diagrama para abrir sua configuração.</p>
+
+</div><div class="card command-card"><h2 class="sectiontitle">Comandos de operação</h2><div class="controls"><div class="ctrlrow"><button class="btn primary" id="start">▶ Partida</button><button class="btn danger" id="stop">■ Parada</button></div><div class="field"><label for="target">Pressão de referência (bar(g))</label><input id="target" type="number" min="1" max="8" step=".5" value="5"></div><div class="ctrlrow"><button class="btn warning" id="fault">Injetar/remover falha de chama</button><button class="btn" id="rearm">Rearmar bloqueio</button></div><div class="help" id="stateText" role="status">Sistema parado.</div><div class="sim-controls"><label for="simSpeed">Velocidade do ensaio</label><select id="simSpeed"><option value="1">1× · tempo real</option><option value="10">10×</option><option value="30">30×</option><option value="60">60×</option></select><button class="btn" id="pauseSimulation">Pausar</button></div><button class="btn" id="feedWater">Habilitar alimentação de água</button><button class="btn" id="reset">Reiniciar simulação a frio</button><p class="help" id="operatorMessage" role="status"></p></div></div>
 </section>
-<section class="layout">
+<section class="screen instruments-screen" id="screen-instruments" aria-label="Instrumentos" hidden><div class="card instrument-list"><h2 class="sectiontitle">Instrumentos e atuadores</h2><p class="help">Selecione para configurar. As leituras continuam atualizando em todas as telas.</p><div class="instrument-grid" id="instrumentTiles"></div></div>
 <div class="card" id="configPanel"><div class="config-head"><h2 class="sectiontitle" id="configTitle">Configuração de instrumentos</h2><span class="chip" id="configTag">PT-101</span></div>
 <p class="pid-info" id="configDescription"></p>
-<div class="config-grid" id="configFields"></div>
+<p class="help" id="configHint"></p><div class="config-grid" id="configFields"></div>
 <div class="config-actions"><button class="btn primary" id="saveInstrument">Aplicar ajustes</button><button class="btn" id="restoreInstrument">Restaurar instrumento</button></div><p class="pid-info" id="configMessage" role="status"></p>
 </div>
-<div class="card"><h2 class="sectiontitle">Alarmes configuráveis</h2><div class="table-scroll"><table class="alarm-table"><thead><tr><th>Variável</th><th>Baixo</th><th>Alto</th><th>Ativo</th></tr></thead><tbody id="alarmConfig"></tbody></table></div><div class="config-actions"><button class="btn primary" id="saveAlarms">Salvar alarmes</button><button class="btn" id="resetAlarms">Restaurar limites</button></div><p class="pid-info" id="alarmMessage" role="status"></p></div>
 </section>
-<section class="layout">
-<div class="card"><h2 class="sectiontitle">Visão geral do processo</h2><div class="diagram" role="img" aria-label="Representação esquemática simplificada de caldeira flamotubular com nível de água e queimador"><div class="blabel">FT-01 · GERADOR DE VAPOR</div><div class="boiler"><div class="pipe"></div><span class="flame" id="flame">◌</span><div class="boiler-info">ÁGUA / VAPOR</div></div></div><div class="legend"><span><i class="dot" id="flameDot"></i> Queimador</span><span><i class="dot off"></i> Queimador desligado</span><span><i class="dot alarm"></i> Alarme</span></div></div>
-<div class="card"><h2 class="sectiontitle">Comandos</h2><div class="controls"><div class="ctrlrow"><button class="btn primary" id="start">▶ Partida</button><button class="btn danger" id="stop">■ Parada</button></div><div class="field"><label for="target">Pressão de referência (bar)</label><input id="target" type="number" min="1" max="8" step=".5" value="5"></div><div class="ctrlrow"><button class="btn warning" id="fault">Falha de chama</button><button class="btn" id="reset">Reiniciar</button></div><div class="help" id="stateText" role="status">Sistema parado.</div></div></div>
+<section class="screen combustion-screen" id="screen-combustion" aria-label="Combustão e segurança" hidden><div class="card"><div class="config-head"><h2 class="sectiontitle">Combustão e balanços</h2><span class="chip" id="ratioStatus">Sem gás</span></div><p class="help" id="crossLimitStatus"></p><div class="comb-view-tabs" role="group" aria-label="Dados da combustão"><button type="button" id="combDataTab" aria-pressed="true" class="active">Balanços e mistura</button><button type="button" id="combActuatorsTab" aria-pressed="false">Atuadores e vazões</button></div><div id="combDataView"><div class="combustion-stats"><div class="combustion-stat"><small>Gás admitido</small><strong id="gasFlow">—</strong></div><div class="combustion-stat"><small>Ar de combustão</small><strong id="airFlow">—</strong></div><div class="combustion-stat"><small>Relação λ</small><strong id="lambda">—</strong></div><div class="combustion-stat"><small>O₂ seco estimado</small><strong id="oxygen">—</strong></div><div class="combustion-stat"><small>Eficiência útil estimada</small><strong id="efficiency">—</strong></div><div class="combustion-stat"><small>Calor útil</small><strong id="heatInput">—</strong></div><div class="combustion-stat"><small>Pressão do gás</small><strong id="gasPressure">—</strong></div><div class="combustion-stat"><small>Índice de combustão incompleta</small><strong id="incomplete">—</strong></div><div class="combustion-stat"><small>Gás não queimado no forno</small><strong id="gasInventory">—</strong></div><div class="combustion-stat"><small>Alimentação de água</small><strong id="waterFlow">—</strong></div><div class="combustion-stat"><small>Vapor de processo</small><strong id="steamFlow">—</strong></div><div class="combustion-stat"><small>Vapor pelo alívio</small><strong id="reliefFlow">—</strong></div><div class="combustion-stat"><small>Descarga de água</small><strong id="drainFlow">—</strong></div><div class="combustion-stat"><small>Nível independente</small><strong id="independentLevel">—</strong></div></div><p class="help">λ deriva das vazões mássicas, considerando combustível equivalente a metano. O₂ é uma estimativa de combustão completa em base seca; abaixo de λ = 1 não é calculado. O índice de combustão incompleta é qualitativo, não representa CO em ppm.</p></div><div id="combActuatorsView" hidden><h3 class="sectiontitle">Comando → posição real (%)</h3><p class="help">Posições reais incluem atraso e falhas. Vazões dependem também de pressão e contrapressão.</p><div class="table-scroll"><table class="alarm-table actuator-table"><thead><tr><th>Equipamento</th><th>Comando</th><th>Real</th></tr></thead><tbody><tr><td>Ventilador</td><td id="cmd-fan">—</td><td id="act-fan">—</td></tr><tr><td>FV-101 · gás</td><td id="cmd-fuel">—</td><td id="act-fuel">—</td></tr><tr><td>P-101 · bomba</td><td id="cmd-pump">—</td><td id="act-pump">—</td></tr><tr><td>LV-101 · água</td><td id="cmd-feed">—</td><td id="act-feed">—</td></tr><tr><td>SV-101 · vapor</td><td id="cmd-steam">—</td><td id="act-steam">—</td></tr><tr><td>BDV-101 · descarga</td><td id="cmd-drain">—</td><td id="act-drain">—</td></tr></tbody></table></div><p class="help">Gás, ar e água: valores em Balanços e mistura. Uma válvula de gás travada pode permanecer aberta, mas a válvula de segurança independente corta a admissão no bloqueio.</p></div></div><div class="card safety-card"><h2 class="sectiontitle">Gerenciamento do queimador</h2><strong id="sequenceState">PARADO</strong><p class="help" id="sequenceTime"></p><div class="sequence-steps"><span data-bms-state="OFF">Parado</span><span data-bms-state="CHECK">Permissivos</span><span data-bms-state="PREPURGE">Pré-purga</span><span data-bms-state="LIGHTOFF">Posição de ignição</span><span data-bms-state="IGNITION">Ignição</span><span data-bms-state="PROVE">Comprovação</span><span data-bms-state="RUN">Operação</span><span data-bms-state="POSTPURGE">Pós-purga</span><span data-bms-state="STANDBY">Espera</span><span data-bms-state="LOCKOUT">Bloqueio</span></div><div class="proof-grid"><strong id="safetyValve">FECHADA</strong><small>Válvula de segurança do gás</small><strong id="flameProof">SEM CHAMA</strong><strong id="airProof">AR NÃO COMPROVADO</strong></div><h3 class="sectiontitle">Primeira causa / último bloqueio</h3><p class="first-out" id="firstOut">Nenhum bloqueio.</p><p class="help" id="rearmConditions"></p><p class="help">Tempos reduzidos de treinamento: pré-purga 8 s, comprovação 2 s, pós-purga 6 s. São hipóteses didáticas, sem equivalência com um queimador certificado.</p></div></section>
+<section class="screen alarms-screen" id="screen-alarms" aria-label="Alarmes" hidden><div class="card"><h2 class="sectiontitle">Avisos configuráveis</h2><p class="help">Baixos de pressão, temperatura e vazão são habilitados após atingir 80% da referência; vazão baixa também requer pressão &gt; 1 bar e saída aberta. Proteções independentes não são desativadas aqui.</p><div class="table-scroll"><table class="alarm-table"><thead><tr><th>Variável</th><th>Baixo</th><th>Alto</th><th>Hist.</th><th>Atraso (s)</th><th>Ativo</th></tr></thead><tbody id="alarmConfig"></tbody></table></div><div class="config-actions"><button class="btn primary" id="saveAlarms">Salvar alarmes</button><button class="btn" id="resetAlarms">Restaurar limites</button></div><p class="pid-info" id="alarmMessage" role="status"></p></div>
+<div class="card event-card"><h2 class="sectiontitle">Eventos e alarmes</h2><div class="ctrlrow" style="margin-bottom:12px"><button class="btn" id="ack">Reconhecer eventos</button></div><div class="alarms" id="alarms" aria-live="polite"><div class="empty">Nenhum evento registrado.</div></div><h3 class="sectiontitle history-title">Histórico e retornos ao normal</h3><div id="eventHistory" class="event-history" aria-label="Histórico de eventos"></div></div></section>
+<section class="screen trends-screen" id="screen-trends" aria-label="Tendências" hidden><div class="card trend-card"><h2 class="sectiontitle">Tendência · pressão manométrica</h2><p class="help">Histórico das últimas 60 amostras · intervalo nominal de 1 segundo · bar(g)</p><canvas class="chart" id="trend" aria-label="Gráfico de tendência da pressão"></canvas></div>
+
+<div class="card visual-card"><h2 class="sectiontitle">Visão geral do processo</h2><div class="diagram" role="img" aria-label="Representação esquemática simplificada de caldeira flamotubular com nível de água e queimador"><div class="blabel">FT-01 · GERADOR DE VAPOR</div><div class="boiler"><div class="pipe"></div><span class="flame" id="flame">◌</span><div class="boiler-info">ÁGUA / VAPOR</div></div></div><div class="legend"><span><i class="dot" id="flameDot"></i> Queimador</span><span><i class="dot off"></i> Queimador desligado</span><span><i class="dot alarm"></i> Alarme</span></div></div>
 </section>
-<section class="layout"><div class="card"><h2 class="sectiontitle">Tendência · pressão</h2><canvas class="chart" id="trend" aria-label="Gráfico de tendência da pressão"></canvas></div>
-<div class="card"><h2 class="sectiontitle">Eventos e alarmes</h2><div class="ctrlrow" style="margin-bottom:12px"><button class="btn" id="ack">Reconhecer eventos</button></div><div class="alarms" id="alarms" aria-live="polite"><div class="empty">Nenhum evento registrado.</div></div></div></section>
-</main>
+<section class="screen scenarios-screen" id="screen-scenarios" aria-label="Cenários e falhas" hidden><div class="card"><h2 class="sectiontitle">Falhas de equipamentos</h2><p class="help">As falhas alteram o equipamento real do modelo. Válvulas travam na posição atual. Remover a falha não rearma o bloqueio nem muda o estado térmico.</p><div id="faultOptions" class="fault-options"></div><div class="config-actions"><button class="btn" id="clearFaults">Remover falhas injetadas</button></div></div><div class="card"><h2 class="sectiontitle">Ensaios guiados</h2><div class="preset-grid"><button class="btn warning" data-preset="rich">Gás 100% / ar 30%</button><button class="btn warning" data-preset="pressure">Vapor fechado / carga 100%</button><button class="btn warning" data-preset="noFeed">Bomba sem vazão + descarga 30%</button><button class="btn primary" data-preset="normal">Restaurar controles automáticos</button></div><p class="help">Mistura rica: após a ignição, comanda gás e ar em manual; deve provocar aviso e bloqueio. Sobrepressão: saída fechada com carga manual; deve atuar o pressostato independente antes do alívio. Falta de água: bomba falha com descarga para observar dois estágios de proteção.</p><p id="scenarioMessage" class="help" role="status"></p><h3 class="sectiontitle">Falhas de instrumentação</h3><div class="sensor-fault-fields"><label>Transmissor<select id="faultSensor"><option>PT-101</option><option>LT-101</option><option>TT-101</option><option>FT-101</option></select></label><label>Condição<select id="sensorFaultType"><option value="frozen">Congelar leitura atual</option><option value="lost">Perder sinal</option><option value="healthy">Restabelecer sinal</option></select></label></div><button class="btn" id="applySensorFault">Aplicar ao sensor</button><p class="help" id="sensorFaultSummary"></p><p class="help">Sinal congelado permanece plausível até divergir da referência independente. Perda de PT/LT provoca bloqueio; perda de TT/FT gera aviso de qualidade.</p></div></section>
+<section class="screen model-screen" id="screen-model" aria-label="Modelo matemático" hidden><article class="card model-card"><h2 class="sectiontitle">Modelo, proteções e limites do ensaio</h2>
+<p>Simulador didático, sem conexão com CLP. Percentuais representam comandos ou posições; vazões são calculadas separadamente. O modo Automático coordena ar/gás com limitação cruzada: ar precede aumento de gás e gás precede redução de ar. O modo Manual força a referência do atuador, mantendo todas as proteções ativas.</p>
+<h3>Combustão</h3><p>Combustível equivalente a metano: vazão nominal 0,16 kg/s, PCI 50.000 kJ/kg, relação estequiométrica de ar 17,2 kg/kg e alvo λ = 1,20. Vazão de gás = 0,16 × (posição/100)<sup>1,5</sup> × √(pressão de gás/0,1). Vazão de ar = 0,16 × 17,2 × 1,2 × velocidade/100. Curvas são hipotéticas. λ = ar / (gás × 17,2); eficiência útil nominal 86%, reduzida por excesso de ar. A fração de gás queimado é limitada pelo ar. O índice qualitativo de incompletude não substitui um modelo de CO. Inventário de gás não queimado é ventilado por um forno idealizado de 8 m³.</p>
+<h3>Sequência de queimador</h3><p>Parado → permissivos → pré-purga (8 s de ar comprovado) → posição de ignição → tentativa de ignição (máximo 3 s) → comprovação (2 s) → operação. Parada ou bloqueio fecha a válvula de segurança do gás e solicita pós-purga de 6 s. Falha de ventilador pode impedir purga efetiva; a indicação de ar permanece disponível. Reinício exige nova sequência. São tempos reduzidos de treinamento, não prescrições normativas.</p>
+<h3>Proteções independentes e coordenação</h3><p>Aviso de pressão alta: 8 bar(g), ajustável na tela de alarmes; bloqueio pelo pressostato independente: 8,5 bar(g), rearme abaixo de 8; alívio abre em 9 e fecha em 8,7. Primeiro nível baixo em 30% corta combustão, com recuperação em 35%; segundo nível baixo em 20% bloqueia e exige rearme. Alimentação é inibida em 95%. Pressão de gás admitida: 0,05–0,16 bar(g). Perda de ar por 0,6 s, perda de chama por 0,7 s, ou mistura rica λ &lt; 0,90 por 0,5 s em operação provocam bloqueio. Perda de PT/LT por 1 s também bloqueia. Corte por temperatura a 200 °C é uma proteção redundante no modelo saturado. Todos esses limites são hipóteses de treinamento.</p>
+<h3>Dinâmica e hidráulica</h3><p>Ventilador, bomba e válvulas possuem atraso de primeira ordem e limite de velocidade. Bomba: altura disponível = altura nominal × (velocidade/100)²; vazão depende da diferença para a contrapressão da caldeira e de uma perda fixa de 0,3 bar. Válvula de retenção impede vazão reversa. Vapor de processo = 2 × abertura/100 × √(pressão manométrica/5) kg/s. Descarga de água = 1,2 × abertura/100 × √(pressão + 1) kg/s. Curvas aproximadas, sem representar um equipamento comercial.</p>
+<h3>Balanços térmicos</h3><p>Recipiente de 3 m³; água com densidade constante 1.000 kg/m³ e calor específico 4,18 kJ/(kg·K); capacidade térmica do metal 1.000 kJ/K; alimentação/ambiente a 25 °C; perdas de 2 kW/K. dm/dt = alimentação − vapor − alívio − descarga. dU/dt = calor útil − perdas + alimentação × h de entrada − vapor/alívio × h do vapor − descarga × h da água. Há inventário de vapor e sua energia. Vapor usa gás ideal; calor latente aproximado por 2.501 − 2,36 × T em kJ/kg. A pressão de saturação usa a região 4 da <a href="https://iapws.org/technical-guidance/release/IF97-Rev" target="_blank" rel="noopener">IAPWS-IF97</a>. Pressão manométrica = absoluta − 1,01325 bar. Na partida fria admite-se purga de ar e quebra-vácuo ideais. Não modela expansão da água, superaquecimento ou cinética química detalhada.</p>
+<h3>Instrumentação, alarmes e recuperação</h3><p>Offsets/faixas afetam indicação e controle; pressostato de alta e chaves de nível independentes usam o estado físico. Sinal perdido aparece como “—”; leitura congelada mantém a amostra e pode gerar divergência temporizada. Avisos configuráveis têm atraso, histerese e retorno ao normal. Alarmes de baixo são condicionados ao estado operacional; desvio persistente e saturação do PIC são avaliados após 600 s acima da ebulição. Primeiro bloqueio registra a causa original. Reconhecer marca ciência; rearmar exige remover a causa e satisfazer permissivos, preservando temperatura, água e eventos; a alimentação pode ser habilitada separadamente para recuperar o nível após remover uma falha da bomba; reiniciar simulação restaura o estado frio e remove falhas injetadas, preservando configurações e histórico.</p>
+<h3>Uso do ensaio</h3><p>Use as telas Combustão e Cenários para observar comando, posição, vazões e primeira causa. O seletor 1×/10×/30×/60× acelera o mesmo tempo físico usado pelos balanços e temporizadores; a integração usa subpassos de até 0,05 s. Trocar de tela não pausa. Suspensão prolongada da página pausa o tempo. As curvas de tendência guardam 60 amostras, de 1 s simulado cada.</p>
+<p>Referências conceituais: <a href="https://www.energy.gov/sites/prod/files/2014/05/f16/steam4_boiler_efficiency.pdf" target="_blank" rel="noopener">DOE — eficiência e excesso de ar</a>; <a href="https://prod-edam.honeywell.com/content/dam/honeywell-edam/hbt/en-us/documents/literature-and-specs/datasheets/65-0200.pdf" target="_blank" rel="noopener">Honeywell 7800 — sequência e supervisão</a>; <a href="https://www.spiraxsarco.com/learn-about-steam/the-boiler-house/methods-of-detecting-water-level-in-steam-boilers?sc_lang=en-GB" target="_blank" rel="noopener">Spirax Sarco — controle e proteção de nível</a>. Essas fontes não validam os números didáticos adotados aqui.</p></article></section>
+</div></main>
+<footer class="screen-footer"><button type="button" class="footer-state" id="screenAlarmStatus" aria-label="Abrir alarmes">Sem alarmes ativos</button><div class="pager"><button type="button" id="previousScreen" aria-label="Tela anterior">←</button><span id="screenPosition">01 / 07 · Processo</span><button type="button" id="nextScreen" aria-label="Próxima tela">→</button></div><span class="footer-note">FT-01 · Simulação local</span></footer>
 <script>
-/* Painel virtual: as leituras e os comandos são gerados localmente; não existe conexão com CLP ou caldeira física. */
+/* Motor didático concentrado. Unidades: kg, s, kJ, kW, bar(g); não controla hardware. */
+function createBoilerSimulator(){
+ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+ const PHYS={volume:3,rho:1000,cp:4.18,metalCapacity:1000,ambient:25,feedTemp:25,maxHeat:6880,loss:2,atm:1.01325,R:.4615,fuelNominal:.16,lhv:50000,airFuel:17.2,lambdaTarget:1.2};
+ const SAFETY={prepurge:8,postpurge:6,ignitionTrial:3,flameProve:2,airTimeout:4,positionTimeout:12,flameLoss:.7,richDelay:.5,pressureTrip:8.5,pressureReset:8,reliefOpen:9,reliefClose:8.7,lowLevel1:30,lowLevel2:20,levelReset:35};
+ const defs={
+  'PT-101':{name:'Transmissor de pressão',unit:'bar(g)',pv:'pressure',fields:{rangeMin:0,rangeMax:10,offset:0}},
+  'LT-101':{name:'Transmissor de nível',unit:'%',pv:'level',fields:{rangeMin:0,rangeMax:100,offset:0}},
+  'TT-101':{name:'Transmissor de temperatura',unit:'°C',pv:'temp',fields:{rangeMin:0,rangeMax:250,offset:0}},
+  'FT-101':{name:'Transmissor de vapor',unit:'t/h',pv:'flow',fields:{rangeMin:0,rangeMax:15,offset:0}},
+  'PIC-101':{name:'Controlador de pressão',unit:'bar(g)',pv:'pressure',fields:{setpoint:5,kp:18,ki:.04,mode:1,manualOutput:0}},
+  'LIC-101':{name:'Controlador de nível',unit:'%',pv:'level',fields:{setpoint:65,kp:3,ki:.03,mode:1,manualOutput:0}},
+  'B-101':{name:'Queimador',unit:'%',pv:'burner',fields:{minLoad:15,maxLoad:100,enabled:1}},
+  'F-101':{name:'Ventilador de combustão',unit:'%',pv:'fan',fields:{mode:1,speed:75,enabled:1}},
+  'P-101':{name:'Bomba de alimentação',unit:'%',pv:'pump',fields:{speed:85,head:14,enabled:1}},
+  'FV-101':{name:'Válvula de combustível',unit:'%',pv:'fuelValve',fields:{mode:1,opening:70,gasPressure:.1,enabled:1}},
+  'LV-101':{name:'Válvula de alimentação',unit:'%',pv:'feedValve',fields:{mode:1,opening:55,enabled:1}},
+  'SV-101':{name:'Válvula de vapor',unit:'%',pv:'steamValve',fields:{opening:80,enabled:1}},
+  'BDV-101':{name:'Válvula de descarga de água',unit:'%',pv:'drainValve',fields:{opening:0,enabled:1}}
+ };
+ const alarmDefaults={pressure:{name:'Pressão (bar(g))',low:.5,high:8,enabled:true,hysteresis:.15,delay:3},level:{name:'Nível (%)',low:45,high:85,enabled:true,hysteresis:2,delay:2},temp:{name:'Fluido (°C)',low:90,high:175,enabled:true,hysteresis:2,delay:3},flow:{name:'Vapor (t/h)',low:.2,high:7,enabled:true,hysteresis:.1,delay:3}};
+ const clone=x=>JSON.parse(JSON.stringify(x));
+ const configs=Object.fromEntries(Object.entries(defs).map(([k,v])=>[k,clone(v.fields)]));
+ const alarmSettings=clone(alarmDefaults),sensorTags={pressure:'PT-101',level:'LT-101',temp:'TT-101',flow:'FT-101'};
+ const faultNames={fanFailure:'Falha do ventilador',gasLoss:'Perda da alimentação de gás',gasHighPressure:'Pressão de gás alta',ignitionFailure:'Falha de ignição',flameFailure:'Perda de chama',fuelValveStuck:'FV-101 travada',feedValveStuck:'LV-101 travada',steamValveStuck:'SV-101 travada',pumpFailure:'Bomba sem vazão',pumpLowHead:'Bomba com altura insuficiente',reliefStuck:'Válvula de alívio travada fechada',airSwitchFailure:'Pressostato de ar sem confirmação',falseFlame:'Sinal indevido de chama',pressureSwitchFailure:'Pressostato independente de alta pressão inoperante'};
+ const faults=Object.fromEntries(Object.keys(faultNames).map(k=>[k,false])),sensorFaults={},heldSensors={},stuckPositions={};
+ const alarmMap=new Map(),events=[],timers={};
+ function saturationBar(t){const T=t+273.15,q=T-.23855557567849/(T-650.17534844798),A=q*q+1167.0521452767*q-724213.16703206,B=-17.073846940092*q*q+12020.824702470*q-3232555.0322333,C=14.915108613530*q*q-4823.2657361591*q+405113.40542057;return 10*(2*C/(-B+Math.sqrt(B*B-4*A*C)))**4}
+ function boilingTemperature(abs){let lo=0,hi=220;for(let j=0;j<48;j++){const t=(lo+hi)/2;if(saturationBar(t)<abs)lo=t;else hi=t}return (lo+hi)/2}
+ const boiling=boilingTemperature(PHYS.atm);
+ function phaseAt(t,mass){const abs=saturationBar(t),density=abs*100/(PHYS.R*(t+273.15)),vapor=density*(PHYS.volume-mass/PHYS.rho)/(1-density/PHYS.rho),liquid=mass-vapor,ul=PHYS.cp*(t-25),hg=ul+2501-2.36*t,ug=hg-PHYS.R*(t+273.15);return {temp:t,p:Math.max(0,abs-PHYS.atm),mass,liquid,vapor,hg,hl:ul,energy:liquid*ul+vapor*ug+PHYS.metalCapacity*(t-25)}}
+ function equilibrium(mass,energy){
+  if(!Number.isFinite(mass)||!Number.isFinite(energy)||mass<=0||mass>=2999)throw new Error('Estado fora do domínio de massa do modelo.');
+  const cap=mass*PHYS.cp+PHYS.metalCapacity,cold=cap*(boiling-25),sat=phaseAt(boiling,mass);
+  if(energy<=cold)return {mass,energy,temp:25+energy/cap,p:0,liquid:mass,vapor:0,hg:0,hl:PHYS.cp*energy/cap};
+  if(energy<sat.energy){const vapor=sat.vapor*(energy-cold)/(sat.energy-cold);return {...sat,energy,p:0,vapor,liquid:mass-vapor}}
+  let lo=boiling,hi=220;if(energy>phaseAt(hi,mass).energy)throw new Error('Energia fora do domínio térmico.');
+  for(let j=0;j<40;j++){const t=(lo+hi)/2;if(phaseAt(t,mass).energy<energy)lo=t;else hi=t}return {...phaseAt((lo+hi)/2,mass),energy};
+ }
+ let plant=equilibrium(1950,0);
+ const s={time:0,requested:false,feedEnabled:false,state:'OFF',stateTime:0,fault:false,firstOut:null,lastTrip:null,integralP:0,integralL:0,demand:0,burner:0,steamFlow:0,feedFlow:0,reliefFlow:0,drainFlow:0,reliefOpen:false,airFlow:0,fuelFlow:0,gasPressure:.1,lambda:null,o2:null,incompleteIndex:0,efficiency:0,heat:0,actualFlame:false,flameSignal:false,ssvOpen:false,gasInventory:0,crossLimited:false,lowLevel1:false,operatingTime:0,warmTime:0,processReady:false,clockRate:1,commands:{fan:0,fuel:0,pump:0,feed:0,steam:80,drain:0},actual:{fan:0,fuel:0,pump:0,feed:0,steam:80,drain:0},balance:{massResidual:0,energyResidual:0}};
+ const stateLabels={OFF:'PARADO',CHECK:'PERMISSIVOS',PREPURGE:'PRÉ-PURGA',LIGHTOFF:'POSIÇÃO DE IGNIÇÃO',IGNITION:'IGNIÇÃO',PROVE:'COMPROVAÇÃO DE CHAMA',RUN:'EM OPERAÇÃO',STANDBY:'ESPERA DE DEMANDA',POSTPURGE:'PÓS-PURGA',LOCKOUT:'BLOQUEADO'};
+ const level=()=>plant.liquid/30;
+ function event(message,type='info',id=''){events.unshift({time:s.time,message,type,id,ack:false});if(events.length>200)events.pop()}
+ function alarm(id,condition,dt,opts={}){
+  let a=alarmMap.get(id);if(!a){a={id,name:opts.name||id,priority:opts.priority||'aviso',active:false,ack:true,on:0,off:0,first:0,last:0,returned:null};alarmMap.set(id,a)}
+  a.name=opts.name||a.name;a.priority=opts.priority||a.priority;
+  if(condition){a.off=0;a.on+=dt;if(!a.active&&a.on+1e-9>=(opts.delay??0)){a.active=true;a.ack=false;a.first=s.time;a.last=s.time;a.returned=null;event(a.name,'alarm',id)}}
+  else{a.on=0;a.off+=dt;if(a.active&&a.off+1e-9>=(opts.clearDelay??.5)){a.active=false;a.returned=s.time;event(a.name+' — retorno ao normal','return',id)}}
+  return a.active;
+ }
+ function sustained(id,condition,dt,delay){timers[id]=condition?(timers[id]||0)+dt:0;return timers[id]+1e-9>=delay}
+ function transition(state){if(s.state===state)return;s.state=state;s.stateTime=0;if(state==='PREPURGE')timers.purge=0;if(state==='RUN'){timers.airLost=0;timers.flameLost=0;timers.rich=0}event('Sequência: '+stateLabels[state],'sequence')}
+ function trip(reason,id){
+  if(s.fault)return;
+  s.fault=true;s.requested=false;s.firstOut={reason,id,time:s.time};s.lastTrip={...s.firstOut};s.ssvOpen=false;s.actualFlame=false;s.flameSignal=false;s.burner=0;s.heat=0;
+  alarm('trip',true,0,{name:'Bloqueio: '+reason,priority:'trip'});event('PRIMEIRA CAUSA: '+reason,'trip',id);transition('POSTPURGE');
+ }
+ function sensorQuality(tag){return sensorFaults[tag]==='lost'?'SEM SINAL':sensorFaults[tag]==='frozen'?'RETIDO (ENSAIO)':'VÁLIDO'}
+ function physicalPV(key){return {pressure:plant.p,level:level(),temp:plant.temp,flow:s.steamFlow*3.6,burner:s.burner,fan:s.actual.fan,pump:s.actual.pump,fuelValve:s.actual.fuel,feedValve:s.actual.feed,steamValve:s.actual.steam,drainValve:s.actual.drain}[key]??0}
+ function getPV(key){const tag=sensorTags[key];if(!tag)return physicalPV(key);if(sensorFaults[tag]==='lost')return NaN;if(sensorFaults[tag]==='frozen')return heldSensors[tag];const c=configs[tag];return clamp(physicalPV(key)+c.offset,c.rangeMin,c.rangeMax)}
+ function piOutput(c,error,integral,bias,limit,dt,available=true){if(!available||!Number.isFinite(error))return {output:0,integral};if(c.mode===0)return {output:Math.min(c.manualOutput,limit),integral};const candidate=clamp(integral+c.ki*error*dt,-100,100),raw=bias+c.kp*error+candidate;if((raw>=0&&raw<=limit)||(raw>limit&&error<0)||(raw<0&&error>0))integral=candidate;return {output:clamp(bias+c.kp*error+integral,0,limit),integral}}
+ function start(){if(s.fault){event('Partida recusada: rearme o bloqueio após remover a causa.','warning');return false}if(s.requested)return true;s.requested=true;s.feedEnabled=true;s.operatingTime=0;s.warmTime=0;s.processReady=false;event('Solicitação de partida');if(s.state==='OFF')transition('CHECK');return true}
+ function stop(){s.requested=false;s.feedEnabled=false;s.ssvOpen=false;event('Parada solicitada');if(s.state!=='OFF'&&s.state!=='LOCKOUT')transition('POSTPURGE')}
+ function rearmBlockers(){const reasons=[];if(s.state!=='LOCKOUT')reasons.push('aguarde concluir a pós-purga');if(Object.values(faults).some(Boolean)||Object.values(sensorFaults).some(x=>x!=='healthy'))reasons.push('remova as falhas injetadas');if(level()<SAFETY.levelReset)reasons.push('recupere nível para pelo menos 35%');if(plant.p>=SAFETY.pressureReset)reasons.push('aguarde pressão abaixo de 8 bar(g)');if(s.actual.fuel>2)reasons.push('aguarde fechamento da válvula de gás');if(configs['FV-101'].gasPressure<.05||configs['FV-101'].gasPressure>.16)reasons.push('corrija a pressão de gás');if(configs['F-101'].mode===0&&configs['FV-101'].mode===0&&configs['FV-101'].opening>0){const q=PHYS.fuelNominal*(configs['FV-101'].opening/100)**1.5*Math.sqrt(Math.max(0,configs['FV-101'].gasPressure)/.1),air=PHYS.fuelNominal*PHYS.airFuel*1.2*configs['F-101'].speed/100,ratio=air/(q*PHYS.airFuel);if(ratio<.9||ratio>4)reasons.push('corrija a relação ar/gás dos comandos manuais')}if(!configs['F-101'].enabled||!configs['FV-101'].enabled||!configs['B-101'].enabled)reasons.push('habilite os equipamentos de combustão');return reasons}
+ function rearm(){if(!s.fault){event('Não há bloqueio para rearmar.');return true}const reasons=rearmBlockers();if(reasons.length){event('Rearme recusado: '+reasons.join('; '),'warning');return false}s.fault=false;s.firstOut=null;s.requested=false;s.integralP=0;for(const key of Object.keys(timers))delete timers[key];alarm('trip',false,1,{clearDelay:0});transition('OFF');event('Bloqueio rearmado; estado físico e histórico preservados.');return true}
+ function setFeedEnabled(value){s.feedEnabled=!!value;event('Alimentação de água '+(s.feedEnabled?'habilitada':'interrompida')+' pelo operador.')}
+ function acknowledge(){for(const a of alarmMap.values())a.ack=true;for(const e of events)e.ack=true;event('Alarmes e eventos reconhecidos.');events[0].ack=true}
+ function setFault(key,value){if(!(key in faults))throw new Error('Falha desconhecida');value=!!value;if(faults[key]===value)return;if(value&&key.endsWith('ValveStuck')){const pos={fuelValveStuck:'fuel',feedValveStuck:'feed',steamValveStuck:'steam'}[key];stuckPositions[key]=s.actual[pos]}faults[key]=value;event((value?'Falha inserida: ':'Falha removida: ')+faultNames[key],value?'injection':'return',key)}
+ function setSensorFault(tag,type){if(!Object.values(sensorTags).includes(tag)||!['healthy','frozen','lost'].includes(type))throw new Error('Falha de sensor inválida');if(type==='frozen')heldSensors[tag]=getPV(defs[tag].pv);if(!Number.isFinite(heldSensors[tag])){const c=configs[tag];heldSensors[tag]=clamp(physicalPV(defs[tag].pv)+c.offset,c.rangeMin,c.rangeMax)}sensorFaults[tag]=type;event(tag+': '+sensorQuality(tag),type==='healthy'?'return':'injection',tag)}
+ function clearFaults(){for(const key of Object.keys(faults))if(faults[key])setFault(key,false);for(const tag of Object.keys(sensorFaults))if(sensorFaults[tag]!=='healthy')setSensorFault(tag,'healthy')}
+ function actuator(name,command,dt,tau,rate){s.commands[name]=clamp(command,0,100);s.actual[name]+=clamp((s.commands[name]-s.actual[name])*(1-Math.exp(-dt/tau)),-rate*dt,rate*dt);s.actual[name]=clamp(s.actual[name],0,100)}
+ function gasPressure(){return faults.gasLoss?0:faults.gasHighPressure?.22:configs['FV-101'].gasPressure}
+ function gasAt(position){return PHYS.fuelNominal*(position/100)**1.5*Math.sqrt(Math.max(0,s.gasPressure)/.1)}
+ function airProven(){return s.airFlow>.12&&!faults.airSwitchFailure}
+ function resetController(tag){if(tag==='PIC-101')s.integralP=0;if(tag==='LIC-101')s.integralL=0}
+ function updateBMS(dt){
+  s.stateTime+=dt;
+  const active=['IGNITION','PROVE','RUN'].includes(s.state),b=configs['B-101'];
+  s.lowLevel1=level()<=SAFETY.lowLevel1||(s.lowLevel1&&level()<SAFETY.levelReset);
+  if((s.requested||active)&&!s.fault){
+   if(level()<=SAFETY.lowLevel2)trip('Nível muito baixo — segundo estágio','LLL');
+   else if(plant.p>=SAFETY.pressureTrip&&!faults.pressureSwitchFailure)trip('Pressão muito alta — pressostato independente','PSHH');
+   else if(plant.temp>=200)trip('Temperatura do fluido muito alta','TSHH');
+   else if(sustained('sensorCritical',['PT-101','LT-101'].some(t=>sensorFaults[t]==='lost'),dt,1))trip('Perda de sinal de transmissor crítico','SIGNAL');
+   else if(s.gasPressure<.05)trip('Pressão de gás baixa','GAS_LOW');
+   else if(s.gasPressure>.16)trip('Pressão de gás alta','GAS_HIGH');
+   else if(!b.enabled)trip('Queimador desabilitado durante solicitação','BURNER_OFF');
+   else if(!configs['FV-101'].enabled)trip('Válvula de gás indisponível','FUEL_OFF');
+   else if(!configs['F-101'].enabled&&s.state!=='CHECK')trip('Ventilador indisponível','FAN_OFF');
+  }
+  if(s.fault){if(s.state==='POSTPURGE'&&s.stateTime>=SAFETY.postpurge)transition('LOCKOUT');return}
+  if(!s.requested){if(!['OFF','POSTPURGE'].includes(s.state))transition('POSTPURGE');if(s.state==='POSTPURGE'&&s.stateTime>=SAFETY.postpurge)transition('OFF');return}
+  if(s.state==='CHECK'){
+   if(faults.falseFlame){trip('Chama detectada antes da ignição','FALSE_FLAME');return}
+   if(s.lowLevel1||(configs['PIC-101'].mode===0&&s.demand<.5)){transition('STANDBY');return}
+   if(!configs['F-101'].enabled){trip('Ventilador indisponível na partida','FAN_OFF');return}
+   transition('PREPURGE');
+  }else if(s.state==='PREPURGE'){
+   if(sustained('purgeNoAir',!airProven(),dt,SAFETY.airTimeout)){trip('Ar de combustão não comprovado na pré-purga','AIR_PURGE');return}
+   if(airProven())timers.purge=(timers.purge||0)+dt;else timers.purge=0;
+   if((timers.purge||0)>=SAFETY.prepurge){timers.purge=0;transition('LIGHTOFF')}
+  }else if(s.state==='LIGHTOFF'){
+   const expectedFan=configs['F-101'].mode===0?configs['F-101'].speed:b.minLoad;
+   if(s.stateTime>SAFETY.positionTimeout){trip('Posição de ignição não atingida','LIGHTOFF_POSITION');return}
+   if(airProven()&&Math.abs(s.actual.fan-expectedFan)<4&&s.actual.fuel<2){transition('IGNITION')}
+  }else if(s.state==='IGNITION'){
+   if(s.actualFlame)transition('PROVE');else if(s.stateTime>=SAFETY.ignitionTrial)trip('Tempo de ignição excedido — chama ausente','IGNITION');
+  }else if(s.state==='PROVE'){
+   if(!s.flameSignal)trip('Chama não comprovada','FLAME_PROVE');else if(s.stateTime>=SAFETY.flameProve)transition('RUN');
+  }else if(s.state==='RUN'){
+   if(sustained('airLost',!airProven(),dt,.6)){trip('Perda de ar de combustão','AIR_LOSS');return}
+   if(sustained('flameLost',!s.flameSignal,dt,SAFETY.flameLoss)){trip('Perda de chama em operação','FLAME_LOSS');return}
+   if(sustained('overfire',s.fuelFlow>PHYS.fuelNominal*1.1,dt,1)){trip('Vazão de gás acima da capacidade nominal','OVERFIRE');return}
+   if(sustained('rich',s.lambda!==null&&s.lambda<.9,dt,SAFETY.richDelay)){trip('Mistura rica — ar insuficiente para o gás admitido','RICH');return}
+   if(s.lowLevel1){event('Primeiro nível baixo — corte de combustão e espera de recuperação','safety');transition('POSTPURGE');return}
+   if(s.demand<.5){transition('POSTPURGE')}
+  }else if(s.state==='STANDBY'){
+   if(!s.lowLevel1&&s.demand>=b.minLoad){transition('CHECK')}
+  }else if(s.state==='POSTPURGE'&&s.stateTime>=SAFETY.postpurge)transition('STANDBY');
+ }
+ function evaluateAlarms(dt=0){
+  for(const [key,c] of Object.entries(alarmSettings)){
+   const value=getPV(key),valid=Number.isFinite(value);
+   const warm=s.processReady;
+   const lowAllowed=key==='level'||(s.requested&&warm&&(key!=='flow'||s.actual.steam>20&&plant.p>1));
+   for(const side of ['low','high']){
+    const id=key+':'+side,a=alarmMap.get(id),h=a?.active?c.hysteresis:0;
+    const condition=valid&&c.enabled&&(side==='low'?lowAllowed&&value<c.low+h:value>c.high-h);
+    alarm(id,condition,dt,{name:c.name+' — '+(side==='low'?'baixo':'alto'),delay:c.delay,clearDelay:1});
+   }
+  }
+  const on=s.state==='RUN',fuelRequired=['IGNITION','PROVE','RUN'].includes(s.state);
+  alarm('lowLevel1',s.lowLevel1,dt,{name:'Primeiro nível baixo — combustão inibida',priority:'proteção',delay:0});
+  alarm('richWarning',on&&s.lambda!==null&&s.lambda<1.05,dt,{name:'Relação ar/gás: deficiência de ar',delay:.3});
+  alarm('overfire',on&&s.fuelFlow>PHYS.fuelNominal*1.05,dt,{name:'Vazão de gás acima da capacidade nominal',delay:.5});
+  alarm('excessAir',on&&s.lambda!==null&&s.lambda>1.8,dt,{name:'Excesso de ar — perda de eficiência',delay:5});
+  alarm('crossLimit',on&&s.crossLimited,dt,{name:'Carga limitada pelo ar disponível',delay:5});
+  alarm('noFeed',s.feedEnabled&&s.commands.pump>20&&s.commands.feed>20&&s.feedFlow<.05,dt,{name:'Alimentação solicitada sem vazão de água',delay:5});
+  alarm('pumpHead',s.commands.pump>20&&s.actual.pump>20&&pumpHead()<=plant.p+.3,dt,{name:'Altura da bomba insuficiente para a contrapressão',delay:3});
+  alarm('pressureDeviation',on&&s.warmTime>600&&Math.abs(getPV('pressure')-configs['PIC-101'].setpoint)>1,dt,{name:'Pressão distante da referência após aquecimento',delay:30});
+  alarm('controllerSaturated',on&&s.demand>95&&configs['PIC-101'].setpoint-getPV('pressure')>.5&&s.warmTime>600,dt,{name:'PIC saturado sem recuperar pressão',delay:30});
+  alarm('relief',s.reliefOpen&&s.reliefFlow>0,dt,{name:'Válvula de alívio aberta',priority:'proteção',delay:0});
+  alarm('reliefFailed',s.reliefOpen&&faults.reliefStuck,dt,{name:'Alívio solicitado sem abertura',priority:'proteção',delay:1});
+  for(const [name,label] of [['fan','Ventilador'],['fuel','FV-101'],['feed','LV-101'],['steam','SV-101']])alarm('position:'+name,Math.abs(s.commands[name]-s.actual[name])>12,dt,{name:label+' — discrepância entre comando e posição',delay:5});
+  for(const [key,tag] of Object.entries(sensorTags)){
+   alarm('signal:'+tag,sensorFaults[tag]==='lost',dt,{name:tag+' — perda de sinal',delay:.5});
+   const tolerance={pressure:.6,level:8,temp:12,flow:2}[key];
+   alarm('disagreement:'+tag,sensorFaults[tag]==='frozen'&&Math.abs(physicalPV(key)-getPV(key))>tolerance,dt,{name:tag+' — divergência com referência independente do modelo',delay:10});
+  }
+ }
+ function pumpHead(){return (faults.pumpLowHead?2:configs['P-101'].head)*(s.actual.pump/100)**2}
+ function simulateStep(dt){
+  s.time+=dt;if(s.requested){s.operatingTime+=dt;if(plant.temp>=boiling)s.warmTime+=dt;if(plant.p>=configs['PIC-101'].setpoint*.8)s.processReady=true}s.gasPressure=gasPressure();
+  const pic=configs['PIC-101'],lic=configs['LIC-101'],b=configs['B-101'],fan=configs['F-101'],fuel=configs['FV-101'];
+  const pressurePI=piOutput(pic,pic.setpoint-getPV('pressure'),s.integralP,0,b.maxLoad,dt,s.requested&&!s.fault);s.integralP=pressurePI.integral;s.demand=pressurePI.output;
+  updateBMS(dt);
+  const active=['IGNITION','PROVE','RUN'].includes(s.state)&&!s.fault&&!s.lowLevel1;
+  let desiredFuel=0,desiredFan=0;s.crossLimited=false;
+  if(['PREPURGE','POSTPURGE'].includes(s.state))desiredFan=fan.mode===0?fan.speed:65;
+  else if(s.state==='LIGHTOFF'||s.state==='IGNITION'||s.state==='PROVE')desiredFan=fan.mode===0?fan.speed:b.minLoad;
+  else if(s.state==='RUN'){
+   const demand=Math.max(b.minLoad,s.demand),q=PHYS.fuelNominal*demand/100;
+   desiredFan=fan.mode===0?fan.speed:100*Math.max(q,s.fuelFlow)*PHYS.airFuel*PHYS.lambdaTarget/(PHYS.fuelNominal*PHYS.airFuel*1.2);
+  }
+  if(active){
+   const load=s.state==='RUN'?Math.max(b.minLoad,s.demand):b.minLoad;
+   let q=PHYS.fuelNominal*load/100;
+   if(fuel.mode===0)desiredFuel=s.state==='RUN'?fuel.opening:Math.min(fuel.opening,100*(b.minLoad/100)**(2/3));
+   else{
+    // Limitação cruzada explicitamente visível: ar sobe antes do gás; gás cai antes do ar.
+    const allowed=s.airFlow/(PHYS.airFuel*1.1);s.crossLimited=q>allowed+.002;q=Math.min(q,allowed);
+    const scale=PHYS.fuelNominal*Math.sqrt(Math.max(.001,s.gasPressure)/.1);desiredFuel=100*(Math.max(0,q)/scale)**(2/3);
+   }
+  }
+  const oldFan=s.actual.fan;actuator('fan',fan.enabled?desiredFan:0,dt,.7,45);if(faults.fanFailure)s.actual.fan=oldFan*Math.exp(-dt/.3);
+  actuator('fuel',fuel.enabled?desiredFuel:0,dt,.35,100);if(faults.fuelValveStuck)s.actual.fuel=stuckPositions.fuelValveStuck;
+  s.ssvOpen=active&&fuel.enabled&&b.enabled&&fan.enabled;
+  s.airFlow=PHYS.fuelNominal*PHYS.airFuel*1.2*(s.actual.fan/100);
+  s.fuelFlow=s.ssvOpen?gasAt(s.actual.fuel):0;
+  s.lambda=s.fuelFlow>1e-7?s.airFlow/(PHYS.airFuel*s.fuelFlow):null;
+  const igniting=s.state==='IGNITION'||s.state==='PROVE';
+  const stable=s.lambda!==null&&s.lambda>.5&&s.lambda<4&&s.fuelFlow>.004;
+  s.actualFlame=stable&&!faults.flameFailure&&((igniting&&!faults.ignitionFailure)||(s.state==='RUN'&&s.actualFlame));
+  s.flameSignal=s.actualFlame||faults.falseFlame;
+  s.o2=s.lambda!==null&&s.lambda>=1?100*(2*s.lambda-2)/(9.52*s.lambda-1):null;
+  s.incompleteIndex=s.lambda===null?0:clamp((1-s.lambda)*100,0,100);
+  const completeness=s.actualFlame?Math.min(1,s.lambda):0;
+  s.efficiency=s.actualFlame?clamp(.86-.08*Math.max(0,(s.lambda||1)-1.2),.4,.86):0;
+  s.heat=s.fuelFlow*PHYS.lhv*completeness*s.efficiency;s.burner=s.heat/PHYS.maxHeat*100;
+  const unburned=s.fuelFlow*(1-completeness);s.gasInventory=Math.max(0,(s.gasInventory+unburned*dt)*Math.exp(-s.airFlow/1.2/8*dt));
+  // A válvula de segurança fecha instantaneamente no bloqueio; a modulante mantém sua dinâmica/posição travada.
+  const steam=configs['SV-101'],drain=configs['BDV-101'];actuator('steam',steam.enabled?steam.opening:0,dt,1.2,40);if(faults.steamValveStuck)s.actual.steam=stuckPositions.steamValveStuck;
+  actuator('drain',drain.enabled?drain.opening:0,dt,.6,50);
+  s.steamFlow=2*s.actual.steam/100*Math.sqrt(Math.max(0,plant.p)/5);
+  if(plant.p>=SAFETY.reliefOpen)s.reliefOpen=true;else if(plant.p<=SAFETY.reliefClose)s.reliefOpen=false;
+  s.reliefFlow=s.reliefOpen&&!faults.reliefStuck?Math.min(8,6*Math.max(0,plant.p-SAFETY.reliefClose)):0;
+  const totalSteam=s.steamFlow+s.reliefFlow,available=plant.vapor*.5/dt;
+  if(totalSteam>available&&totalSteam>0){s.steamFlow*=available/totalSteam;s.reliefFlow*=available/totalSteam}
+  const pump=configs['P-101'],valve=configs['LV-101'];
+  const highLevel=level()>=95;
+  actuator('pump',s.feedEnabled&&pump.enabled&&!highLevel?pump.speed:0,dt,.8,60);
+  const head=pumpHead(),n=s.actual.pump/100;
+  const feedCapacity=4*n*Math.sqrt(Math.max(0,1-(plant.p+.3)/Math.max(.001,head)));
+  const bias=feedCapacity>0?(s.steamFlow+s.reliefFlow)/feedCapacity*100:0;
+  const levelPI=piOutput(lic,lic.setpoint-getPV('level'),s.integralL,bias,100,dt,s.feedEnabled&&!highLevel);s.integralL=levelPI.integral;
+  actuator('feed',s.feedEnabled&&valve.enabled&&!highLevel?(valve.mode===0?valve.opening:levelPI.output):0,dt,.7,60);if(faults.feedValveStuck)s.actual.feed=stuckPositions.feedValveStuck;
+  s.feedFlow=faults.pumpFailure?0:feedCapacity*s.actual.feed/100;
+  s.drainFlow=Math.min(1.2*s.actual.drain/100*Math.sqrt(plant.p+1),Math.max(0,(plant.liquid-100)/dt));
+  const oldMass=plant.mass,oldEnergy=plant.energy,dm=(s.feedFlow-s.steamFlow-s.reliefFlow-s.drainFlow)*dt;
+  const loss=PHYS.loss*(plant.temp-25),dU=(s.heat-loss+s.feedFlow*PHYS.cp*(PHYS.feedTemp-25)-(s.steamFlow+s.reliefFlow)*plant.hg-s.drainFlow*plant.hl)*dt;
+  plant=equilibrium(oldMass+dm,oldEnergy+dU);s.balance={massResidual:plant.mass-oldMass-dm,energyResidual:plant.energy-oldEnergy-dU};
+  evaluateAlarms(dt);
+ }
+ function advance(seconds){if(!Number.isFinite(seconds)||seconds<0)throw new Error('Tempo inválido');const steps=Math.ceil(seconds/.05);for(let j=0;j<steps;j++)simulateStep(seconds/steps)}
+ function instrumentError(tag,c){
+  const def=defs[tag];if(!def)return 'Instrumento desconhecido.';
+  if(Object.keys(def.fields).some(k=>!Number.isFinite(c[k])))return 'Preencha todos os campos com números válidos.';
+  if(c.rangeMin!==undefined&&(c.rangeMin<0||c.rangeMax<=c.rangeMin||c.rangeMax>({'PT-101':20,'LT-101':100,'TT-101':250,'FT-101':30}[tag])||Math.abs(c.offset)>c.rangeMax-c.rangeMin))return 'Faixa ou offset inválido para este transmissor.';
+  if(c.setpoint!==undefined&&(c.setpoint<(tag==='PIC-101'?1:25)||c.setpoint>(tag==='PIC-101'?8:90)))return tag==='PIC-101'?'Referência de pressão: 1–8 bar(g).':'Referência de nível: 25–90%.';
+  for(const k of ['speed','opening','minLoad','maxLoad','manualOutput'])if(c[k]!==undefined&&(c[k]<0||c[k]>100))return 'Percentuais devem estar entre 0 e 100.';
+  for(const k of ['mode','enabled'])if(c[k]!==undefined&&![0,1].includes(c[k]))return 'Use Automático/Habilitado (1) ou Manual/Desabilitado (0).';
+  if(c.minLoad!==undefined&&(c.minLoad<5||c.minLoad>c.maxLoad))return 'Carga mínima entre 5% e a carga máxima.';
+  if(c.kp!==undefined&&(c.kp<0||c.kp>1000||c.ki<0||c.ki>100))return 'Ganhos inválidos: Kp 0–1000; Ki 0–100/s.';
+  if(c.head!==undefined&&(c.head<.5||c.head>30))return 'Altura da bomba: 0,5–30 bar.';
+  if(c.gasPressure!==undefined&&(c.gasPressure<0||c.gasPressure>.3))return 'Pressão de gás: 0–0,3 bar(g). Valores fora de 0,05–0,16 provocam bloqueio didático.';
+  return '';
+ }
+ function configure(tag,next){const c={...configs[tag],...next},error=instrumentError(tag,c);if(error)return error;configs[tag]=c;resetController(tag);event(tag+' — configuração aplicada');return ''}
+ function configureAlarm(key,next){const a={...alarmSettings[key],...next};if(typeof a.enabled!=='boolean'||!Number.isFinite(a.low)||!Number.isFinite(a.high)||a.low>=a.high||!Number.isFinite(a.delay)||a.delay<0||a.delay>120||!Number.isFinite(a.hysteresis)||a.hysteresis<0||a.hysteresis>=(a.high-a.low)/2)return 'Limites, histerese ou atraso inválidos.';alarmSettings[key]=a;return ''}
+ function resetSimulation(){
+  plant=equilibrium(1950,0);s.requested=false;s.feedEnabled=false;s.state='OFF';s.stateTime=0;s.fault=false;s.firstOut=null;s.lastTrip=null;s.integralP=s.integralL=s.demand=s.burner=s.steamFlow=s.feedFlow=s.reliefFlow=s.drainFlow=s.airFlow=s.fuelFlow=s.heat=s.gasInventory=s.operatingTime=s.warmTime=0;s.processReady=false;s.lambda=s.o2=null;s.incompleteIndex=s.efficiency=0;s.actualFlame=s.flameSignal=s.ssvOpen=s.reliefOpen=s.crossLimited=s.lowLevel1=false;
+  for(const k of Object.keys(timers))delete timers[k];for(const k of Object.keys(faults))faults[k]=false;for(const k of Object.keys(sensorFaults))delete sensorFaults[k];s.gasPressure=gasPressure();
+  for(const k of Object.keys(s.commands))s.commands[k]=s.actual[k]=0;s.commands.steam=s.actual.steam=configs['SV-101'].enabled?configs['SV-101'].opening:0;
+  s.balance={massResidual:0,energyResidual:0};for(const a of alarmMap.values())if(a.active){a.active=false;a.returned=s.time;event(a.name+' — encerrado ao reiniciar simulação','return',a.id)}
+  for(const a of alarmMap.values()){a.on=0;a.off=0}event('Simulação reiniciada a frio; falhas injetadas removidas.');
+ }
+ function preset(name){
+  if(name==='rich'){configure('F-101',{mode:0,speed:30});configure('FV-101',{mode:0,opening:100});event('Cenário: gás manual 100%, ar manual 30% — supervisão de mistura permanece ativa.','injection')}
+  else if(name==='noFeed'){setFault('pumpFailure',true);configure('BDV-101',{opening:30})}
+  else if(name==='pressure'){configure('PIC-101',{mode:0,manualOutput:100});configure('SV-101',{opening:0});event('Cenário: carga manual máxima e saída de vapor fechada.','injection')}
+  else if(name==='normal'){clearFaults();configure('F-101',{mode:1});configure('FV-101',{mode:1});configure('LV-101',{mode:1});configure('PIC-101',{mode:1});configure('LIC-101',{mode:1});configure('SV-101',{opening:80});configure('BDV-101',{opening:0});event('Controles automáticos restaurados; bloqueio exige rearme separado.')}
+ }
+ function snapshot(){return {...s,...plant,level:level(),stateLabel:stateLabels[s.state],commands:{...s.commands},actual:{...s.actual},activeAlarms:[...alarmMap.values()].filter(a=>a.active).map(a=>({...a})),unacked:[...alarmMap.values()].filter(a=>!a.ack).length}}
+ return {PHYS,SAFETY,defs,configs,alarmDefaults,alarmSettings,faults,faultNames,sensorFaults,s,events,alarmMap,saturationBar,boilingTemperature,phaseAt,equilibrium,piOutput,start,stop,rearm,rearmBlockers,setFeedEnabled,acknowledge,setFault,setSensorFault,clearFaults,sensorQuality,getPV,physicalPV,configure,instrumentError,configureAlarm,resetController,resetSimulation,preset,advance,simulateStep,evaluateAlarms,snapshot,event,
+  // Permite cenários automatizados de ensaio sem expor comandos a equipamentos físicos.
+  setInitialState(t,mass=1950){if(s.state!=='OFF')throw new Error('Condição inicial só pode ser preparada com o simulador parado.');plant=t<boiling?equilibrium(mass,(mass*PHYS.cp+PHYS.metalCapacity)*(t-25)):phaseAt(t,mass)}
+ };
+}
+
+/* HMI — o motor continua evoluindo ao navegar entre telas. */
 (()=>{
-const $=id=>document.getElementById(id);let running=false,fault=false,p=0,level=65,temp=25,burner=0,history=Array(60).fill(0),events=[];
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));const now=()=>new Date().toLocaleTimeString('pt-BR');
-function addEvent(message,critical=false){events.unshift({message,time:now(),critical,ack:false});events=events.slice(0,30);renderEvents()}
-function renderEvents(){const box=$('alarms');box.replaceChildren();if(!events.length){const el=document.createElement('div');el.className='empty';el.textContent='Nenhum evento registrado.';box.append(el);return}for(const e of events){const item=document.createElement('div');item.className='alarmitem'+(e.critical?' critical':'');const msg=document.createElement('strong');msg.textContent=(e.ack?'✓ ':'● ')+e.message;const small=document.createElement('small');small.textContent=e.time+' · '+(e.ack?'Reconhecido':'Não reconhecido');item.append(msg,small);box.append(item)}}
-function render(){ refreshInstruments(); $('pressure').textContent=p.toFixed(1).replace('.',',');$('level').textContent=Math.round(level);$('temp').textContent=Math.round(temp);$('burner').textContent=Math.round(burner);$('clock').textContent=now();$('mode').textContent=fault?'FALHA':running?'EM OPERAÇÃO':'PARADA';$('mode').className='pill '+(fault?'bad':running?'ok':'');$('flame').textContent=running&&!fault?'🔥':'◌';$('flameDot').className='dot '+(running&&!fault?'':'off');$('stateText').textContent=fault?'Falha de chama. Reinicie para restabelecer.':running?'Sistema em operação.':'Sistema parado.';draw()}
-function draw(){const c=$('trend'),rect=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1,w=Math.max(240,rect.width),h=Math.max(150,rect.height);c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);const x=c.getContext('2d');x.scale(dpr,dpr);x.clearRect(0,0,w,h);x.strokeStyle='#2d4359';x.lineWidth=1;for(let i=0;i<=4;i++){let y=12+(h-30)*i/4;x.beginPath();x.moveTo(38,y);x.lineTo(w-10,y);x.stroke();x.fillStyle='#8fa8bf';x.font='11px system-ui';x.fillText(String((10-i*2.5).toFixed(1)),3,y+4)}x.beginPath();history.forEach((v,i)=>{const px=38+i*(w-50)/(history.length-1),py=12+(h-30)*(1-clamp(v/10,0,1));i?x.lineTo(px,py):x.moveTo(px,py)});x.strokeStyle='#59c7f2';x.lineWidth=2.5;x.stroke()}
-$('start').onclick=()=>{if(fault){addEvent('Partida bloqueada por falha de chama',true);return}if(!running){running=true;addEvent('Partida realizada')}render()};
-$('stop').onclick=()=>{if(running){running=false;burner=0;addEvent('Parada realizada')}render()};
-$('fault').onclick=()=>{fault=true;running=false;burner=0;addEvent('Falha de chama — operação interrompida',true);render()};
-$('reset').onclick=()=>{running=false;fault=false;p=0;level=65;temp=25;burner=0;history=Array(60).fill(0);events=[];addEvent('Sistema reiniciado');render()};
-$('ack').onclick=()=>{events.forEach(e=>e.ack=true);renderEvents()};
-$('target').onchange=()=>{const value=clamp(Number($('target').value)||5,1,8);$('target').value=value;configs['PIC-101'].setpoint=value;localStorage.setItem('thermo-instruments-v1',JSON.stringify(configs));if(selectedTag==='PIC-101')showInstrument(selectedTag);addEvent('Pressão de referência alterada para '+value+' bar')};
-setInterval(()=>{if(running){const pic=configs['PIC-101'],lic=configs['LIC-101'];const target=clamp(pic.setpoint,1,8);integralP=clamp(integralP+(target-p)*pic.ki,-15,15);const demand=30+(target-p)*pic.kp+integralP;burner=(configs['B-101'].enabled&&configs['F-101'].enabled&&configs['FV-101'].enabled)?clamp(demand*configs['FV-101'].opening/70,configs['B-101'].minLoad,configs['B-101'].maxLoad):0;p=clamp(p+(burner/70*(target-p))*.035+(Math.random()-.5)*.035,0,9);temp=25+p*16;integralL=clamp(integralL+(lic.setpoint-level)*lic.ki,-10,10);const feed=(configs['P-101'].enabled&&configs['LV-101'].enabled)?(configs['P-101'].speed/70)*(configs['LV-101'].opening/55):0;level=clamp(level+feed*(lic.setpoint-level)*.01+integralL*.001+(Math.random()-.5)*.15-.012,0,100)}else{burner=0;p=Math.max(0,p-.025);temp=Math.max(25,temp-.4)}history.push(p);history.shift();evaluateAlarms();render()},1000);
+ const $=id=>document.getElementById(id),model=createBoilerSimulator(),fmt=(v,n=1)=>Number.isFinite(v)?v.toLocaleString('pt-BR',{minimumFractionDigits:n,maximumFractionDigits:n}):'—';
+ let selectedTag='PT-101',currentScreen='process',history=Array.from({length:60},()=>({time:0,p:0})),lastTime=performance.now(),nextSample=1,paused=false,eventsSignature='';
+ const labels={rangeMin:'Faixa mínima',rangeMax:'Faixa máxima',offset:'Offset',setpoint:'Referência',kp:'Ganho proporcional',ki:'Ganho integral (por segundo)',manualOutput:'Saída manual (%)',mode:'Modo de comando',minLoad:'Carga mínima (%)',maxLoad:'Carga máxima (%)',enabled:'Equipamento habilitado',speed:'Velocidade manual / nominal (%)',opening:'Abertura manual (%)',gasPressure:'Pressão de alimentação do gás (bar(g))',head:'Altura de fechamento a 100% (bar)'};
+ const screenNames={process:'Processo',instruments:'Instrumentos',combustion:'Combustão',alarms:'Alarmes',trends:'Tendências',scenarios:'Cenários',model:'Modelo'};
+ const equipmentNames={fan:'Ventilador',fuel:'Válvula de gás',pump:'Bomba',feed:'Válvula de água',steam:'Válvula de vapor',drain:'Descarga de água'};
+ function readNumber(v){return v.trim()===''?NaN:Number(v)}
+ function persist(){try{localStorage.setItem('thermo-instruments-v3',JSON.stringify(model.configs));localStorage.setItem('thermo-alarms-v3',JSON.stringify(model.alarmSettings))}catch{$('configMessage').textContent='Ajustes aplicados nesta sessão; armazenamento local indisponível.'}}
+ function load(){
+  try{
+   const c=JSON.parse(localStorage.getItem('thermo-instruments-v3')||'null');
+   if(c&&typeof c==='object')for(const tag of Object.keys(model.defs))if(c[tag]){const next=Object.fromEntries(Object.keys(model.defs[tag].fields).map(k=>[k,c[tag][k]??model.defs[tag].fields[k]]));model.configure(tag,next)}
+   const a=JSON.parse(localStorage.getItem('thermo-alarms-v3')||'null');if(a&&typeof a==='object')for(const key of Object.keys(model.alarmDefaults))if(a[key])model.configureAlarm(key,a[key]);
+  }catch{}
+  model.events.length=0;model.event('Simulador preparado. Tempos e limites são didáticos.');
+ }
+ function showScreen(name){
+  if(!Object.hasOwn(screenNames,name))return;currentScreen=name;
+  for(const key of Object.keys(screenNames))$('screen-'+key).hidden=key!==name;
+  document.querySelectorAll('.screen-nav [data-screen]').forEach(b=>{const on=b.dataset.screen===name;b.classList.toggle('active',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+  const keys=Object.keys(screenNames),index=keys.indexOf(name);$('screenPosition').textContent=String(index+1).padStart(2,'0')+' / '+String(keys.length).padStart(2,'0')+' · '+screenNames[name];$('previousScreen').disabled=index===0;$('nextScreen').disabled=index===keys.length-1;
+  requestAnimationFrame(draw);
+ }
+ function showInstrument(tag){
+  if(!model.defs[tag])return;selectedTag=tag;const d=model.defs[tag];$('configTitle').textContent=d.name;$('configTag').textContent=tag;$('configFields').replaceChildren();
+  for(const [key,val] of Object.entries(model.configs[tag])){
+   const label=document.createElement('label');label.textContent=labels[key]||key;let input;
+   if(['enabled','mode'].includes(key)){
+    input=document.createElement('select');for(const [value,text] of [[1,key==='mode'?'Automático':'Habilitado'],[0,key==='mode'?'Manual (ensaio)':'Desabilitado']]){const option=document.createElement('option');option.value=value;option.textContent=text;input.append(option)}
+   }else{input=document.createElement('input');input.type='number';input.step='any'}
+   input.value=val;input.dataset.key=key;input.setAttribute('aria-label',labels[key]||key);label.append(input);$('configFields').append(label);
+  }
+  $('configMessage').textContent='';
+  const note=['F-101','FV-101','LV-101'].includes(tag)?'Em Automático, o controlador calcula a posição. Para forçar o valor informado, selecione Manual (ensaio). As proteções continuam ativas.':tag==='P-101'?'A vazão depende da velocidade real, da altura da bomba, da válvula e da pressão da caldeira.':tag.startsWith('P')||tag.startsWith('L')?'Ajustes do controlador/transmissor não alteram as proteções independentes.':'A indicação inclui a calibração e a qualidade do sinal.';
+  $('configHint').textContent=note;document.querySelectorAll('.instrument-tile').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tag===tag)));refreshInstruments();
+ }
+ function refreshInstruments(){
+  for(const [tag,d] of Object.entries(model.defs)){const el=document.querySelector('[data-pv="'+tag+'"]');if(el)el.textContent=fmt(model.getPV(d.pv))+' '+d.unit+(model.sensorFaults[tag]&&model.sensorFaults[tag]!=='healthy'?' · '+model.sensorQuality(tag):'')}
+  const d=model.defs[selectedTag];if(d)$('configDescription').textContent='Valor real/indicado: '+fmt(model.getPV(d.pv))+' '+d.unit;
+ }
+ function setupInstruments(){
+  for(const [tag,d] of Object.entries(model.defs)){
+   const b=document.createElement('button');b.className='instrument-tile';b.dataset.tag=tag;const strong=document.createElement('strong');strong.textContent=tag+' · '+d.name;const small=document.createElement('small');small.dataset.pv=tag;b.append(strong,small);b.onclick=()=>showInstrument(tag);$('instrumentTiles').append(b);
+  }
+  document.querySelectorAll('.pid .symbol').forEach(el=>{const action=()=>{showInstrument(el.dataset.tag);showScreen('instruments')};el.addEventListener('click',action);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();action()}})});
+  $('saveInstrument').onclick=()=>{
+   const next={};for(const input of $('configFields').querySelectorAll('[data-key]'))next[input.dataset.key]=readNumber(input.value);
+   const error=model.configure(selectedTag,next);if(error){$('configMessage').textContent=error;return}persist();$('target').value=model.configs['PIC-101'].setpoint;showInstrument(selectedTag);$('configMessage').textContent='Ajustes aplicados. O atuador real segue sua dinâmica.';render();
+  };
+  $('restoreInstrument').onclick=()=>{model.configure(selectedTag,{...model.defs[selectedTag].fields});persist();$('target').value=model.configs['PIC-101'].setpoint;showInstrument(selectedTag);$('configMessage').textContent='Parâmetros do instrumento restaurados.';render()};
+  showInstrument(selectedTag);
+ }
+ function drawAlarmSettings(){
+  $('alarmConfig').replaceChildren();
+  for(const [key,a] of Object.entries(model.alarmSettings)){
+   const row=document.createElement('tr');row.dataset.key=key;const td=document.createElement('td');td.textContent=a.name;row.append(td);
+   for(const field of ['low','high','hysteresis','delay']){const cell=document.createElement('td'),input=document.createElement('input');input.type='number';input.step='any';input.value=a[field];input.dataset.field=field;input.setAttribute('aria-label',a.name+' '+field);cell.append(input);row.append(cell)}
+   const cell=document.createElement('td'),input=document.createElement('input');input.type='checkbox';input.checked=a.enabled;input.dataset.field='enabled';input.setAttribute('aria-label','Habilitar '+a.name);cell.append(input);row.append(cell);$('alarmConfig').append(row);
+  }
+ }
+ function setupAlarms(){
+  drawAlarmSettings();$('saveAlarms').onclick=()=>{
+   const candidates={};
+   for(const row of $('alarmConfig').querySelectorAll('tr')){const next={};for(const k of ['low','high','hysteresis','delay'])next[k]=readNumber(row.querySelector('[data-field='+k+']').value);next.enabled=row.querySelector('[data-field=enabled]').checked;
+    if(!Number.isFinite(next.low)||!Number.isFinite(next.high)||next.low>=next.high||!Number.isFinite(next.hysteresis)||next.hysteresis<0||next.hysteresis>=(next.high-next.low)/2||!Number.isFinite(next.delay)||next.delay<0||next.delay>120){$('alarmMessage').textContent='Use baixo < alto; histerese ≥ 0 e menor que metade da faixa; atraso entre 0 e 120 s.';return}candidates[row.dataset.key]=next;
+   }
+   for(const [key,next] of Object.entries(candidates))model.configureAlarm(key,next);persist();model.event('Configuração de avisos atualizada; proteções de segurança preservadas.');$('alarmMessage').textContent='Avisos salvos. Intertravamentos não são desabilitados por esta tabela.';render();
+  };
+  $('resetAlarms').onclick=()=>{for(const [key,a] of Object.entries(model.alarmDefaults))model.configureAlarm(key,{...a});persist();drawAlarmSettings();$('alarmMessage').textContent='Limites de aviso restaurados.';render()};
+  $('ack').onclick=()=>{model.acknowledge();render()};
+ }
+ function timeText(t){const n=Math.floor(t);return [Math.floor(n/3600),Math.floor(n%3600/60),n%60].map(x=>String(x).padStart(2,'0')).join(':')}
+ function renderEvents(){
+  const signature=JSON.stringify([model.events, [...model.alarmMap.values()].map(a=>[a.id,a.active,a.ack])]);if(signature===eventsSignature)return;eventsSignature=signature;
+  $('alarms').replaceChildren();
+  for(const a of model.alarmMap.values())if(a.active||!a.ack){const el=document.createElement('div');el.className='alarmitem'+(a.priority==='trip'?' critical':'');const strong=document.createElement('strong');strong.textContent=(a.active?'ATIVO':'RETORNOU')+' · '+a.name;const small=document.createElement('small');small.textContent=(a.ack?'Reconhecido':'Não reconhecido')+' · início '+timeText(a.first)+(a.returned!==null?' · retorno '+timeText(a.returned):'');el.append(strong,small);$('alarms').append(el)}
+  if(!$('alarms').children.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='Sem alarmes ativos ou pendentes de reconhecimento.';$('alarms').append(empty)}
+  $('eventHistory').replaceChildren();for(const e of model.events){const row=document.createElement('div');row.className='history-event '+e.type;row.textContent=timeText(e.time)+' · '+e.message;$('eventHistory').append(row)}
+ }
+ function setupScenarios(){
+  for(const [key,name] of Object.entries(model.faultNames)){
+   const label=document.createElement('label');label.className='fault-option';const input=document.createElement('input');input.type='checkbox';input.dataset.fault=key;input.onchange=()=>{model.setFault(key,input.checked);render()};const text=document.createElement('span');text.textContent=name;label.append(input,text);$('faultOptions').append(label);
+  }
+  $('clearFaults').onclick=()=>{model.clearFaults();$('scenarioMessage').textContent='Falhas removidas. Corrija comandos manuais inseguros e rearme o bloqueio separadamente.';render()};
+  document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>{model.preset(b.dataset.preset);persist();showInstrument(selectedTag);$('scenarioMessage').textContent='Cenário aplicado: '+b.textContent.trim()+'. '+(model.s.requested?'Acompanhe a sequência e a primeira causa.':'Solicite Partida para iniciar o ensaio.');render()});
+  $('applySensorFault').onclick=()=>{model.setSensorFault($('faultSensor').value,$('sensorFaultType').value);render()};
+ }
+ function refreshCombustion(d){
+  const values={gasFlow:fmt(d.fuelFlow,4)+' kg/s',airFlow:fmt(d.airFlow,3)+' kg/s',lambda:fmt(d.lambda,2),oxygen:fmt(d.o2,1)+' %',efficiency:fmt(d.efficiency*100,1)+' %',heatInput:fmt(d.heat,0)+' kW',gasPressure:fmt(d.gasPressure,3)+' bar(g)',incomplete:fmt(d.incompleteIndex,0)+' / 100',gasInventory:fmt(d.gasInventory,4)+' kg',waterFlow:fmt(d.feedFlow*3.6,2)+' t/h',steamFlow:fmt(d.steamFlow*3.6,2)+' t/h',reliefFlow:fmt(d.reliefFlow*3.6,2)+' t/h',drainFlow:fmt(d.drainFlow*3.6,2)+' t/h',independentLevel:fmt(d.level,1)+' %',safetyValve:d.ssvOpen?'ABERTA':'FECHADA',flameProof:d.flameSignal?'CHAMA COMPROVADA':'SEM CHAMA',airProof:d.airFlow>.12&&!model.faults.airSwitchFailure?'AR COMPROVADO':'AR NÃO COMPROVADO'};
+  for(const [id,value] of Object.entries(values))$(id).textContent=value;
+  $('ratioStatus').textContent=d.lambda===null?'Sem admissão de gás':d.lambda<1?'MISTURA RICA':d.lambda>1.8?'EXCESSO DE AR':'FAIXA DE COMBUSTÃO';$('ratioStatus').className='chip '+(d.lambda!==null&&d.lambda<1?'bad':'');
+  $('crossLimitStatus').textContent=d.crossLimited?'Limitação cruzada: combustível limitado pelo ar medido':'Limitação cruzada disponível no gás automático';
+  for(const key of Object.keys(equipmentNames)){$('cmd-'+key).textContent=fmt(d.commands[key]);$('act-'+key).textContent=fmt(d.actual[key])}
+  $('sequenceState').textContent=d.stateLabel;$('sequenceTime').textContent=fmt(d.stateTime,1)+' s nesta etapa';
+  document.querySelectorAll('[data-bms-state]').forEach(el=>el.classList.toggle('current',el.dataset.bmsState===d.state));
+  const first=d.firstOut||d.lastTrip;$('firstOut').textContent=first?timeText(first.time)+' · '+first.reason:'Nenhum bloqueio registrado.';
+  $('rearmConditions').textContent=d.fault?'Para rearmar: '+(model.rearmBlockers().join('; ')||'condições satisfeitas; pressione Rearmar bloqueio.'):'Reconhecer não remove falhas. Rearmar não esfria nem repõe água.';
+ }
+ function render(){
+  const d=model.snapshot();refreshInstruments();$('pressure').textContent=fmt(model.getPV('pressure'));$('level').textContent=fmt(model.getPV('level'),0);$('temp').textContent=fmt(model.getPV('temp'),0);$('burner').textContent=fmt(d.burner,0);$('clock').textContent=timeText(d.time);$('mode').textContent=d.stateLabel;$('mode').className='pill '+(d.fault?'bad':d.state==='RUN'?'ok':'');
+  $('flame').textContent=d.actualFlame?'🔥':'◌';$('flameDot').className='dot '+(d.actualFlame?'':'off');
+  $('stateText').textContent=d.fault?'BLOQUEADO: '+d.firstOut.reason:d.state==='RUN'?'Combustão supervisionada. Demanda: '+fmt(d.demand,0)+'%.':d.stateLabel+' · '+fmt(d.stateTime,1)+' s';
+  $('start').disabled=d.requested||d.fault;$('rearm').disabled=!d.fault;$('feedWater').textContent=d.feedEnabled?'Parar alimentação de água':'Habilitar alimentação de água';
+  const count=d.activeAlarms.length;$('alarmBadge').textContent=String(count);$('alarmBadge').classList.toggle('alert',count>0);$('screenAlarmStatus').classList.toggle('alert',count>0);$('screenAlarmStatus').textContent=count?count+' ativo(s) · '+d.unacked+' não reconhecido(s)':'Sem alarmes ativos'+(d.unacked?' · '+d.unacked+' pendente(s)':'');
+  $('bmsSummary').textContent=d.stateLabel+(d.firstOut?' · '+d.firstOut.reason:'');$('bmsSummary').classList.toggle('bad',d.fault);
+  refreshCombustion(d);renderEvents();
+  document.querySelectorAll('[data-fault]').forEach(input=>input.checked=model.faults[input.dataset.fault]);
+  $('sensorFaultSummary').textContent=Object.entries(model.sensorFaults).filter(([,v])=>v!=='healthy').map(([k])=>k+': '+model.sensorQuality(k)).join(' · ')||'Todos os transmissores sem falha injetada.';
+  draw();
+ }
+ function draw(){
+  const c=$('trend'),rect=c.getBoundingClientRect();if(!rect.width||!rect.height)return;const w=rect.width,h=rect.height,dpr=window.devicePixelRatio||1;c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);const ctx=c.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);const max=Math.max(10,...history.map(x=>Number.isFinite(x.p)?x.p:0))*1.05,pad=38;ctx.clearRect(0,0,w,h);ctx.font='11px system-ui';
+  for(let j=0;j<=4;j++){const y=15+(h-45)*j/4;ctx.strokeStyle='#2d4359';ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-10,y);ctx.stroke();ctx.fillStyle='#9bb3c9';ctx.fillText(fmt(max*(1-j/4)),2,y+4)}
+  ctx.strokeStyle='#59c7f2';ctx.lineWidth=2;ctx.beginPath();let pen=false;history.forEach((point,j)=>{if(!Number.isFinite(point.p)){pen=false;return}const x=pad+j/(history.length-1)*(w-pad-10),y=15+(h-45)*(1-point.p/max);if(pen)ctx.lineTo(x,y);else ctx.moveTo(x,y);pen=true});ctx.stroke();ctx.fillStyle='#9bb3c9';ctx.fillText('bar(g)',3,10);ctx.fillText(timeText(history[0].time),pad,h-7);ctx.fillText(timeText(history[history.length-1].time),Math.max(pad,w-65),h-7);
+ }
+ function bind(){
+  const buttons=[...document.querySelectorAll('.screen-nav [data-screen]')],keys=Object.keys(screenNames);
+  buttons.forEach((b,i)=>{b.onclick=()=>showScreen(b.dataset.screen);b.onkeydown=e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const index=e.key==='Home'?0:e.key==='End'?keys.length-1:(i+(e.key==='ArrowRight'?1:keys.length-1))%keys.length;buttons[index].focus();showScreen(keys[index])}});
+  $('previousScreen').onclick=()=>showScreen(keys[keys.indexOf(currentScreen)-1]);$('nextScreen').onclick=()=>showScreen(keys[keys.indexOf(currentScreen)+1]);$('screenAlarmStatus').onclick=()=>showScreen('alarms');
+  $('start').onclick=()=>{model.start();render()};$('stop').onclick=()=>{model.stop();render()};$('rearm').onclick=()=>{const ok=model.rearm();$('operatorMessage').textContent=ok?'Rearme concluído; solicite nova partida.':'Rearme recusado: '+model.rearmBlockers().join('; ');render()};
+  $('feedWater').onclick=()=>{model.setFeedEnabled(!model.s.feedEnabled);render()};
+  $('fault').onclick=()=>{model.setFault('flameFailure',!model.faults.flameFailure);render()};
+  $('reset').onclick=()=>{model.resetSimulation();history=Array.from({length:60},()=>({time:model.s.time,p:model.getPV('pressure')}));nextSample=model.s.time+1;$('operatorMessage').textContent='Condição fria restaurada. Configurações e histórico de eventos preservados.';render()};
+  $('target').onchange=()=>{const error=model.configure('PIC-101',{setpoint:readNumber($('target').value)});if(error)$('operatorMessage').textContent=error;else{persist();$('operatorMessage').textContent='Referência atualizada.'} $('target').value=model.configs['PIC-101'].setpoint;if(selectedTag==='PIC-101')showInstrument(selectedTag);render()};
+  for(const [id,on] of [['combDataTab',true],['combActuatorsTab',false]])$(id).onclick=()=>{
+   $('combDataView').hidden=!on;$('combActuatorsView').hidden=on;
+   $('combDataTab').setAttribute('aria-pressed',String(on));$('combActuatorsTab').setAttribute('aria-pressed',String(!on));$('combDataTab').classList.toggle('active',on);$('combActuatorsTab').classList.toggle('active',!on);
+  };
+  $('simSpeed').onchange=()=>model.s.clockRate=Number($('simSpeed').value);
+  $('pauseSimulation').onclick=()=>{paused=!paused;$('pauseSimulation').textContent=paused?'Retomar':'Pausar';lastTime=performance.now()};
+  new ResizeObserver(draw).observe($('trend'));window.addEventListener('resize',draw);
+ }
+ load();setupInstruments();setupAlarms();setupScenarios();bind();$('target').value=model.configs['PIC-101'].setpoint;showScreen('process');render();
+ setInterval(()=>{
+  const now=performance.now(),realDt=(now-lastTime)/1000;lastTime=now;if(paused)return;if(realDt>5){model.event('Tempo pausado durante suspensão da página.');render();return}
+  let remaining=realDt*model.s.clockRate;
+  try{while(remaining>1e-8){const part=Math.min(remaining,Math.max(.001,nextSample-model.s.time));model.advance(part);remaining-=part;if(model.s.time+1e-7>=nextSample){history.push({time:model.s.time,p:model.getPV('pressure')});history.shift();nextSample+=1}}}catch(error){paused=true;$('pauseSimulation').textContent='Retomar';$('operatorMessage').textContent='Simulação pausada: '+error.message;model.event(error.message,'error')}
+  render();
+ },250);
+})();
 
-/* Configuração local dos instrumentos do modelo virtual; não controla equipamentos físicos. */
-const instrumentDefs={
-"PT-101":{name:"Transmissor de pressão",unit:"bar",pv:"pressure",fields:{rangeMin:0,rangeMax:10,offset:0}},
-"LT-101":{name:"Transmissor de nível",unit:"%",pv:"level",fields:{rangeMin:0,rangeMax:100,offset:0}},
-"TT-101":{name:"Transmissor de temperatura",unit:"°C",pv:"temp",fields:{rangeMin:0,rangeMax:250,offset:0}},
-"FT-101":{name:"Transmissor de vazão de vapor",unit:"t/h",pv:"flow",fields:{rangeMin:0,rangeMax:12,offset:0}},
-"PIC-101":{name:"Controlador de pressão",unit:"bar",pv:"pressure",fields:{setpoint:5,kp:12,ki:0.035,mode:1}},
-"LIC-101":{name:"Controlador de nível",unit:"%",pv:"level",fields:{setpoint:65,kp:1.2,ki:0.02,mode:1}},
-"B-101":{name:"Queimador",unit:"%",pv:"burner",fields:{minLoad:15,maxLoad:100,enabled:1}},
-"F-101":{name:"Ventilador de combustão",unit:"%",pv:"fan",fields:{speed:75,enabled:1}},
-"P-101":{name:"Bomba de alimentação",unit:"%",pv:"pump",fields:{speed:70,enabled:1}},
-"FV-101":{name:"Válvula de combustível",unit:"%",pv:"fuelValve",fields:{opening:70,enabled:1}},
-"LV-101":{name:"Válvula de alimentação",unit:"%",pv:"feedValve",fields:{opening:55,enabled:1}},
-"SV-101":{name:"Válvula de vapor",unit:"%",pv:"steamValve",fields:{opening:80,enabled:1}}
-};
-const alarmDefaults={pressure:{name:"Pressão (bar)",low:0,high:8.5,enabled:true},level:{name:"Nível (%)",low:45,high:85,enabled:true},temp:{name:"Temperatura (°C)",low:0,high:185,enabled:true},flow:{name:"Vazão (t/h)",low:0,high:11,enabled:true}};
-const copy=o=>JSON.parse(JSON.stringify(o));
-const storeRead=(key,defaultValue)=>{try{const val=JSON.parse(localStorage.getItem(key));return val&&typeof val==="object"?val:copy(defaultValue)}catch{return copy(defaultValue)}};
-let configs=storeRead("thermo-instruments-v1",Object.fromEntries(Object.entries(instrumentDefs).map(([k,v])=>[k,v.fields])));
-let alarmSettings=storeRead("thermo-alarms-v1",alarmDefaults);
-for(const [tag,def] of Object.entries(instrumentDefs))configs[tag]={...def.fields,...configs[tag]};
-for(const [key,def] of Object.entries(alarmDefaults))alarmSettings[key]={...def,...alarmSettings[key]};
-let selectedTag="PT-101",activeAlarms=new Set(),integralP=0,integralL=0;
-const labels={rangeMin:"Faixa mínima",rangeMax:"Faixa máxima",offset:"Offset",setpoint:"Setpoint",kp:"Ganho proporcional",ki:"Ganho integral",mode:"Automático (1) / Manual (0)",minLoad:"Carga mínima",maxLoad:"Carga máxima",enabled:"Habilitado (1) / Desabilitado (0)",speed:"Velocidade (%)",opening:"Abertura (%)"};
-const getPV=key=>({pressure:p,level,temp,burner,flow:running?burner*.085:0,fan:running&&configs["F-101"].enabled?configs["F-101"].speed:0,pump:running&&configs["P-101"].enabled?configs["P-101"].speed:0,fuelValve:running?configs["FV-101"].opening:0,feedValve:running?configs["LV-101"].opening:0,steamValve:configs["SV-101"].opening})[key]??0;
-function showInstrument(tag){
- selectedTag=tag;const def=instrumentDefs[tag];if(!def)return;
- $("configTitle").textContent=def.name;$("configTag").textContent=tag;
- $("configDescription").textContent="Valor atual: "+getPV(def.pv).toFixed(1)+" "+def.unit;
- $("configFields").replaceChildren();
- for(const [key,val] of Object.entries(configs[tag])){
- const label=document.createElement("label");label.textContent=labels[key]||key;
- const input=document.createElement("input");input.type="number";input.step="any";input.value=val;input.dataset.key=key;input.setAttribute("aria-label",label.textContent);
- label.append(input);$("configFields").append(label);
- }
- $("configMessage").textContent="";
- document.querySelectorAll(".instrument-tile").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.tag===tag)));
-}
-function setupInstruments(){
- const tiles=$("instrumentTiles");
- for(const [tag,def] of Object.entries(instrumentDefs)){
- const btn=document.createElement("button");btn.className="instrument-tile";btn.dataset.tag=tag;
- btn.innerHTML="<strong>"+tag+" · "+def.name+"</strong><small data-pv='"+tag+"'>—</small>";
- btn.onclick=()=>{showInstrument(tag);$("configPanel").scrollIntoView({behavior:"smooth",block:"nearest"})};tiles.append(btn);
- }
- document.querySelectorAll(".pid .symbol").forEach(el=>{
- const action=()=>{showInstrument(el.dataset.tag);$("configPanel").scrollIntoView({behavior:"smooth",block:"nearest"})};
- el.addEventListener("click",action);el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();action()}});
- });
- $("saveInstrument").onclick=()=>{
- const next={};for(const input of $("configFields").querySelectorAll("input")){const n=Number(input.value);if(!Number.isFinite(n)){ $("configMessage").textContent="Informe valores numéricos válidos.";return }next[input.dataset.key]=n}
- if(next.rangeMin!==undefined&&next.rangeMax<=next.rangeMin){$("configMessage").textContent="A faixa máxima deve ser maior que a mínima.";return}
- if(next.setpoint!==undefined&&(next.setpoint<0||next.setpoint>100)){ $("configMessage").textContent="Setpoint fora da faixa permitida.";return}
- if(next.minLoad!==undefined&&next.minLoad>next.maxLoad){$("configMessage").textContent="A carga mínima deve ser menor que a máxima.";return}
- for(const key of ["speed","opening","minLoad","maxLoad"]){if(next[key]!==undefined&&(next[key]<0||next[key]>100)){$("configMessage").textContent="Utilize valores entre 0 e 100%.";return}}
- for(const key of ["enabled","mode"]){if(next[key]!==undefined&&![0,1].includes(next[key])){$("configMessage").textContent="Utilize 0 ou 1.";return}}
- if(next.kp!==undefined&&(next.kp<0||next.ki<0)){$("configMessage").textContent="Os ganhos não podem ser negativos.";return}
- configs[selectedTag]=next;localStorage.setItem("thermo-instruments-v1",JSON.stringify(configs));
- if(selectedTag==="PIC-101"){$("target").value=next.setpoint;integralP=0}
- addEvent(selectedTag+" · parâmetros atualizados");showInstrument(selectedTag);$("configMessage").textContent="Ajustes aplicados.";
- };
- $("restoreInstrument").onclick=()=>{configs[selectedTag]=copy(instrumentDefs[selectedTag].fields);localStorage.setItem("thermo-instruments-v1",JSON.stringify(configs));if(selectedTag==="PIC-101")$("target").value=configs[selectedTag].setpoint;showInstrument(selectedTag);$("configMessage").textContent="Parâmetros restaurados."};
- showInstrument(selectedTag);
-}
-function drawAlarmSettings(){
- const body=$("alarmConfig");body.replaceChildren();
- for(const [key,a] of Object.entries(alarmSettings)){
- const row=document.createElement("tr");row.dataset.key=key;
- const title=document.createElement("td");title.textContent=a.name;row.append(title);
- for(const k of ["low","high"]){const td=document.createElement("td"),inp=document.createElement("input");inp.type="number";inp.step="any";inp.value=a[k];inp.dataset.field=k;inp.setAttribute("aria-label",a.name+" "+(k==="low"?"limite baixo":"limite alto"));td.append(inp);row.append(td)}
- const td=document.createElement("td"),check=document.createElement("input");check.type="checkbox";check.checked=a.enabled;check.dataset.field="enabled";check.setAttribute("aria-label","Habilitar alarme "+a.name);td.append(check);row.append(td);body.append(row);
- }
-}
-function setupAlarms(){
- drawAlarmSettings();
- $("saveAlarms").onclick=()=>{
- const next=copy(alarmSettings);
- for(const row of $("alarmConfig").querySelectorAll("tr")){
- const key=row.dataset.key,low=Number(row.querySelector('[data-field="low"]').value),high=Number(row.querySelector('[data-field="high"]').value);
- if(!Number.isFinite(low)||!Number.isFinite(high)||low>=high){$("alarmMessage").textContent="O limite baixo deve ser menor que o alto.";return}
- next[key]={...next[key],low,high,enabled:row.querySelector('[data-field="enabled"]').checked};
- }
- alarmSettings=next;activeAlarms.clear();localStorage.setItem("thermo-alarms-v1",JSON.stringify(next));$("alarmMessage").textContent="Limites de alarme salvos.";addEvent("Limites de alarme atualizados");
- };
- $("resetAlarms").onclick=()=>{alarmSettings=copy(alarmDefaults);activeAlarms.clear();localStorage.setItem("thermo-alarms-v1",JSON.stringify(alarmSettings));drawAlarmSettings();$("alarmMessage").textContent="Limites restaurados."};
-}
-function evaluateAlarms(){
- for(const [key,a] of Object.entries(alarmSettings)){
- const value=getPV(key),state=a.enabled?(value<a.low?"baixo":value>a.high?"alto":null):null;
- const previous=[...activeAlarms].find(x=>x.startsWith(key+":"));
- if(previous&&previous!==key+":"+state)activeAlarms.delete(previous);
- if(state&&!activeAlarms.has(key+":"+state)){activeAlarms.add(key+":"+state);addEvent(a.name+" · alarme "+state+" ("+value.toFixed(1)+")",true)}
- }
-}
-function refreshInstruments(){
- for(const [tag,def] of Object.entries(instrumentDefs)){
- const el=document.querySelector('[data-pv="'+tag+'"]');if(el)el.textContent=getPV(def.pv).toFixed(1)+" "+def.unit;
- }
- if(instrumentDefs[selectedTag])$("configDescription").textContent="Valor atual: "+getPV(instrumentDefs[selectedTag].pv).toFixed(1)+" "+instrumentDefs[selectedTag].unit;
-}
-setupInstruments();setupAlarms();
-
-window.addEventListener('resize',draw);render();refreshInstruments();})();
-</script></body></html>
+</script><details class="lab-nav lab-nav--floating"><summary>Menu Marcel Labs</summary><nav aria-label="Navegação entre projetos"><a href="../">Página inicial</a><a href="../caldeira/" aria-current="page">Caldeira</a><a href="../clima/">Clima Brasil</a><a href="../alarme_de_incendio/">Alarme de incêndio</a></nav></details></body></html>
